@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Digital Yazman</string>
+    <string name="title_activity_menu">menuActivity</string>
+    <string name="title_activity_businesses">businesses</string>
+    <string name="title_activity_emergency">EmergencyActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_local_deals">LocalDeals</string>
+    <string name="title_activity_local_news">LocalNews</string>
+    <string name="title_activity_opportunities">Opportunities</string>
+    <string name="title_activity_services">Services</string>
+    <string name="title_activity_support">Support</string>
+    <string name="title_activity_transport">Transport</string>
+    <string name="title_activity_login">Login</string>
+    <string name="history_1">Yazman (Urdu: يزمان), is a city and capital of Yazman Tehsil of Bahawalpur District, in southern Punjab, Pakistan. It is located at an altitude of 115 metres (380 feet).</string>
+    <string name="history_2">Yazman is primarily called a gateway to the Cholistan Desert. It is the largest tehsil of Bahawalpur District. Yazman is a unique offspring of the process of colonization of the defunct state of Bahawalpur and it was named after a city of “Yazman” in a Syrian region of Balkh.</string>
+    <string name="history_3">Yazman is actually a seven to eight decades older city. The following three factors played a vital role in its colonization and development. 1-It is situated at a starting point of Cholistan, 32 kilometers from Bahawalpur (The capital of the ex-state of Bahawalpur and a commissionerate and divisional headquarters after its merger into Pakistan) 2-The colonization as a result of the completion of Satluj Valley Project canal system. 3-An important station of the Cholistan or Colony Railway Line laid down from Samma Satta, Bahawalpur to Fort Abbas via Yazman. Yazman came into being because an administrative unit was required in the colony area of Cholistan.</string>
+    <string name="history_4">After 1955 the coming years heralded a new era of development and progress and its infrastructure was enhanced to the maximum extent. With effect from 1 July 1984 Yazman gained the status of Tahsil with a high profile socio-economic and agrarian progress.</string>
+    <string name="history_5">Tehsil level offices of all important departments i.e. Police, Agriculture, Social Welfare, Education, Food, Forest, sports, irrigation, electricity, telephone and branches of all the national banks are operational here. Special focus on the development of Cholistan has been a special phenomenon. After devolution, many development projects of education, irrigation, communication, public health engineering and electricity have so far been carried out. The famous village of this area is Chak No 58/DB Chak No 114/DNB Chak No 39/DB Near Kudwala Chak No 106/DB, Yazman Mandi Chack No 128/DNB, Yazman mandi Chack 198/DNB, Yazman Mandi Ch Tariq Basheer Cheema, Member of Pakistan National assembly belongs to this Village</string>
+    <string name="title_activity_signup">Signup</string>
+    <string name="title_activity_test">test</string>
+    <string name="title_activity_test2">test2</string>
+    <string name="title_activity_businesses_views">BusinessesViews</string>
+    <string name="title_activity_admin">Admin</string>
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "42632788096",
+    "project_id": "digital-yazman-34f70",
+    "storage_bucket": "digital-yazman-34f70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42632788096:android:263500ac47635444064e65",
+        "android_client_info": {
+          "package_name": "com.digital.yazman.ah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42632788096-cmcs4cctevj12ceskj99kfeftb75g2lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxTHTCKWNTpK0ETJa2M83zkYXLzm1is1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42632788096-cmcs4cctevj12ceskj99kfeftb75g2lv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

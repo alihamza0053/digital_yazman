@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/dy_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DigitalYazman"
+        tools:targetApi="31">
+        <activity
+            android:name=".Admin"
+            android:exported="true"
+            android:label="@string/title_activity_admin"
+            android:theme="@style/Theme.DigitalYazman">
+
+        </activity>
+        <activity
+            android:name=".BusinessesViews"
+            android:exported="true"
+            android:label="@string/title_activity_businesses_views"
+            android:theme="@style/Theme.DigitalYazman"></activity>
+        <activity
+            android:name=".Signup"
+            android:exported="true"
+            android:label="@string/title_activity_signup"
+            android:theme="@style/Theme.DigitalYazman" >
+
+        </activity>
+        <activity
+            android:name=".Login"
+            android:exported="true"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Transport"
+            android:exported="true"
+            android:label="@string/title_activity_transport"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Support"
+            android:exported="true"
+            android:label="@string/title_activity_support"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Services"
+            android:exported="true"
+            android:label="@string/title_activity_services"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Opportunities"
+            android:exported="true"
+            android:label="@string/title_activity_opportunities"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".LocalNews"
+            android:exported="true"
+            android:label="@string/title_activity_local_news"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".LocalDeals"
+            android:exported="true"
+            android:label="@string/title_activity_local_deals"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".History"
+            android:exported="true"
+            android:label="@string/title_activity_history"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Emergency"
+            android:exported="true"
+            android:label="@string/title_activity_emergency"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".Businesses"
+            android:exported="true"
+            android:label="@string/title_activity_businesses"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".menuActivity"
+            android:exported="true"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.DigitalYazman">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
