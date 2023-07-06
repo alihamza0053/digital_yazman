@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class Admin : ComponentActivity() {
@@ -40,29 +41,33 @@ class Admin : ComponentActivity() {
             var id by remember {
                 mutableStateOf("ID")
             }
+            val db = FirebaseFirestore.getInstance()
+
             val database = Firebase.database
             val myRef = database.getReference("Local Deals")
-            myRef.get().addOnSuccessListener {
-                var nameCheck =
-                    it.children.last().key.toString()
-                        .subSequence(4, it.children.last().key.toString().length).toString()
-                        .toInt() + 1
-                id = "DYLD0" + nameCheck.toString()
-            }.addOnFailureListener {
-                Toast.makeText(applicationContext, "Check Internet", Toast.LENGTH_SHORT).show()
-            }
-            DigitalYazmanTheme {
-                // A surface container using the 'background' color from the theme
-                DataToUpload(id)
-
-            }
+//            myRef.get().addOnSuccessListener {
+//                var nameCheck =
+//                    it.children.last().key.toString()
+//                        .subSequence(4, it.children.last().key.toString().length).toString()
+//                        .toInt() + 1
+//                id = "DYLD0" + nameCheck.toString()
+//            }.addOnFailureListener {
+//                Toast.makeText(applicationContext, "Check Internet", Toast.LENGTH_SHORT).show()
+//            }
+//            DigitalYazmanTheme {
+//                // A surface container using the 'background' color from the theme
+                DataToUpload("DYD001")
+//
+//            }
         }
     }
 }
 
 @Composable
 fun DataToUpload(id: String) {
+
     var id = id
+
     var category by remember {
         mutableStateOf("")
     }
@@ -78,6 +83,16 @@ fun DataToUpload(id: String) {
     var date by remember {
         mutableStateOf("")
     }
+
+    val data = hashMapOf(
+        "id" to id,
+        "category" to category,
+        "title" to title,
+        "shortDes" to shortDescription,
+        "source" to source,
+        "date" to date
+        )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,8 +100,6 @@ fun DataToUpload(id: String) {
             .verticalScroll(rememberScrollState())
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-
-
     ) {
         OutlinedTextField(
             value = id, onValueChange = {
@@ -181,13 +194,12 @@ fun DataToUpload(id: String) {
 
         Button(
             onClick = {
-                val database = Firebase.database
-                val data = LocalDealNewsOppor(id, category, title, shortDescription, source, date)
-                val myRef = database.getReference("Local Deals")
+                val db = FirebaseFirestore.getInstance()
+                val collection = db.collection("Local Deals")
                 if (id != "ID") {
                     if (category != "" && title != "" && shortDescription != "" && source != "" && date != "") {
-                        myRef.child(id).setValue(data).addOnSuccessListener {
-                            id = "";
+                        collection.add(data)
+                            .addOnSuccessListener {
                             category = "";
                             title = "";
                             shortDescription = "";
@@ -196,6 +208,22 @@ fun DataToUpload(id: String) {
                         }
                     }
                 }
+
+//                val database = Firebase.database
+//                val data = LocalDealNewsOppor(id, category, title, shortDescription, source, date)
+//                val myRef = database.getReference("Local Deals")
+//                if (id != "ID") {
+//                    if (category != "" && title != "" && shortDescription != "" && source != "" && date != "") {
+//                        myRef.child(id).setValue(data).addOnSuccessListener {
+//                            id = "";
+//                            category = "";
+//                            title = "";
+//                            shortDescription = "";
+//                            source = "";
+//                            date = "";
+//                        }
+//                    }
+//                }
             },
             shape = RoundedCornerShape(3.dp),
             modifier = Modifier.fillMaxWidth(),

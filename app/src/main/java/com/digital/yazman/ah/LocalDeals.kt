@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,14 +34,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class LocalDeals : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val database = Firebase.database
-            val myRef = database.getReference("Local Deals")
+            val db = FirebaseFirestore.getInstance()
+
             var category by remember {
                 mutableStateOf("")
             }
@@ -57,7 +60,7 @@ class LocalDeals : ComponentActivity() {
                 mutableStateOf("")
             }
 
-            var vlist = mutableListOf<LocalDealsData>()
+            val itemsState = remember { mutableStateOf(emptyList<LocalDealNewsOppor>()) }
 
             DigitalYazmanTheme {
 
@@ -85,49 +88,62 @@ class LocalDeals : ComponentActivity() {
                         Toast.makeText(applicationContext, "Service Brand", Toast.LENGTH_SHORT)
                     )
 
-                    myRef.get().addOnSuccessListener {
-                        if (it.exists()) {
-                            it.children.forEach {
-
-                                val todo = it.child("category").value.toString()
-                                category = it.child("category").value.toString()
-                                title = it.child("title").value.toString()
-                                description = it.child("shortDes").value.toString()
-                                source = it.child("source").value.toString()
-                                date = it.child("date").value.toString()
 
 
-                            }
+                    LaunchedEffect(Unit) {
+                        val querySnapshot = db.collection("Local Deals").get().await()
+                        val userDataList = mutableListOf<LocalDealNewsOppor>()
+                        for (document in querySnapshot) {
+                            val id = document.getString("id") ?: ""
+                            val category = document.getString("category") ?: ""
+                            val title = document.getString("title") ?: ""
+                            val shortDes = document.getString("shortDes") ?: ""
+                            val source = document.getString("source") ?: ""
+                            val date = document.getString("date") ?: ""
+                            userDataList.add(
+                                LocalDealNewsOppor(
+                                    id, category, title, shortDes, source, date
+                                )
+                            )
                         }
+                        itemsState.value = userDataList
+                        Toast.makeText(
+                            applicationContext, itemsState.toString(), Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                    itemsState.value.forEach {data ->
+                        CardItem(
+                            category = data.category,
+                            title = data.title,
+                            description = data.shortDes,
+                            source = data.source,
+                            date = data.date,
+                            Toast.makeText(applicationContext, data.source, Toast.LENGTH_SHORT)
+                        )
                     }
                     CardItem(
-                        category = category,
-                        title = title,
-                        description = description,
-                        source = source,
-                        date = date,
-
+                        category = "category",
+                        title = "title",
+                        description = "description",
+                        source = "source",
+                        date = "date",
                         Toast.makeText(applicationContext, "Service Brand", Toast.LENGTH_SHORT)
                     )
 
                 }
 
 
-
+            }
         }
     }
-}
 }
 
 
 @Composable
 fun CardItem(
-    category: String,
-    title: String,
-    description: String,
-    source: String,
-    date: String,
-    toast: Toast
+    category: String, title: String, description: String, source: String, date: String, toast: Toast
 ) {
     Card(
         elevation = 6.dp,
