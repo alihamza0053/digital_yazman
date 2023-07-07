@@ -49,7 +49,7 @@ class Signup : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val firestoreDatabase = Firebase.firestore
+            val db = Firebase.firestore
             val database = Firebase.database
             val myRef = database.getReference("Signup")
 
@@ -77,27 +77,21 @@ class Signup : ComponentActivity() {
             var verify by remember {
                 mutableStateOf(0)
             }
-            var nameCheck = 0
-            firestoreDatabase.collection("Users").get().addOnSuccessListener { results ->
-                for (document in results) {
-                    nameCheck = document.get("id").toString().subSequence(3, document.get("id").toString().length).toString().toInt() + 1
-                    id = "DYU0" + nameCheck.toString()
 
-
-                }
-//                id = "DYU0" + nameCheck
+            var emailCheck by remember {
+                mutableStateOf("")
             }
-//            myRef.get().addOnSuccessListener {
-//                var nameCheck =
-//                    it.children.last().key.toString()
-//                        .subSequence(3, it.children.last().key.toString().length).toString()
-//                        .toInt() + 1
-//                id = "DYU0" + nameCheck.toString()
-//            }
+            var nameCheck = 0
+            db.collection("Users").get().addOnSuccessListener { results ->
+                for (document in results) {
+                    nameCheck = document.get("id").toString()
+                        .subSequence(3, document.get("id").toString().length).toString().toInt() + 1
+                    id = "DYU0" + nameCheck.toString()
+                }
+            }
                 .addOnFailureListener {
                     Toast.makeText(applicationContext, "Check Internet", Toast.LENGTH_SHORT).show()
                 }
-
             val context = LocalContext.current
             DigitalYazmanTheme {
                 Column(
@@ -235,27 +229,17 @@ class Signup : ComponentActivity() {
                                 password.trim(),
                                 verify
                             )
-//                            myRef.get().addOnSuccessListener {
-//                                var check = name
-//                                var a = it.children.last().key
-//                                Toast.makeText(applicationContext, a.toString(), Toast.LENGTH_SHORT)
-//                                    .show()
-//                                it.children.forEach {
-//                                    if (it.child("name").value == name) {
-//                                        Toast.makeText(
-//                                            applicationContext,
-//                                            "Already ",
-//                                            Toast.LENGTH_SHORT
-//                                        )
-//                                            .show()
-//                                        check = "Unknown"
-//                                    }
-//                                }
 
-//                                if (check == name) {
-                            if (true) {
-                                if (name != "" && email != "" && address != "" && phone != "" && password != "") {
-                                    firestoreDatabase.collection("Users").document(id).set(data)
+                            db.collection("Users").get().addOnSuccessListener { results ->
+                                for (document in results) {
+                                    if(email == document.get("email").toString()){
+                                        emailCheck = document.get("email").toString()
+                                    }
+                                }
+                            }
+                            if (name != "" && email != "" && address != "" && phone != "" && password != "") {
+                                Toast.makeText(applicationContext,emailCheck,Toast.LENGTH_SHORT).show()
+                                    db.collection("Users").document(id).set(data)
                                         .addOnSuccessListener {
                                             Toast.makeText(
                                                 applicationContext,
@@ -263,40 +247,16 @@ class Signup : ComponentActivity() {
                                                 Toast.LENGTH_SHORT
                                             )
                                                 .show()
+                                            context.startActivity(Intent(context, Login::class.java))
+                                            finish()
                                         }
-//                                    myRef.child(id).setValue(data).addOnSuccessListener {
-//                                        Toast.makeText(
-//                                            applicationContext,
-//                                            "record added",
-//                                            Toast.LENGTH_SHORT
-//                                        )
-//                                            .show()
-//                                    }.addOnFailureListener {
-//                                        Toast.makeText(
-//                                            applicationContext,
-//                                            "check your internet",
-//                                            Toast.LENGTH_SHORT
-//                                        )
-//                                            .show()
-//                                    }
-                                } else {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Fill All Fields.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
                             } else {
                                 Toast.makeText(
                                     applicationContext,
-                                    "Wait until ID generated!",
+                                    "Fill All Fields.",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-//                                }
-//                                else{
-//                                    check = name
-//                                }
                             enable = true
                         },
                         shape = RoundedCornerShape(3.dp),

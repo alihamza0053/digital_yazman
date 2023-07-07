@@ -1,15 +1,27 @@
 package com.digital.yazman.ah
 
+import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.LayoutDirection
+import android.util.Size
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -24,216 +36,79 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
+import kotlin.math.sqrt
 
 class Admin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var id by remember {
-                mutableStateOf("ID")
-            }
-            val db = FirebaseFirestore.getInstance()
+            val context = LocalContext.current
+            DigitalYazmanTheme {
+                // A surface container using the 'background' color from the theme
+                Column {
+                    Row(modifier =  Modifier.padding(20.dp)) {
+                        Hexagon("Local Deals",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, LocalDealsAdmin::class.java)
+                                )
+                            })
+                        Spacer(modifier = Modifier.padding(20.dp))
+                        Hexagon("Local News",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, LocalNewsAdmin::class.java)
+                                )
+                            })
+                    }
+                    Row(modifier =  Modifier.padding(20.dp)) {
 
-            val database = Firebase.database
-            val myRef = database.getReference("Local Deals")
-//            myRef.get().addOnSuccessListener {
-//                var nameCheck =
-//                    it.children.last().key.toString()
-//                        .subSequence(4, it.children.last().key.toString().length).toString()
-//                        .toInt() + 1
-//                id = "DYLD0" + nameCheck.toString()
-//            }.addOnFailureListener {
-//                Toast.makeText(applicationContext, "Check Internet", Toast.LENGTH_SHORT).show()
-//            }
-//            DigitalYazmanTheme {
-//                // A surface container using the 'background' color from the theme
-                DataToUpload("DYD001")
-//
-//            }
+                        Hexagon("Opportunities",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, OpportunitiesAdmin::class.java)
+                                )
+                            })
+                        Spacer(modifier = Modifier.padding(20.dp))
+                        Hexagon("Local News",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, LocalDealsAdmin::class.java)
+                                )
+                            })
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun DataToUpload(id: String) {
-
-    var id = id
-
-    var category by remember {
-        mutableStateOf("")
-    }
-    var title by remember {
-        mutableStateOf("")
-    }
-    var shortDescription by remember {
-        mutableStateOf("")
-    }
-    var source by remember {
-        mutableStateOf("")
-    }
-    var date by remember {
-        mutableStateOf("")
-    }
-
-    val data = hashMapOf(
-        "id" to id,
-        "category" to category,
-        "title" to title,
-        "shortDes" to shortDescription,
-        "source" to source,
-        "date" to date
-        )
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFADD8E6))
-            .verticalScroll(rememberScrollState())
+fun Hexagon(text: String, modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .clip(CutCornerShape(8.dp))
+            .background(Color(0xFFFAC898))
             .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.Center
     ) {
-        OutlinedTextField(
-            value = id, onValueChange = {
-                id = it
-            },
-            label = { Text(text = "ID") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
-        OutlinedTextField(
-            value = category, onValueChange = {
-                category = it
-            },
-            label = { Text(text = "Category") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
-        OutlinedTextField(
-            value = title, onValueChange = {
-                title = it
-            },
-            label = { Text(text = "Title") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.SemiBold,
-            )
-        )
-
-        OutlinedTextField(
-            value = shortDescription, onValueChange = {
-                shortDescription = it
-            },
-            label = { Text(text = "Short Description") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
-        OutlinedTextField(
-            value = source, onValueChange = {
-                source = it
-            },
-            label = { Text(text = "Source") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
-        OutlinedTextField(
-            value = date, onValueChange = {
-                date = it
-            },
-            label = { Text(text = "Date") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
-
-        Button(
-            onClick = {
-                val db = FirebaseFirestore.getInstance()
-                val collection = db.collection("Local Deals")
-                if (id != "ID") {
-                    if (category != "" && title != "" && shortDescription != "" && source != "" && date != "") {
-                        collection.add(data)
-                            .addOnSuccessListener {
-                            category = "";
-                            title = "";
-                            shortDescription = "";
-                            source = "";
-                            date = "";
-                        }
-                    }
-                }
-
-//                val database = Firebase.database
-//                val data = LocalDealNewsOppor(id, category, title, shortDescription, source, date)
-//                val myRef = database.getReference("Local Deals")
-//                if (id != "ID") {
-//                    if (category != "" && title != "" && shortDescription != "" && source != "" && date != "") {
-//                        myRef.child(id).setValue(data).addOnSuccessListener {
-//                            id = "";
-//                            category = "";
-//                            title = "";
-//                            shortDescription = "";
-//                            source = "";
-//                            date = "";
-//                        }
-//                    }
-//                }
-            },
-            shape = RoundedCornerShape(3.dp),
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(Color(0xFF800080))
-        ) {
-            Text(
-                text = "Upload", fontSize = 20.nonScaledSp, color = Color(0xFFFFFFFF),
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
+        Text(text = text)
     }
 }

@@ -36,6 +36,7 @@ import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.tasks.await
 
 class LocalDeals : ComponentActivity() {
@@ -43,23 +44,6 @@ class LocalDeals : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val db = FirebaseFirestore.getInstance()
-
-            var category by remember {
-                mutableStateOf("")
-            }
-            var title by remember {
-                mutableStateOf("")
-            }
-            var description by remember {
-                mutableStateOf("")
-            }
-            var source by remember {
-                mutableStateOf("")
-            }
-            var date by remember {
-                mutableStateOf("")
-            }
-
             val itemsState = remember { mutableStateOf(emptyList<LocalDealNewsOppor>()) }
 
             DigitalYazmanTheme {
@@ -78,18 +62,6 @@ class LocalDeals : ComponentActivity() {
                         modifier = Modifier.padding(top = 15.dp, start = 20.dp)
                     )
 
-                    CardItem(
-                        category = "Service",
-                        title = "50% off on shoes",
-                        description = "sale sale sale on this Sunday 50% off on all sizes on all service shops.",
-                        source = "Service Brand",
-                        date = "01-06/01-07",
-
-                        Toast.makeText(applicationContext, "Service Brand", Toast.LENGTH_SHORT)
-                    )
-
-
-
                     LaunchedEffect(Unit) {
                         val querySnapshot = db.collection("Local Deals").get().await()
                         val userDataList = mutableListOf<LocalDealNewsOppor>()
@@ -107,30 +79,30 @@ class LocalDeals : ComponentActivity() {
                             )
                         }
                         itemsState.value = userDataList
-                        Toast.makeText(
-                            applicationContext, itemsState.toString(), Toast.LENGTH_SHORT
-                        ).show()
                     }
 
+                    if (itemsState.value.isEmpty()) {
+                        repeat(10) {
+                            CardItem(
+                                modifier = Modifier.shimmer(),
+                                category = "category",
+                                title = "title",
+                                description = "description",
+                                source = "source",
+                                date = "date"
+                            )
+                        }
+                    }
 
-                    itemsState.value.forEach {data ->
+                    itemsState.value.forEach { data ->
                         CardItem(
                             category = data.category,
                             title = data.title,
                             description = data.shortDes,
                             source = data.source,
-                            date = data.date,
-                            Toast.makeText(applicationContext, data.source, Toast.LENGTH_SHORT)
+                            date = data.date
                         )
                     }
-                    CardItem(
-                        category = "category",
-                        title = "title",
-                        description = "description",
-                        source = "source",
-                        date = "date",
-                        Toast.makeText(applicationContext, "Service Brand", Toast.LENGTH_SHORT)
-                    )
 
                 }
 
@@ -143,32 +115,37 @@ class LocalDeals : ComponentActivity() {
 
 @Composable
 fun CardItem(
-    category: String, title: String, description: String, source: String, date: String, toast: Toast
+    modifier: Modifier = Modifier,
+    category: String,
+    title: String,
+    description: String,
+    source: String,
+    date: String
 ) {
     Card(
         elevation = 6.dp,
         shape = RoundedCornerShape(15.dp),
         backgroundColor = Color(0xFFFFFFFF),
-        modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 10.dp)
+        modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 10.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .clickable {
-                    toast.show()
+
                 },
         ) {
             Image(
                 painter = painterResource(id = R.drawable.service_logo),
                 contentDescription = null,
-                modifier = Modifier
+                modifier = modifier
                     .height(50.dp)
                     .width(50.dp)
                     .padding(start = 5.dp)
             )
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(start = 10.dp)
             ) {
@@ -178,7 +155,7 @@ fun CardItem(
                     fontSize = 14,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.ExtraLight,
-                    modifier = Modifier
+                    modifier = modifier
                         .alpha(0.5f)
                         .padding(0.dp)
                 )
@@ -187,18 +164,18 @@ fun CardItem(
                     fontSize = 17,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(0.dp)
+                    modifier = modifier.padding(0.dp)
                 )
                 AllTexts(
                     description,
                     fontSize = 14,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(0.dp)
+                    modifier = modifier.padding(0.dp)
                 )
 
                 Row(
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(top = 10.dp, bottom = 1.dp)
                         .fillMaxWidth()
                 ) {
@@ -207,7 +184,7 @@ fun CardItem(
                         fontSize = 14,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.ExtraLight,
-                        modifier = Modifier
+                        modifier = modifier
                             .alpha(0.5f)
                             .padding(0.dp)
                             .weight(1f)
@@ -217,7 +194,7 @@ fun CardItem(
                         fontSize = 14,
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.ExtraLight,
-                        modifier = Modifier
+                        modifier = modifier
                             .alpha(0.5f)
                             .padding(0.dp, end = 10.dp)
                             .weight(1f)

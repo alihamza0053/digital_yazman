@@ -21,4 +21,7 @@
     <string name="title_activity_test2">test2</string>
     <string name="title_activity_businesses_views">BusinessesViews</string>
     <string name="title_activity_admin">Admin</string>
+    <string name="title_activity_local_deals_admin">LocalDealsAdmin</string>
+    <string name="title_activity_local_news_admin">LocalNewsAdmin</string>
+    <string name="title_activity_opportunities_admin">OpportunitiesAdmin</string>
 </resources>

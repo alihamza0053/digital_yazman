@@ -57,6 +57,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 
@@ -70,29 +71,29 @@ class menuActivity : ComponentActivity() {
                 mutableStateOf("")
             }
             var imgVerify by remember {
-                mutableStateOf(R.drawable.user_verify)
+                mutableStateOf(R.drawable.user_unverified)
             }
             var login by remember {
                 mutableStateOf("Login")
             }
-            val database = Firebase.database
-            val myRef = database.getReference("Signup")
-            myRef.get().addOnSuccessListener {
-                if (it.exists()) {
-                    it.children.forEach {
-                        if (it.child("id").value == "DYU05" && it.child("email").value == "alihamza00053@gmail.com" || it.child("verify").value.toString() == "1") {
-                            name = it.child("name").value.toString()
-                            if (it.child("verify").value.toString() == "1") {
-                                imgVerify = R.drawable.admin_king
-                                login = "Log out"
-                            }
-                        }
 
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("Users").get().addOnSuccessListener { results ->
+                for (document in results) {
+                    if(document.get("id").toString() == "DYU05" && document.get("email").toString() == "alihamza00053@gmail.com"){
+                        name = document.get("name").toString()
+                        if(document.get("verify").toString() == "2"){
+                            imgVerify = R.drawable.admin_king
+                        }
+                        if(document.get("verify").toString()=="1"){
+                            imgVerify = R.drawable.user_verify
+                        }
+                        login = "Log out"
+                        Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT).show()
                     }
                 }
-                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT).show()
             }
-
 //            myRef.get().addOnSuccessListener {
 //                var idCheck =
 //                    it.children.last().key.toString()
@@ -167,9 +168,14 @@ class menuActivity : ComponentActivity() {
                             color = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(context, Admin::class.java)
-                                    )
+                                    if( imgVerify === R.drawable.admin_king ){
+                                        context.startActivity(
+                                            Intent(context, Admin::class.java)
+                                        )
+                                    }else{
+                                        Toast.makeText(applicationContext,"You are not admin.",Toast.LENGTH_SHORT).show()
+                                    }
+
                                 }
                         )
                         Image(
