@@ -117,10 +117,10 @@ class menuActivity : ComponentActivity() {
                     Font(R.font.lexend_thin, FontWeight.Thin),
                 )
                 val images = listOf(
-                    "https://gamingrust.me/wp-content/uploads/2023/04/Black-Urban-City-T-Shirts-1-1.png",
-                    "https://gamingrust.me/wp-content/uploads/2023/04/Annotation-2023-04-30-005644.jpg",
-                    "https://gamingrust.me/wp-content/uploads/2023/04/Black-Simple-Monoline-Letter-DY-Logo.png",
-                    "https://gamingrust.me/wp-content/uploads/2023/04/creative-coming-soon-teaser-background-free-vector.webp",
+                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",
+                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/2.png?alt=media&token=d70ebc49-265c-4c13-9df6-4d01e56e3a6c",
+                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/3.png?alt=media&token=2fe49b52-0ff4-4871-b18c-653c2476c324",
+                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/4.png?alt=media&token=72d1d394-6aac-4314-b915-18b24005084b",
 
                     )
                 var exit = 0
