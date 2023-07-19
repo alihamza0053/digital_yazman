@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
@@ -62,32 +64,101 @@ class Admin : ComponentActivity() {
             val context = LocalContext.current
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
-                Column {
-                    Row(modifier =  Modifier.padding(20.dp)) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xFFADD8E6))
+                ) {
+                    Text(
+                        text = "Ali Hamza",
+                        fontSize = 20.nonScaledSp,
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF000000),
+                        modifier = Modifier
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                20.dp
+                            )
+                    ) {
+                        Hexagon("Business",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, LocalDealsAdmin::class.java)
+                                )
+                            })
+                        Spacer(modifier = Modifier.weight(1f))
                         Hexagon("Local Deals",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, LocalDealsAdmin::class.java)
                                 )
                             })
-                        Spacer(modifier = Modifier.padding(20.dp))
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                20.dp
+                            )
+                    ) {
+
                         Hexagon("Local News",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, LocalNewsAdmin::class.java)
                                 )
                             })
+                        Spacer(modifier = Modifier.weight(1f))
+                        Hexagon("MS ads",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, LocalDealsAdmin::class.java)
+                                )
+                            })
                     }
-                    Row(modifier =  Modifier.padding(20.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                20.dp
+                            )
+                    ) {
 
+                        Hexagon("Notification",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, OpportunitiesAdmin::class.java)
+                                )
+                            })
+                        Spacer(modifier = Modifier.weight(1f))
                         Hexagon("Opportunities",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, OpportunitiesAdmin::class.java)
                                 )
                             })
-                        Spacer(modifier = Modifier.padding(20.dp))
-                        Hexagon("Local News",
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                20.dp
+                            )
+                    ) {
+
+                        Hexagon("Services",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, OpportunitiesAdmin::class.java)
+                                )
+                            })
+                        Spacer(modifier = Modifier.weight(1f))
+                        Hexagon("Unknown",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, LocalDealsAdmin::class.java)
@@ -105,11 +176,18 @@ fun Hexagon(text: String, modifier: Modifier) {
     Box(
         modifier = modifier
             .clip(CutCornerShape(8.dp))
-            .background(Color(0xFFFAC898))
-            .padding(20.dp),
+            .background(Color(0xFF000000))
+            .height(70.dp)
+            .width(130.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            fontSize = 16.nonScaledSp,
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            color = Color(0xFFFFFFFF)
+        )
     }
 }
 //

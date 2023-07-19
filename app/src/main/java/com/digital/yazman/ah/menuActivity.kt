@@ -78,7 +78,6 @@ class menuActivity : ComponentActivity() {
             }
 
             val db = FirebaseFirestore.getInstance()
-
             db.collection("Users").get().addOnSuccessListener { results ->
                 for (document in results) {
                     if(document.get("id").toString() == "DYU05" && document.get("email").toString() == "alihamza00053@gmail.com"){
