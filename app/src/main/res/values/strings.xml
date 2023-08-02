@@ -24,4 +24,6 @@
     <string name="title_activity_local_deals_admin">LocalDealsAdmin</string>
     <string name="title_activity_local_news_admin">LocalNewsAdmin</string>
     <string name="title_activity_opportunities_admin">OpportunitiesAdmin</string>
+    <string name="title_activity_services_view">ServicesView</string>
+    <string name="title_activity_transport_admin">TransportAdmin</string>
 </resources>

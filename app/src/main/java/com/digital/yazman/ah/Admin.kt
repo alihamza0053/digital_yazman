@@ -158,10 +158,10 @@ class Admin : ComponentActivity() {
                                 )
                             })
                         Spacer(modifier = Modifier.weight(1f))
-                        Hexagon("Unknown",
+                        Hexagon("Transport",
                             modifier = Modifier.clickable {
                                 context.startActivity(
-                                    Intent(context, LocalDealsAdmin::class.java)
+                                    Intent(context, TransportAdmin::class.java)
                                 )
                             })
                     }

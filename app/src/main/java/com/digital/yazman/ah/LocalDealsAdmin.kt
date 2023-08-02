@@ -43,12 +43,12 @@ class LocalDealsAdmin : ComponentActivity() {
             }
             val db = FirebaseFirestore.getInstance()
 
-            var nameCheck = 0
+            var idCheck = 0
             db.collection("Local Deals").get().addOnSuccessListener { results ->
                 for (document in results) {
-                    nameCheck = document.get("id").toString()
+                    idCheck = document.get("id").toString()
                         .subSequence(4, document.get("id").toString().length).toString().toInt() + 1
-                    id = "DYLD0" + nameCheck.toString()
+                    id = "DYLD0" + idCheck.toString()
                 }
             }
             //   val database = Firebase.database

@@ -70,7 +70,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -94,7 +94,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -118,7 +118,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -147,7 +147,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -171,7 +171,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -195,7 +195,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -224,7 +224,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -248,7 +248,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -272,7 +272,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -301,7 +301,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -325,7 +325,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -349,7 +349,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -378,7 +378,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -402,7 +402,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },
@@ -426,7 +426,7 @@ class Services : ComponentActivity() {
                                 .clickable {
                                     context.startActivity(
                                         Intent(
-                                            context, BusinessesViews::class.java
+                                            context, ServicesView::class.java
                                         )
                                     )
                                 },

@@ -116,15 +116,12 @@ fun Bus(busName:String, busNumber:String,startTime:String,arivalTime:String,star
                 .padding(start = 20.dp, top = 5.dp, end = 20.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(end = 20.dp)
-            ) {
+            Column{
                 Text(
                     text = startTime,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.nonScaledSp,
+                    fontSize = 15.nonScaledSp,
                     modifier = Modifier
                         .padding(bottom = 17.dp)
                 )
@@ -132,7 +129,7 @@ fun Bus(busName:String, busNumber:String,startTime:String,arivalTime:String,star
                     text = arivalTime,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.nonScaledSp
+                    fontSize = 15.nonScaledSp
                 )
             }
             Image(
@@ -143,12 +140,13 @@ fun Bus(busName:String, busNumber:String,startTime:String,arivalTime:String,star
                     .height(55.dp)
                     .padding(top = 4.dp)
             )
+            Spacer(modifier = Modifier.weight(1f))
             Column {
                 Text(
                     text = startPoint,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.nonScaledSp,
+                    fontSize = 15.nonScaledSp,
                     modifier = Modifier
                         .padding(bottom = 17.dp)
                 )
@@ -156,20 +154,22 @@ fun Bus(busName:String, busNumber:String,startTime:String,arivalTime:String,star
                     text = destination,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.nonScaledSp
+                    fontSize = 15.nonScaledSp
                 )
             }
+            Spacer(modifier = Modifier.weight(1f))
             Card(
                 colors = CardDefaults.cardColors(Color(0xFF800080)),
                 shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.padding(start = 30.dp),
+                
             ) {
 
                 Text(
-                    text = ticketPrice + "Rs",
+                    text = ticketPrice + "\nRs",
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
                     color = Color.White,
+                    fontSize = 15.nonScaledSp,
                     modifier = Modifier
                         .padding(10.dp)
                 )
@@ -192,14 +192,14 @@ fun Bus(busName:String, busNumber:String,startTime:String,arivalTime:String,star
                 text = distance + "km",
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.nonScaledSp
+                fontSize = 12.nonScaledSp
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "Time $timeTaken",
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.nonScaledSp
+                fontSize = 12.nonScaledSp
             )
         }
     }

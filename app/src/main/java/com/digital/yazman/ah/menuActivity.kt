@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,8 +30,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +54,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -80,16 +86,19 @@ class menuActivity : ComponentActivity() {
             val db = FirebaseFirestore.getInstance()
             db.collection("Users").get().addOnSuccessListener { results ->
                 for (document in results) {
-                    if(document.get("id").toString() == "DYU05" && document.get("email").toString() == "alihamza00053@gmail.com"){
+                    if (document.get("id").toString() == "DYU05" && document.get("email")
+                            .toString() == "alihamza00053@gmail.com"
+                    ) {
                         name = document.get("name").toString()
-                        if(document.get("verify").toString() == "2"){
+                        if (document.get("verify").toString() == "2") {
                             imgVerify = R.drawable.admin_king
                         }
-                        if(document.get("verify").toString()=="1"){
+                        if (document.get("verify").toString() == "1") {
                             imgVerify = R.drawable.user_verify
                         }
                         login = "Log out"
-                        Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -167,12 +176,16 @@ class menuActivity : ComponentActivity() {
                             color = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .clickable {
-                                    if( imgVerify === R.drawable.admin_king ){
+                                    if (imgVerify === R.drawable.admin_king) {
                                         context.startActivity(
                                             Intent(context, Admin::class.java)
                                         )
-                                    }else{
-                                        Toast.makeText(applicationContext,"You are not admin.",Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "You are not admin.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
 
                                 }
@@ -210,15 +223,28 @@ class menuActivity : ComponentActivity() {
                             .weight(1f)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        Text(
-                            text = "Announcements",
-                            color = Color(0xFF000000),
-                            fontSize = 20.nonScaledSp,
-                            fontFamily = fontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(start = 20.dp, top = 10.dp)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp)
+                        ) {
+                            Text(
+                                text = "Announcements",
+                                color = Color(0xFF000000),
+                                fontSize = 20.nonScaledSp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.SemiBold,
 
+                                )
+                            Spacer(
+                                modifier = Modifier
+                                    .weight(1f)
+                            )
+                            Icon(imageVector = Icons.Filled.Favorite, contentDescription = null,
+                                modifier = Modifier.graphicsLayer {
+                                    scaleX = 1.3f
+                                    scaleY = 1.3f
+                                })
+                        }
                         @OptIn(ExperimentalPagerApi::class) (Card(
                             modifier = Modifier.padding(16.dp),
                             shape = RoundedCornerShape(16.dp),
