@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,98 +16,103 @@
         android:theme="@style/Theme.DigitalYazman"
         tools:targetApi="31">
         <activity
-            android:name=".TransportAdmin"
+            android:name=".admin.ServicesAdmin"
             android:exported="true"
-            android:label="@string/title_activity_transport_admin"
+            android:label="@string/title_activity_services_admin"
             android:theme="@style/Theme.DigitalYazman">
         </activity>
         <activity
-            android:name=".ServicesView"
+            android:name=".admin.TransportAdmin"
             android:exported="true"
-            android:label="@string/title_activity_services_view"
+            android:label="@string/title_activity_transport_admin"
             android:theme="@style/Theme.DigitalYazman"></activity>
         <activity
-            android:name=".OpportunitiesAdmin"
+            android:name=".activities.ServicesView"
+            android:exported="true"
+            android:label="@string/title_activity_services_view"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
+            android:name=".admin.OpportunitiesAdmin"
             android:exported="true"
             android:label="@string/title_activity_opportunities_admin"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".LocalNewsAdmin"
+            android:name=".admin.LocalNewsAdmin"
             android:exported="true"
             android:label="@string/title_activity_local_news_admin"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".LocalDealsAdmin"
+            android:name=".admin.LocalDealsAdmin"
             android:exported="true"
             android:label="@string/title_activity_local_deals_admin"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Admin"
+            android:name=".admin.Admin"
             android:exported="true"
             android:label="@string/title_activity_admin"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".BusinessesViews"
+            android:name=".activities.BusinessesViews"
             android:exported="true"
             android:label="@string/title_activity_businesses_views"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Signup"
+            android:name=".activities.Signup"
             android:exported="true"
             android:label="@string/title_activity_signup"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Login"
+            android:name=".activities.Login"
             android:exported="true"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Transport"
+            android:name=".activities.Transport"
             android:exported="true"
             android:label="@string/title_activity_transport"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Support"
+            android:name=".activities.Support"
             android:exported="true"
             android:label="@string/title_activity_support"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Services"
+            android:name=".activities.Services"
             android:exported="true"
             android:label="@string/title_activity_services"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Opportunities"
+            android:name=".activities.Opportunities"
             android:exported="true"
             android:label="@string/title_activity_opportunities"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".LocalNews"
+            android:name=".activities.LocalNews"
             android:exported="true"
             android:label="@string/title_activity_local_news"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".LocalDeals"
+            android:name=".activities.LocalDeals"
             android:exported="true"
             android:label="@string/title_activity_local_deals"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".History"
+            android:name=".activities.History"
             android:exported="true"
             android:label="@string/title_activity_history"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Emergency"
+            android:name=".activities.Emergency"
             android:exported="true"
             android:label="@string/title_activity_emergency"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".Businesses"
+            android:name=".activities.Businesses"
             android:exported="true"
             android:label="@string/title_activity_businesses"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
-            android:name=".menuActivity"
+            android:name=".activities.menuActivity"
             android:exported="true"
             android:label="@string/title_activity_menu"
             android:theme="@style/Theme.DigitalYazman" />
@@ -117,7 +123,6 @@
             android:theme="@style/Theme.DigitalYazman">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

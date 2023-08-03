@@ -26,4 +26,5 @@
     <string name="title_activity_opportunities_admin">OpportunitiesAdmin</string>
     <string name="title_activity_services_view">ServicesView</string>
     <string name="title_activity_transport_admin">TransportAdmin</string>
+    <string name="title_activity_services_admin">ServicesAdmin</string>
 </resources>
