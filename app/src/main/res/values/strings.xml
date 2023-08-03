@@ -27,4 +27,8 @@
     <string name="title_activity_services_view">ServicesView</string>
     <string name="title_activity_transport_admin">TransportAdmin</string>
     <string name="title_activity_services_admin">ServicesAdmin</string>
+    <string name="title_activity_contact">Contact</string>
+    <string name="title_activity_faqs">FAQs</string>
+    <string name="title_activity_event_gallery">EventGallery</string>
+    <string name="title_activity_businesses_admin">BusinessesAdmin</string>
 </resources>

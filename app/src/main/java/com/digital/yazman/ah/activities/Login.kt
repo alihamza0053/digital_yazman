@@ -44,8 +44,6 @@ class Login : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-
             var email by remember {
                 mutableStateOf("")
             }

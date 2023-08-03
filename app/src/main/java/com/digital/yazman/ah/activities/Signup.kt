@@ -50,6 +50,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.LoginInfo
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database

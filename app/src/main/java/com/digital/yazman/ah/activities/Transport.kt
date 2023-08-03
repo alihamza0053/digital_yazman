@@ -133,31 +133,6 @@ class Transport : ComponentActivity() {
     }
 }
 
-@Composable
-fun MainColumn(
-
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFADD8E6))
-            .verticalScroll(rememberScrollState())
-
-    ) {
-        Text(
-            text = "Transportation",
-            color = Color(0xFF000000),
-            fontSize = 25.nonScaledSp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(top = 15.dp, start = 20.dp)
-        )
-
-
-
-    }
-
-}
 
 @Composable
 fun Bus(

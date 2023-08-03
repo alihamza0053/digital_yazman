@@ -20,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,6 +41,7 @@ class Businesses : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             val context = LocalContext.current
             DigitalYazmanTheme {
                 Column(
@@ -60,7 +64,9 @@ class Businesses : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -138,7 +144,9 @@ class Businesses : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -213,11 +221,13 @@ class Businesses : ComponentActivity() {
                     }
 
 
-                        // third row with 3 cards
+                    // third row with 3 cards
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -291,11 +301,13 @@ class Businesses : ComponentActivity() {
                         )
                     }
 
-                        // forth row with 3 cards
+                    // forth row with 3 cards
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -370,11 +382,13 @@ class Businesses : ComponentActivity() {
                     }
 
 
-                        // fifth row with 3 cards
+                    // fifth row with 3 cards
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -448,11 +462,13 @@ class Businesses : ComponentActivity() {
                         )
                     }
 
-                        // sixth row with 3 cards
+                    // sixth row with 3 cards
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -531,7 +547,9 @@ class Businesses : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -610,7 +628,9 @@ class Businesses : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -684,11 +704,13 @@ class Businesses : ComponentActivity() {
                         )
                     }
 
-                        // nine row with 3 cards
+                    // nine row with 3 cards
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //nine row first card
 
@@ -737,44 +759,44 @@ class Businesses : ComponentActivity() {
                                 .width(50.dp)
                         )
                     }
-                        //categories end
-                    }
+                    //categories end
                 }
             }
         }
     }
+}
 
 
-    @Composable
-    fun CardColumn(
-        painter: Painter,
-        title: String,
-        fontSize: Int = 12,
-        fontWeight: FontWeight = FontWeight.Light,
-        cardModifier: Modifier,
-        columnModifier: Modifier,
-        imageModifier: Modifier,
+@Composable
+fun CardColumn(
+    painter: Painter,
+    title: String,
+    fontSize: Int = 12,
+    fontWeight: FontWeight = FontWeight.Light,
+    cardModifier: Modifier,
+    columnModifier: Modifier,
+    imageModifier: Modifier,
+
+    ) {
+    Card(
+        elevation = 6.dp,
+        shape = RoundedCornerShape(15.dp),
+        backgroundColor = Color(0xFFFFFFFF),
+        modifier = cardModifier
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = columnModifier
 
         ) {
-        Card(
-            elevation = 6.dp,
-            shape = RoundedCornerShape(15.dp),
-            backgroundColor = Color(0xFFFFFFFF),
-            modifier = cardModifier
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = columnModifier
-
-            ) {
-                Image(
-                    painter = painter, contentDescription = null, modifier = imageModifier
-                )
-                AllTexts(title, fontSize = fontSize, fontWeight = fontWeight)
-            }
+            Image(
+                painter = painter, contentDescription = null, modifier = imageModifier
+            )
+            AllTexts(title, fontSize = fontSize, fontWeight = fontWeight)
         }
     }
+}
 
 
 @Composable
@@ -786,7 +808,7 @@ fun AllTexts(
     textAlign: TextAlign = TextAlign.Center,
     color: Color = Color(0xFF000000)
 ) {
-    androidx.compose.material.Text(
+    Text(
         text = text,
         color = color,
         fontFamily = fontFamily,
@@ -796,3 +818,14 @@ fun AllTexts(
         modifier = modifier
     )
 }
+val fontFamily = FontFamily(
+    Font(R.font.lexend_black, FontWeight.Bold),
+    Font(R.font.lexend_bold, FontWeight.Bold),
+    Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
+    Font(R.font.lexend_light, FontWeight.Light),
+    Font(R.font.lexend_medium, FontWeight.Medium),
+    Font(R.font.lexend_extralight, FontWeight.ExtraLight),
+    Font(R.font.lexend_regular, FontWeight.Normal),
+    Font(R.font.lexend_semibold, FontWeight.SemiBold),
+    Font(R.font.lexend_thin, FontWeight.Thin),
+)

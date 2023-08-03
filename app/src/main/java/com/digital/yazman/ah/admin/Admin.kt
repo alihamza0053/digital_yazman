@@ -23,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.digital.yazman.ah.R
+import com.digital.yazman.ah.activities.AllTexts
 import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
@@ -60,7 +63,7 @@ class Admin : ComponentActivity() {
                         Hexagon("Business",
                             modifier = Modifier.clickable {
                                 context.startActivity(
-                                    Intent(context, LocalDealsAdmin::class.java)
+                                    Intent(context, BusinessesAdmin::class.java)
                                 )
                             })
                         Spacer(modifier = Modifier.weight(1f))
@@ -153,10 +156,9 @@ fun Hexagon(text: String, modifier: Modifier) {
             .width(130.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        AllTexts(
             text = text,
-            fontSize = 16.nonScaledSp,
-            fontFamily = fontFamily,
+            fontSize = 16,
             fontWeight = FontWeight.Medium,
             color = Color(0xFFFFFFFF)
         )

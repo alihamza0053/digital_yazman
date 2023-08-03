@@ -49,8 +49,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -87,8 +85,7 @@ class menuActivity : ComponentActivity() {
             var login by remember {
                 mutableStateOf("Login")
             }
-
-            val badgeNumber = ""
+            var badgeNumber = "200"
             var badgeColor = Color.Transparent
 
             val db = FirebaseFirestore.getInstance()
@@ -110,6 +107,7 @@ class menuActivity : ComponentActivity() {
                     }
                 }
             }
+
 //            myRef.get().addOnSuccessListener {
 //                var idCheck =
 //                    it.children.last().key.toString()
@@ -121,17 +119,7 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
-                val fontFamily = FontFamily(
-                    Font(R.font.lexend_black, FontWeight.Bold),
-                    Font(R.font.lexend_bold, FontWeight.Bold),
-                    Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
-                    Font(R.font.lexend_light, FontWeight.Light),
-                    Font(R.font.lexend_medium, FontWeight.Medium),
-                    Font(R.font.lexend_extralight, FontWeight.ExtraLight),
-                    Font(R.font.lexend_regular, FontWeight.Normal),
-                    Font(R.font.lexend_semibold, FontWeight.SemiBold),
-                    Font(R.font.lexend_thin, FontWeight.Thin),
-                )
+
                 val images = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",
                     "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/2.png?alt=media&token=d70ebc49-265c-4c13-9df6-4d01e56e3a6c",
@@ -248,10 +236,13 @@ class menuActivity : ComponentActivity() {
                                     .weight(1f)
                             )
 
-                            if(badgeNumber == ""){
+                            if (badgeNumber == "") {
                                 badgeColor = Color.Transparent
-                            }else{
+                            } else {
                                 badgeColor = Color.Red
+                            }
+                            if(badgeNumber < "99"){
+                                badgeNumber = "99+"
                             }
                             // Notification Badge Box
                             BadgedBox(
@@ -266,7 +257,7 @@ class menuActivity : ComponentActivity() {
                                                 contentDescription =
                                                     "$badgeNumber new notifications"
                                             },
-                                            fontFamily = com.digital.yazman.ah.activities.fontFamily,
+                                            fontFamily = fontFamily,
                                             fontWeight = FontWeight.SemiBold,
                                             fontSize = 12.sp,
                                             color = Color.White
@@ -280,6 +271,9 @@ class menuActivity : ComponentActivity() {
                                         scaleX = 1.3f
                                         scaleY = 1.3f
                                     }
+                                        .clickable {
+                                            Toast.makeText(applicationContext,"Insan bn haly",Toast.LENGTH_SHORT).show()
+                                        }
                                 )
                             }
                         }
@@ -522,7 +516,7 @@ class menuActivity : ComponentActivity() {
                             //third row third card
                             CardColumn(
                                 painter = painterResource(id = R.drawable.gallery),
-                                title = "Events Gallery",
+                                title = "Event Gallery",
                                 fontSize = 10,
                                 fontWeight = FontWeight.SemiBold,
                                 cardModifier = Modifier,
@@ -532,7 +526,7 @@ class menuActivity : ComponentActivity() {
                                     .clickable {
                                         context.startActivity(
                                             Intent(
-                                                context, Support::class.java
+                                                context, EventGallery::class.java
                                             )
                                         )
                                     },
@@ -541,7 +535,6 @@ class menuActivity : ComponentActivity() {
                                     .width(40.dp)
                             )
                         }
-
 
 
                         // fourth row with 3 cards
@@ -566,7 +559,7 @@ class menuActivity : ComponentActivity() {
                                     .clickable {
                                         context.startActivity(
                                             Intent(
-                                                context, Services::class.java
+                                                context, FAQs::class.java
                                             )
                                         )
                                     },
@@ -589,7 +582,7 @@ class menuActivity : ComponentActivity() {
                                     .clickable {
                                         context.startActivity(
                                             Intent(
-                                                context, Transport::class.java
+                                                context, Contact::class.java
                                             )
                                         )
                                     },
@@ -602,7 +595,7 @@ class menuActivity : ComponentActivity() {
                             //fourth row third card
 //                            CardColumn(
 //                                painter = painterResource(id = R.drawable.supprot),
-//                                title = "Support",
+//                                title = "Test",
 //                                fontSize = 10,
 //                                fontWeight = FontWeight.SemiBold,
 //                                cardModifier = Modifier,
@@ -612,7 +605,7 @@ class menuActivity : ComponentActivity() {
 //                                    .clickable {
 //                                        context.startActivity(
 //                                            Intent(
-//                                                context, Support::class.java
+//                                                context, Test::class.java
 //                                            )
 //                                        )
 //                                    },

@@ -63,7 +63,7 @@ class ServicesView : ComponentActivity() {
                             "Yazman",
                             "03065600053",
                             painterResource(id = R.drawable.hamza2),
-                            modifier = Modifier.shimmer()
+                            modifier = Modifier
                         )
                     }
 
