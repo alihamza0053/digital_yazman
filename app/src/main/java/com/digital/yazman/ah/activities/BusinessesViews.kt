@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -124,11 +126,20 @@ fun BusinessCard(
     contact: String,
     context: Context
 ) {
-    Column {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        ),
+        colors = CardDefaults.cardColors(
+          containerColor = Color.White
+        ),
+        modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 5.dp)
+            .fillMaxSize(),
+
+    ) {
         Column(modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp)
-            .background(Color.White)
             .clickable {
                 Toast
                     .makeText(context, name, Toast.LENGTH_SHORT)
