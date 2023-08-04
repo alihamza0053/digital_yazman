@@ -88,10 +88,12 @@ class Signup : ComponentActivity() {
             var phone by remember {
                 mutableStateOf("")
             }
+            var notify by remember {
+                mutableStateOf("")
+            }
             var verify by remember {
                 mutableStateOf(0)
             }
-
             var emailCheck by remember {
                 mutableStateOf("")
             }
@@ -122,7 +124,6 @@ class Signup : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    LoadingView(modifier = Modifier.padding(16.dp), dialog)
 
                     //business start
                     Text(
@@ -247,6 +248,7 @@ class Signup : ComponentActivity() {
                                 phone.trim(),
                                 email.trim(),
                                 password.trim(),
+                                notify.trim(),
                                 verify
                             )
 
@@ -273,6 +275,7 @@ class Signup : ComponentActivity() {
                                         finish()
                                     }
                             } else {
+                                dialog = false
                                 Toast.makeText(
                                     applicationContext,
                                     "Fill All Fields.",
@@ -293,6 +296,7 @@ class Signup : ComponentActivity() {
                         )
                     }
 
+                    LoadingView(modifier = Modifier.padding(16.dp), dialog)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
