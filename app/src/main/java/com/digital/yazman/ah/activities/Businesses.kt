@@ -660,7 +660,7 @@ class Businesses : ComponentActivity() {
 
                         CardColumn(
                             painter = painterResource(id = R.drawable.steeliron),
-                            title = "Steel $ Iron",
+                            title = "Steel & Iron",
                             fontSize = 12,
                             fontWeight = FontWeight.Light,
                             cardModifier = Modifier,

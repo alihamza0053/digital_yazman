@@ -73,9 +73,10 @@ class BusinessesViews : ComponentActivity() {
                             val name = document.getString("name") ?: ""
                             val address = document.getString("address") ?: ""
                             val contact = document.getString("contact") ?: ""
+                            val business = document.getString("business") ?: ""
                             userDataList.add(
                                 BusinessesClass(
-                                    id, shop, name, address, contact
+                                    id, shop, name, address, contact, business
                                 )
                             )
                         }
