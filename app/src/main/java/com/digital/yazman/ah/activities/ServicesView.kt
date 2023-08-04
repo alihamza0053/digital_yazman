@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,13 +40,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.classes.BusinessesClass
+import com.digital.yazman.ah.classes.ServicesClass
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.firestore.FirebaseFirestore
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.tasks.await
 
 class ServicesView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val servicesName = intent.getStringExtra("services")
+            val db = FirebaseFirestore.getInstance()
+            val itemsState = remember { mutableStateOf(emptyList<ServicesClass>()) }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 Column(
@@ -56,15 +64,52 @@ class ServicesView : ComponentActivity() {
                 ) {
 
 
-                    repeat(15){
+                    LaunchedEffect(Unit) {
+                        val querySnapshot = db.collection("Services").get().await()
+                        val userDataList = mutableListOf<ServicesClass>()
+                        for (document in querySnapshot) {
+                            if (servicesName == document.getString("services")) {
+                                val id = document.getString("id") ?: ""
+                                val name = document.getString("name") ?: ""
+                                val expert = document.getString("expert") ?: ""
+                                val location = document.getString("location") ?: ""
+                                val contact = document.getString("contact") ?: ""
+                                val services = document.getString("services") ?: ""
+                                userDataList.add(
+                                    ServicesClass(
+                                        id, name, expert, location, contact, services
+                                    )
+                                )
+                            }
+                        }
+                        itemsState.value = userDataList
+                    }
+
+
+                    if (itemsState.value.isEmpty()) {
+
+                        repeat(10) {
+                            ServicesCard(
+                                "Name",
+                                "Skill",
+                                "Yazman",
+                                "03XXXXXXXXX",
+                                painterResource(id = R.drawable.hamza2),
+                                modifier = Modifier.shimmer()
+                            )
+                        }
+                    }
+
+                    itemsState.value.forEach { data ->
                         ServicesCard(
-                            "Ali Hamza",
-                            "Android Developer\nJetpack compose",
-                            "Yazman",
-                            "03065600053",
-                            painterResource(id = R.drawable.hamza2),
-                            modifier = Modifier
+                            name = data.name,
+                            expertise = data.expertise,
+                            location = data.location,
+                            contact = data.contact,
+                            painter = painterResource(id = R.drawable.hamza2),
+                            modifier = Modifier,
                         )
+
                     }
 
 
@@ -113,16 +158,17 @@ fun ServicesCard(
 
                 Column {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically,modifier = modifier
                     ) {
                         AllTexts(
                             name,
                             fontSize = 17,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.Bold,
+                            modifier = modifier
                         )
-                        Spacer(modifier = Modifier.weight(1f))
-                        FavoriteButton()
+                        Spacer(modifier = modifier.weight(1f))
+                        FavoriteButton(modifier = modifier)
                     }
 
                     AllTexts(
@@ -133,15 +179,16 @@ fun ServicesCard(
                         fontWeight = FontWeight.Light,
                         modifier = modifier
                     )
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = modifier.weight(1f))
                     Row {
                         AllTexts(
                             text = "Location",
                             fontSize = 14,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.SemiBold,
+                            modifier = modifier
                         )
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = modifier.weight(1f))
                         AllTexts(
                             "Contact",
                             fontSize = 14,
@@ -150,7 +197,7 @@ fun ServicesCard(
                             modifier = modifier
                         )
                     }
-                    Row {
+                    Row(modifier = modifier) {
                         AllTexts(
                             location,
                             fontSize = 14,
@@ -158,7 +205,7 @@ fun ServicesCard(
                             fontWeight = FontWeight.Light,
                             modifier = modifier
                         )
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = modifier.weight(1f))
                         AllTexts(
                             contact,
                             fontSize = 14,

@@ -1,5 +1,6 @@
 package com.digital.yazman.ah.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
@@ -20,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -36,20 +36,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.BusinessesClass
-import com.digital.yazman.ah.classes.LocalDealNewsOppor
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.tasks.await
 
 class BusinessesViews : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<BusinessesClass>()) }
+
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                val businessName = intent.getStringExtra("business")
+                Toast.makeText(applicationContext, businessName, Toast.LENGTH_SHORT).show()
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -60,7 +63,7 @@ class BusinessesViews : ComponentActivity() {
 
                 ) {
                     AllTexts(
-                        "Businesses",
+                        businessName.toString(),
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(top = 15.dp, start = 20.dp)
@@ -70,17 +73,19 @@ class BusinessesViews : ComponentActivity() {
                         val querySnapshot = db.collection("Businesses").get().await()
                         val userDataList = mutableListOf<BusinessesClass>()
                         for (document in querySnapshot) {
-                            val id = document.getString("id") ?: ""
-                            val shop = document.getString("shop") ?: ""
-                            val name = document.getString("name") ?: ""
-                            val address = document.getString("address") ?: ""
-                            val contact = document.getString("contact") ?: ""
-                            val business = document.getString("business") ?: ""
-                            userDataList.add(
-                                BusinessesClass(
-                                    id, shop, name, address, contact, business
+                            if (businessName == document.getString("business")) {
+                                val id = document.getString("id") ?: ""
+                                val shop = document.getString("shop") ?: ""
+                                val name = document.getString("name") ?: ""
+                                val address = document.getString("address") ?: ""
+                                val contact = document.getString("contact") ?: ""
+                                val business = document.getString("business") ?: ""
+                                userDataList.add(
+                                    BusinessesClass(
+                                        id, shop, name, address, contact, business
+                                    )
                                 )
-                            )
+                            }
                         }
                         itemsState.value = userDataList
                     }
@@ -89,10 +94,10 @@ class BusinessesViews : ComponentActivity() {
                         repeat(10) {
                             BusinessCard(
                                 modifier = Modifier.shimmer(),
-                                "Pakistan Photo State",
-                                "Muhammad Naeem",
-                                "Old Court Road Yazman",
-                                "03180150327",
+                                "Title",
+                                "Name",
+                                "Yazman",
+                                "03XXXXXXXXX",
                                 applicationContext
                             )
                         }
@@ -126,18 +131,19 @@ fun BusinessCard(
     contact: String,
     context: Context
 ) {
+
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         ),
         colors = CardDefaults.cardColors(
-          containerColor = Color.White
+            containerColor = Color.White
         ),
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 5.dp)
             .fillMaxSize(),
 
-    ) {
+        ) {
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {

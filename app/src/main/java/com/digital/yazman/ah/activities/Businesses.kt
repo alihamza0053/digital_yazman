@@ -80,11 +80,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Agriculture")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -104,11 +102,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Aluminium")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -128,11 +124,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Automobile")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -160,11 +154,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Banks")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -184,11 +176,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Books")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -208,11 +198,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Clothing")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -241,11 +229,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Computers")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -265,11 +251,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Education")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -289,11 +273,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Electric")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -321,11 +303,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Footwear")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -345,11 +325,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Fresh Meat")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -369,11 +347,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Grain Market")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -402,11 +378,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Grocery")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -426,11 +400,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Jewelry")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -450,11 +422,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Machine Work")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -482,11 +452,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Marble")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -506,11 +474,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Marriage Hall")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -530,11 +496,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Mobile Accessories")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -563,11 +527,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Petroleum")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -587,11 +549,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Photo & Copy Shop")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -611,11 +571,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Property Dealer")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -644,11 +602,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Restaurants")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -668,11 +624,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Steel & Iron")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -692,11 +646,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Sweets")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -724,11 +676,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Tehsil Office")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -748,11 +698,9 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, BusinessesViews::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business","Wood Work")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -818,6 +766,7 @@ fun AllTexts(
         modifier = modifier
     )
 }
+
 val fontFamily = FontFamily(
     Font(R.font.lexend_black, FontWeight.Bold),
     Font(R.font.lexend_bold, FontWeight.Bold),

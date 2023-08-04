@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,13 +27,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Services : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             val context = LocalContext.current
             DigitalYazmanTheme {
                 Column(
@@ -55,7 +58,9 @@ class Services : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -69,11 +74,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "TV Cable")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -93,11 +96,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Car Mechanics")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -117,11 +118,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Catering")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -132,7 +131,9 @@ class Services : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -146,11 +147,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Computer Repair")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -170,11 +169,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Electricians")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -194,11 +191,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Handyman")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -209,7 +204,9 @@ class Services : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -223,11 +220,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Home Cleaners")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -247,11 +242,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Home Security")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -271,11 +264,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "HVACR")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -286,7 +277,9 @@ class Services : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -300,11 +293,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Internet")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -324,11 +315,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Movers")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -348,11 +337,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Painters")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -363,7 +350,9 @@ class Services : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding( 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ) {
                         //first row first card
 
@@ -377,11 +366,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Pet Service")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -401,11 +388,9 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Photograph")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
@@ -425,20 +410,15 @@ class Services : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    context.startActivity(
-                                        Intent(
-                                            context, ServicesView::class.java
-                                        )
-                                    )
+                                    val intent = Intent(this@Services, ServicesView::class.java)
+                                    intent.putExtra("services", "Plumbers")
+                                    startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
                                 .width(50.dp)
                         )
                     }
-
-
-
 
 
                 }
