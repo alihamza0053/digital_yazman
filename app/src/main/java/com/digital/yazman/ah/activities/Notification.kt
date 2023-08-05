@@ -2,6 +2,8 @@ package com.digital.yazman.ah.activities
 
 import android.content.ClipDescription
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -83,9 +85,10 @@ class Notification : ComponentActivity() {
                             val title = document.getString("title") ?: ""
                             val shortDes = document.getString("shortDes") ?: ""
                             val date = document.getString("date") ?: ""
+                            val link = document.getString("link") ?: ""
                             userDataList.add(
                                 NotificationClass(
-                                    id, title, shortDes, date,
+                                    id, title, shortDes, date, link
                                 )
                             )
 
@@ -100,7 +103,9 @@ class Notification : ComponentActivity() {
                                 title = "Title",
                                 shortDes = "Short Description",
                                 date = "01-01-2000",
+                                link = "",
                                 context = applicationContext
+
                             )
                         }
                     }
@@ -111,6 +116,7 @@ class Notification : ComponentActivity() {
                             title = data.title,
                             shortDes = data.shortDes,
                             date = data.date,
+                            link = data.link,
                             context = applicationContext
                         )
                     }
@@ -128,6 +134,7 @@ fun NotificationCard(
     title: String,
     shortDes: String,
     date: String,
+    link: String,
     context: Context
 ) {
 
@@ -146,6 +153,12 @@ fun NotificationCard(
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {
+                if (link != ""){
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent)
+                }
+
                 Toast
                     .makeText(context, title, Toast.LENGTH_SHORT)
                     .show()

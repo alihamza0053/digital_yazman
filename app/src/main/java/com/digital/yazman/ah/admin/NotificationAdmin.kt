@@ -35,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.activities.fontFamily
-import com.digital.yazman.ah.admin.ui.theme.DigitalYazmanTheme
+import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.nonScaledSp
 
 import com.google.firebase.firestore.FirebaseFirestore
@@ -89,12 +89,16 @@ fun NotificationData(id: String, collectionName: String, context: Context) {
     var date by remember {
         mutableStateOf("")
     }
+    var link by remember {
+        mutableStateOf("")
+    }
 
     val data = hashMapOf(
         "id" to id.trim(),
         "title" to title.trim(),
         "shortDes" to shortDescription.trim(),
-        "date" to date.trim()
+        "date" to date.trim(),
+        "link" to link.trim()
     )
 
     Column(
@@ -175,18 +179,34 @@ fun NotificationData(id: String, collectionName: String, context: Context) {
             )
         )
 
+        OutlinedTextField(
+            value = link, onValueChange = {
+                link = it
+            },
+            label = { Text(text = "Link") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+            ),
+            textStyle = TextStyle.Default.copy(
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal,
+            )
+        )
+
 
         Button(
             onClick = {
                 val db = FirebaseFirestore.getInstance()
                 val collection = db.collection(collectionName)
                 if (id != "ID") {
-                    if (title != "" && shortDescription != "" && date != "") {
+                    if (title != "" && shortDescription != "" && date != "" && link != "") {
                         collection.document(id).set(data)
                             .addOnSuccessListener {
                                 title = "";
                                 shortDescription = "";
                                 date = "";
+                                link = "";
                                 id = id
                             }
                         context.startActivity(Intent(context, Admin::class.java))

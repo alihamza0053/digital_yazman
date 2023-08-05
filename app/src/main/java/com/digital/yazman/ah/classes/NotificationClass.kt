@@ -5,5 +5,6 @@ class NotificationClass(
     val title: String,
     val shortDes: String,
     val date: String,
+    val link: String
 ) {
 }

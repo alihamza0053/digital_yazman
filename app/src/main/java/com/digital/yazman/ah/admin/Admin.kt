@@ -2,7 +2,9 @@ package com.digital.yazman.ah.admin
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,16 +31,22 @@ import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.activities.AllTexts
 import com.digital.yazman.ah.activities.fontFamily
+import com.digital.yazman.ah.activities.menuActivity
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 
 class Admin : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                BackHandler(enabled = true, onBack = {
+                    context.startActivity(Intent(this@Admin,menuActivity::class.java))
+                })
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -164,4 +172,3 @@ fun Hexagon(text: String, modifier: Modifier) {
         )
     }
 }
-//
