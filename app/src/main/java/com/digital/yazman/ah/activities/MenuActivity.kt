@@ -198,6 +198,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(context, Admin::class.java)
                                         )
+                                        finish()
                                     } else {
                                         Toast.makeText(
                                             applicationContext,
