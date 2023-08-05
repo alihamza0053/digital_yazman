@@ -85,15 +85,35 @@ class menuActivity : ComponentActivity() {
             var login by remember {
                 mutableStateOf("Login")
             }
-            var badgeNumber = "200"
+            var userNotify by remember {
+                mutableStateOf("0")
+            }
+
+            var badgeNumber by remember {
+                mutableStateOf("0")
+            }
             var badgeColor = Color.Transparent
 
             val db = FirebaseFirestore.getInstance()
+
+            var notifiCheck = 0
+            var ids by remember {
+                mutableStateOf(0)
+            }
+
+            db.collection("Notification").get().addOnSuccessListener { results ->
+                for (document in results) {
+                    ids = document.get("id").toString()
+                        .subSequence(3, document.get("id").toString().length).toString().toInt()
+                }
+            }
+
             db.collection("Users").get().addOnSuccessListener { results ->
                 for (document in results) {
                     if (document.get("id").toString() == "DYU01" && document.get("email")
                             .toString() == "alihamza00053@gmail.com"
                     ) {
+                        userNotify = document.get("notify").toString()
                         name = document.get("name").toString()
                         if (document.get("verify").toString() == "2") {
                             imgVerify = R.drawable.admin_king
@@ -107,6 +127,8 @@ class menuActivity : ComponentActivity() {
                     }
                 }
             }
+
+
 
 //            myRef.get().addOnSuccessListener {
 //                var idCheck =
@@ -241,10 +263,12 @@ class menuActivity : ComponentActivity() {
                             } else {
                                 badgeColor = Color.Red
                             }
-                            if(badgeNumber < "99"){
+                            if (badgeNumber > "99") {
                                 badgeNumber = "99+"
                             }
                             // Notification Badge Box
+
+                            badgeNumber = (ids - userNotify.toInt()).toString()
                             BadgedBox(
                                 badge = {
                                     Badge(
@@ -267,12 +291,15 @@ class menuActivity : ComponentActivity() {
                                 Icon(
                                     Icons.Filled.Notifications,
                                     contentDescription = "Notification",
-                                    modifier = Modifier.graphicsLayer {
-                                        scaleX = 1.3f
-                                        scaleY = 1.3f
-                                    }
+                                    modifier = Modifier
+                                        .graphicsLayer {
+                                            scaleX = 1.3f
+                                            scaleY = 1.3f
+                                        }
                                         .clickable {
-                                            Toast.makeText(applicationContext,"Insan bn haly",Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this@menuActivity, Notification::class.java)
+                                            intent.putExtra("notification",badgeNumber)
+                                            startActivity(intent)
                                         }
                                 )
                             }

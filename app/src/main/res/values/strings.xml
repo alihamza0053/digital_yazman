@@ -31,4 +31,6 @@
     <string name="title_activity_faqs">FAQs</string>
     <string name="title_activity_event_gallery">EventGallery</string>
     <string name="title_activity_businesses_admin">BusinessesAdmin</string>
+    <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_notification_admin">NotificationAdmin</string>
 </resources>

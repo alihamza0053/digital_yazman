@@ -63,7 +63,6 @@ class ServicesView : ComponentActivity() {
                         .background(Color(0xFFADD8E6))
                 ) {
 
-
                     LaunchedEffect(Unit) {
                         val querySnapshot = db.collection("Services").get().await()
                         val userDataList = mutableListOf<ServicesClass>()

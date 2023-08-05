@@ -107,7 +107,7 @@ class Admin : ComponentActivity() {
                         Hexagon("Notification",
                             modifier = Modifier.clickable {
                                 context.startActivity(
-                                    Intent(context, OpportunitiesAdmin::class.java)
+                                    Intent(context, NotificationAdmin::class.java)
                                 )
                             })
                         Spacer(modifier = Modifier.weight(1f))

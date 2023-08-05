@@ -89,7 +89,7 @@ class Signup : ComponentActivity() {
                 mutableStateOf("")
             }
             var notify by remember {
-                mutableStateOf("")
+                mutableStateOf("0")
             }
             var verify by remember {
                 mutableStateOf(0)
