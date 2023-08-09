@@ -23,6 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +45,7 @@ class Contact : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 adminContact()
@@ -76,13 +81,14 @@ fun adminContact() {
                     .width(100.dp)
                     .height(100.dp)
             )
-            AllTexts(
+            ContactTexts(
                 color = Color.White,
                 text = "Ali Hamza",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20
+
             )
-            AllTexts(
+            ContactTexts(
                 color = Color.White,
                 text = "Developer",
                 fontWeight = FontWeight.Normal,
@@ -135,7 +141,7 @@ fun adminContact() {
                 modifier = Modifier.fillMaxWidth()
             ) {
 
-                AllTexts(
+                ContactTexts(
                     text = "Information",
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
@@ -161,14 +167,14 @@ fun adminContact() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.padding(20.dp)
                         ) {
-                            AllTexts(
+                            ContactTexts(
                                 text = "Address",
                                 fontWeight = FontWeight.Normal,
                                 color = Color.White,
                                 fontSize = 14
 
                             )
-                            AllTexts(
+                            ContactTexts(
                                 text = "Hassan Colony, Tehsil Yazman, Bahawalpur",
                                 color = Color.White, fontSize = 12,
                                 fontWeight = FontWeight.Light
@@ -196,13 +202,13 @@ fun adminContact() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.padding(20.dp)
                         ) {
-                            AllTexts(
+                            ContactTexts(
                                 text = "Availability",
                                 fontWeight = FontWeight.Normal,
                                 color = Color.White,
                                 fontSize = 14
                             )
-                            AllTexts(
+                            ContactTexts(
                                 text = "Monday to Friday\n10:00am to 04:00pm",
                                 fontWeight = FontWeight.Light,
                                 color = Color.White,
@@ -212,7 +218,7 @@ fun adminContact() {
                         }
                     }
                 }
-                AllTexts(
+                ContactTexts(
                     text = "About",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18,
@@ -233,7 +239,7 @@ fun adminContact() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(20.dp)
                     ) {
-                        AllTexts(
+                        ContactTexts(
                             text = "I'm Ali Hamza Android Developer, Complete BS CS form IUB." +
                                     "\nContact me in case of any issue.\nThanks❤️",
                             color = Color.White,
@@ -245,4 +251,27 @@ fun adminContact() {
             }
         }
     }
+}
+
+
+
+@Composable
+fun ContactTexts(
+    text: String,
+    modifier: Modifier = Modifier.padding(5.dp),
+    fontWeight: FontWeight = FontWeight.Light,
+    fontSize: Int = 10,
+    textAlign: TextAlign = TextAlign.Center,
+    color: Color,
+) {
+
+    Text(
+        text = text,
+        color = color,
+        fontFamily = fontFamily,
+        fontSize = fontSize.nonScaledSp,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        modifier = modifier
+    )
 }

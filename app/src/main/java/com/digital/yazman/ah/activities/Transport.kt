@@ -21,8 +21,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,17 +43,24 @@ class Transport : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember {
                 mutableStateOf(emptyList<TransportClass>())
             }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
 
                 ) {
@@ -108,6 +117,7 @@ class Transport : ComponentActivity() {
                                 ticketPrice = "000",
                                 distance = "000km",
                                 timeTaken = "Time 0 Hours",
+                                dark = dark
                             )
                         }
                     }
@@ -123,6 +133,7 @@ class Transport : ComponentActivity() {
                             ticketPrice = data.ticketPrice,
                             distance = data.distance,
                             timeTaken = data.timeTaken,
+                            dark = dark
                         )
                     }
 
@@ -145,13 +156,18 @@ fun Bus(
     destination: String,
     ticketPrice: String,
     distance: String,
-    timeTaken: String
+    timeTaken: String,
+    dark: Boolean
 ) {
+    var cardBackgroundColor = Color(0xFFFFFF)
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+    }
     Column(
         modifier = modifier
             .padding(20.dp)
             .fillMaxWidth()
-            .background(Color.White),
+            .background(cardBackgroundColor),
     ) {
 
         //first row
@@ -159,20 +175,20 @@ fun Bus(
             modifier = modifier
                 .padding(start = 20.dp, top = 5.dp, end = 20.dp, bottom = 5.dp)
         ) {
-            Text(
+            AllTexts(
                 text = busName,
-                fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.nonScaledSp,
-                modifier = modifier
+                fontSize = 15,
+                modifier = modifier,
+                dark = dark
             )
             Spacer(modifier = modifier.weight(1f))
-            Text(
+            AllTexts(
                 text = busNumber,
-                fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.nonScaledSp,
-                modifier = modifier
+                fontSize = 15,
+                modifier = modifier,
+                dark = dark
             )
         }
 
@@ -191,20 +207,20 @@ fun Bus(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(
+                AllTexts(
                     text = startTime,
-                    fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.nonScaledSp,
+                    fontSize = 15,
                     modifier = modifier
-                        .padding(bottom = 17.dp)
+                        .padding(bottom = 17.dp),
+                    dark = dark
                 )
-                Text(
+                AllTexts(
                     text = arivalTime,
-                    fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.nonScaledSp,
-                    modifier = modifier
+                    fontSize = 15,
+                    modifier = modifier,
+                    dark = dark
                 )
             }
             Image(
@@ -217,20 +233,20 @@ fun Bus(
             )
             Spacer(modifier = modifier.weight(1f))
             Column {
-                Text(
+                AllTexts(
                     text = startPoint,
-                    fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.nonScaledSp,
+                    fontSize = 15,
                     modifier = modifier
-                        .padding(bottom = 17.dp)
+                        .padding(bottom = 17.dp),
+                    dark = dark
                 )
-                Text(
+                AllTexts(
                     text = destination,
-                    fontFamily = fontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.nonScaledSp,
-                    modifier = modifier
+                    fontSize = 15,
+                    modifier = modifier,
+                    dark = dark
                 )
             }
             Spacer(modifier = modifier.weight(1f))
@@ -265,20 +281,20 @@ fun Bus(
             modifier = modifier
                 .padding(start = 20.dp, top = 5.dp, end = 20.dp, bottom = 5.dp)
         ) {
-            Text(
+            AllTexts(
                 text = distance + "km",
-                fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.nonScaledSp,
-                modifier = modifier
+                fontSize = 12,
+                modifier = modifier,
+                dark = dark
             )
             Spacer(modifier = modifier.weight(1f))
-            Text(
+            AllTexts(
                 text = "Time $timeTaken",
-                fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.nonScaledSp,
-                modifier = modifier
+                fontSize = 12,
+                modifier = modifier,
+                dark = dark
             )
         }
     }

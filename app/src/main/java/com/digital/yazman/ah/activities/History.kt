@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -25,36 +29,89 @@ class History : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
 
                 ) {
-                    AllTexts("Yazman Mandi", fontSize = 25, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 15.dp, start = 20.dp))
+                    AllTexts(
+                        "Yazman Mandi",
+                        fontSize = 25,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
+                    )
 
-                    AllTexts(stringResource(id = R.string.history_1), fontSize = 16, textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 15.dp))
+                    AllTexts(
+                        stringResource(id = R.string.history_1),
+                        fontSize = 16,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 15.dp),
+                        dark = dark
+                    )
 
-                    Image(painter = painterResource(id = R.drawable.yazman_img1), contentDescription =null,
-                    modifier = Modifier
-                        .padding(top = 5.dp, start = 20.dp, end = 15.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.yazman_img1),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(top = 5.dp, start = 20.dp, end = 15.dp)
+                    )
 
-                    AllTexts(stringResource(id = R.string.history_2), fontSize = 16, textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp))
+                    AllTexts(
+                        stringResource(id = R.string.history_2),
+                        fontSize = 16,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp),
+                        dark = dark
+                    )
 
-                    AllTexts(stringResource(id = R.string.history_3), fontSize = 16, textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp))
+                    AllTexts(
+                        stringResource(id = R.string.history_3),
+                        fontSize = 16,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp),
+                        dark = dark
+                    )
 
-                    Image(painter = painterResource(id = R.drawable.yazman_img2), contentDescription =null,
+                    Image(
+                        painter = painterResource(id = R.drawable.yazman_img2),
+                        contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 5.dp, start = 20.dp, end = 15.dp))
+                            .padding(top = 5.dp, start = 20.dp, end = 15.dp)
+                    )
 
-                    AllTexts(stringResource(id = R.string.history_4), fontSize = 16, textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp))
+                    AllTexts(
+                        stringResource(id = R.string.history_4),
+                        fontSize = 16,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp),
+                        dark = dark
+                    )
 
-                    AllTexts(stringResource(id = R.string.history_5), fontSize = 16, textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 15.dp, bottom = 10.dp))
+                    AllTexts(
+                        stringResource(id = R.string.history_5),
+                        fontSize = 16,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(
+                            top = 5.dp,
+                            start = 20.dp,
+                            end = 15.dp,
+                            bottom = 10.dp
+                        ),
+                        dark = dark
+                    )
 
 
                 }

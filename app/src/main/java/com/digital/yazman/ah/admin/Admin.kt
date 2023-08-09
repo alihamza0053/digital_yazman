@@ -20,6 +20,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,9 +45,16 @@ class Admin : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val context = LocalContext.current
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 BackHandler(enabled = true, onBack = {
                     context.startActivity(Intent(this@Admin,menuActivity::class.java))
                 })
@@ -73,14 +84,16 @@ class Admin : ComponentActivity() {
                                 context.startActivity(
                                     Intent(context, BusinessesAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                         Spacer(modifier = Modifier.weight(1f))
                         Hexagon("Local Deals",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, LocalDealsAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                     }
                     Row(
                         modifier = Modifier
@@ -95,14 +108,16 @@ class Admin : ComponentActivity() {
                                 context.startActivity(
                                     Intent(context, LocalNewsAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                         Spacer(modifier = Modifier.weight(1f))
                         Hexagon("MS ads",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, LocalDealsAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                     }
                     Row(
                         modifier = Modifier
@@ -117,14 +132,16 @@ class Admin : ComponentActivity() {
                                 context.startActivity(
                                     Intent(context, NotificationAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                         Spacer(modifier = Modifier.weight(1f))
                         Hexagon("Opportunities",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, OpportunitiesAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                     }
                     Row(
                         modifier = Modifier
@@ -139,14 +156,16 @@ class Admin : ComponentActivity() {
                                 context.startActivity(
                                     Intent(context, ServicesAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                         Spacer(modifier = Modifier.weight(1f))
                         Hexagon("Transport",
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, TransportAdmin::class.java)
                                 )
-                            })
+                            },
+                            dark = dark)
                     }
                 }
             }
@@ -155,7 +174,7 @@ class Admin : ComponentActivity() {
 }
 
 @Composable
-fun Hexagon(text: String, modifier: Modifier) {
+fun Hexagon(text: String, modifier: Modifier,dark: Boolean) {
     Box(
         modifier = modifier
             .clip(CutCornerShape(8.dp))
@@ -168,7 +187,7 @@ fun Hexagon(text: String, modifier: Modifier) {
             text = text,
             fontSize = 16,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFFFFFFFF)
+            dark = dark
         )
     }
 }

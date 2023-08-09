@@ -76,6 +76,11 @@ class menuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var textColor = Color(0xFFFFFFFF)
+            var backgroundColor = Color(0xFFADD8E6)
             var name by remember {
                 mutableStateOf("")
             }
@@ -129,7 +134,6 @@ class menuActivity : ComponentActivity() {
             }
 
 
-
 //            myRef.get().addOnSuccessListener {
 //                var idCheck =
 //                    it.children.last().key.toString()
@@ -141,6 +145,9 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
+                if(dark){
+                    backgroundColor = Color(0xFF14141f)
+                }
 
                 val images = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",
@@ -155,7 +162,7 @@ class menuActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                 ) {
                     Row(
                         modifier = Modifier
@@ -246,13 +253,11 @@ class menuActivity : ComponentActivity() {
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp)
                         ) {
-                            Text(
+                            AllTexts(
                                 text = "Announcements",
-                                color = Color(0xFF000000),
-                                fontSize = 20.nonScaledSp,
-                                fontFamily = fontFamily,
+                                fontSize = 20,
                                 fontWeight = FontWeight.SemiBold,
-
+                                dark = dark
                                 )
                             Spacer(
                                 modifier = Modifier
@@ -292,14 +297,16 @@ class menuActivity : ComponentActivity() {
                                 Icon(
                                     Icons.Filled.Notifications,
                                     contentDescription = "Notification",
+                                    tint = textColor,
                                     modifier = Modifier
                                         .graphicsLayer {
                                             scaleX = 1.3f
                                             scaleY = 1.3f
                                         }
                                         .clickable {
-                                            val intent = Intent(this@menuActivity, Notification::class.java)
-                                            intent.putExtra("notification",badgeNumber)
+                                            val intent =
+                                                Intent(this@menuActivity, Notification::class.java)
+                                            intent.putExtra("notification", badgeNumber)
                                             startActivity(intent)
                                         }
                                 )
@@ -327,7 +334,7 @@ class menuActivity : ComponentActivity() {
                             "Categories",
                             fontSize = 20,
                             fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(start = 20.dp, top = 1.dp)
+                            modifier = Modifier.padding(start = 20.dp, top = 1.dp), dark = dark
                         )
 
 
@@ -358,7 +365,9 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
+
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
@@ -382,7 +391,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -405,7 +415,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                         }
 
@@ -436,7 +447,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
@@ -460,7 +472,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -483,7 +496,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                         }
 
@@ -514,7 +528,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -537,7 +552,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -560,7 +576,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                         }
 
@@ -593,7 +610,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -616,7 +634,8 @@ class menuActivity : ComponentActivity() {
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)
-                                    .width(40.dp)
+                                    .width(40.dp),
+                                dark = dark
                             )
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -650,6 +669,7 @@ class menuActivity : ComponentActivity() {
             }
         }
     }
+}
 
 
     // image slider start
@@ -736,39 +756,3 @@ class menuActivity : ComponentActivity() {
         }
     }
 // image slider start
-
-
-    @Composable
-    fun CardColumn(
-        painter: Painter,
-        title: String,
-        fontSize: Int = 12,
-        fontWeight: FontWeight = FontWeight.Light,
-        cardModifier: Modifier,
-        columnModifier: Modifier,
-        imageModifier: Modifier,
-
-        ) {
-        Card(
-            elevation = 6.dp,
-            shape = RoundedCornerShape(15.dp),
-            backgroundColor = Color(0xFFFFFFFF),
-            modifier = cardModifier
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = columnModifier
-
-            ) {
-                Image(
-                    painter = painter,
-                    contentDescription = null,
-                    modifier = imageModifier
-                )
-                AllTexts(title, fontSize = fontSize, fontWeight = fontWeight)
-            }
-        }
-    }
-}
-

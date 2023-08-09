@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -26,14 +28,21 @@ class Opportunities : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<LocalDealNewsOppor>()) }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
                 ) {
 
@@ -41,7 +50,8 @@ class Opportunities : ComponentActivity() {
                         "Opportunities",
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
                     )
 
 
@@ -72,7 +82,8 @@ class Opportunities : ComponentActivity() {
                                 title = "title",
                                 description = "description",
                                 source = "source",
-                                date = "date"
+                                date = "date",
+                                dark = dark
                             )
                         }
                     }
@@ -83,7 +94,8 @@ class Opportunities : ComponentActivity() {
                             title = data.title,
                             description = data.shortDes,
                             source = data.source,
-                            date = data.date
+                            date = data.date,
+                            dark = dark
                         )
                     }
 

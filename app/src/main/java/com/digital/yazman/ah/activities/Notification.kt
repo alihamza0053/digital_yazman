@@ -29,8 +29,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,11 +56,18 @@ class Notification : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<NotificationClass>()) }
             val notification = intent.getStringExtra("notification")
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Toast.makeText(applicationContext, notification, Toast.LENGTH_SHORT).show()
 
                 Column(
@@ -66,7 +75,7 @@ class Notification : ComponentActivity() {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                         .background(
-                            Color(0xFFADD8E6)
+                            backgroundColor
                         )
 
                 ) {
@@ -74,7 +83,7 @@ class Notification : ComponentActivity() {
                         "Notifications",
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp), dark = dark
                     )
 
                     LaunchedEffect(Unit) {
@@ -104,7 +113,7 @@ class Notification : ComponentActivity() {
                                 shortDes = "Short Description",
                                 date = "01-01-2000",
                                 link = "",
-                                context = applicationContext
+                                context = applicationContext, dark = dark
 
                             )
                         }
@@ -117,7 +126,7 @@ class Notification : ComponentActivity() {
                             shortDes = data.shortDes,
                             date = data.date,
                             link = data.link,
-                            context = applicationContext
+                            context = applicationContext, dark = dark
                         )
                     }
 
@@ -135,15 +144,19 @@ fun NotificationCard(
     shortDes: String,
     date: String,
     link: String,
+    dark: Boolean,
     context: Context
 ) {
-
+    var cardBackgroundColor = Color(0xFFFFFF)
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+    }
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = cardBackgroundColor
         ),
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 5.dp)
@@ -153,7 +166,7 @@ fun NotificationCard(
         Column(modifier = modifier
             .fillMaxWidth()
             .clickable {
-                if (link != ""){
+                if (link != "") {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent)
@@ -174,14 +187,14 @@ fun NotificationCard(
                         fontSize = 15,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp), dark = dark
                     )
                     AllTexts(
                         shortDes,
                         fontSize = 13,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Normal,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp), dark = dark
                     )
                     Row {
                         Spacer(modifier = modifier.weight(1f))
@@ -190,7 +203,7 @@ fun NotificationCard(
                             fontSize = 11,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.Normal,
-                            modifier = modifier
+                            modifier = modifier, dark = dark
                         )
                     }
                 }

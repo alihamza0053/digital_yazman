@@ -22,6 +22,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,13 +45,19 @@ class Businesses : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val context = LocalContext.current
             DigitalYazmanTheme {
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
 
                 ) {
@@ -56,7 +66,8 @@ class Businesses : ComponentActivity() {
                         "Businesses",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 25,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
                     )
 
 
@@ -80,13 +91,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Agriculture")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Agriculture")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -102,13 +115,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Aluminium")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Aluminium")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -124,13 +139,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Automobile")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Automobile")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -154,13 +171,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Banks")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Banks")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -176,13 +195,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Books")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Books")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -198,13 +219,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Clothing")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Clothing")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -229,13 +252,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Computers")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Computers")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -251,13 +276,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Education")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Education")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -273,13 +300,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Electric")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Electric")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -303,13 +332,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Footwear")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Footwear")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -325,13 +356,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Fresh Meat")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Fresh Meat")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -347,13 +380,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Grain Market")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Grain Market")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -378,13 +413,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Grocery")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Grocery")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -400,13 +437,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Jewelry")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Jewelry")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -422,13 +461,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Machine Work")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Machine Work")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -452,13 +493,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Marble")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Marble")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -474,13 +517,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Marriage Hall")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Marriage Hall")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -496,13 +541,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Mobile Accessories")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Mobile Accessories")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -527,13 +574,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Petroleum")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Petroleum")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -549,13 +598,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Photo & Copy Shop")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Photo & Copy Shop")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -571,13 +622,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Property Dealer")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Property Dealer")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -602,13 +655,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Restaurants")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Restaurants")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -624,13 +679,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Steel & Iron")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Steel & Iron")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -646,13 +703,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Sweets")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Sweets")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -676,13 +735,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Tehsil Office")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Tehsil Office")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.padding(start = 20.dp, end = 20.dp))
 
@@ -698,13 +759,15 @@ class Businesses : ComponentActivity() {
                                 .height(90.dp)
                                 .width(90.dp)
                                 .clickable {
-                                    val intent = Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business","Wood Work")
+                                    val intent =
+                                        Intent(this@Businesses, BusinessesViews::class.java)
+                                    intent.putExtra("business", "Wood Work")
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
                     //categories end
@@ -724,12 +787,19 @@ fun CardColumn(
     cardModifier: Modifier,
     columnModifier: Modifier,
     imageModifier: Modifier,
+    dark: Boolean = false
+) {
+    var cardColor = Color(0xFFFFFFFF)
+    var textColor = Color(0xFF000000)
+    if (dark) {
+        cardColor = Color(0xFF282834)
+        textColor = Color(0xFFFFFFFF)
+    }
 
-    ) {
     Card(
         elevation = 6.dp,
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color(0xFFFFFFFF),
+        backgroundColor = cardColor,
         modifier = cardModifier
     ) {
         Column(
@@ -741,7 +811,7 @@ fun CardColumn(
             Image(
                 painter = painter, contentDescription = null, modifier = imageModifier
             )
-            AllTexts(title, fontSize = fontSize, fontWeight = fontWeight)
+            AllTexts(title, fontSize = fontSize, fontWeight = fontWeight, dark = dark)
         }
     }
 }
@@ -754,8 +824,12 @@ fun AllTexts(
     fontWeight: FontWeight = FontWeight.Light,
     fontSize: Int = 10,
     textAlign: TextAlign = TextAlign.Center,
-    color: Color = Color(0xFF000000)
+    dark: Boolean
 ) {
+    var color = Color(0xFF000000)
+    if (dark) {
+        color = Color(0xFFFFFFFF)
+    }
     Text(
         text = text,
         color = color,

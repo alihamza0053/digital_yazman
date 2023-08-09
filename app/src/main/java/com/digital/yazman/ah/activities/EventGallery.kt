@@ -59,6 +59,10 @@ class EventGallery : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             var imgVisibility by remember {
                 mutableStateOf(false)
             }
@@ -72,23 +76,27 @@ class EventGallery : ComponentActivity() {
                 )
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState())
                         .fillMaxSize()
                         .background(
-                            Color(0xFFADD8E6)
+                            backgroundColor
                         )
                 ) {
                     AllTexts(
                         "Event Gallery",
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
                     )
                     repeat(20){
 
-                        ExpandableCard(images, "Cricket Event", imgVisibility)
+                        ExpandableImageCard(images, "Cricket Event", imgVisibility)
                     }
                 }
             }
@@ -98,7 +106,7 @@ class EventGallery : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpandableCard(images: List<String>, title: String, imgVisibility: Boolean) {
+fun ExpandableImageCard(images: List<String>, title: String, imgVisibility: Boolean) {
     var expandedState by remember {
         mutableStateOf(false)
     }
@@ -106,7 +114,7 @@ fun ExpandableCard(images: List<String>, title: String, imgVisibility: Boolean) 
 
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color(0xFFfbf7f5)
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -131,6 +139,7 @@ fun ExpandableCard(images: List<String>, title: String, imgVisibility: Boolean) 
                     modifier = Modifier.weight(6f),
                     text = title,
                     fontSize = 20.nonScaledSp,
+                    fontFamily = fontFamily,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

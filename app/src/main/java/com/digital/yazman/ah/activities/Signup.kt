@@ -63,6 +63,10 @@ class Signup : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = Firebase.firestore
             val database = Firebase.database
             val myRef = database.getReference("Signup")
@@ -114,10 +118,13 @@ class Signup : ComponentActivity() {
                 }
             val context = LocalContext.current
             DigitalYazmanTheme {
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
@@ -126,13 +133,12 @@ class Signup : ComponentActivity() {
                 ) {
 
                     //business start
-                    Text(
+                    AllTexts(
                         text = "Sign up",
-                        color = Color(0xFF000000),
-                        fontSize = 25.sp,
-                        fontFamily = fontFamily,
+                        fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 20.dp),
+                        dark = dark
                     )
 
                     Card(
@@ -142,14 +148,14 @@ class Signup : ComponentActivity() {
                         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
                     ) {
 
-                        Text(
+                        AllTexts(
                             text = id,
-                            fontSize = 15.sp,
-                            fontFamily = fontFamily,
+                            fontSize = 15,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            dark = dark
                         )
                     }
                     OutlinedTextField(
@@ -302,11 +308,11 @@ class Signup : ComponentActivity() {
                             .fillMaxWidth()
                             .padding(top = 10.dp)
                     ) {
-                        Text(
+                        AllTexts(
                             text = "Already have account!",
-                            color = Color(0xFF000000),
-                            fontFamily = fontFamily,
+                            fontSize = 12,
                             fontWeight = FontWeight.Normal,
+                            dark = dark
                         )
 
                         Spacer(

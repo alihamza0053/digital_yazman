@@ -21,8 +21,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,13 +42,20 @@ class Emergency : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val context = LocalContext.current
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
 
 
@@ -111,7 +122,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Ambulance", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Ambulance", fontSize = 12, fontWeight = FontWeight.Light,dark = dark)
                                 }
                             }
 
@@ -148,7 +159,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Blood Donors", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Blood Donors", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
 
                                 }
                             }
@@ -187,7 +198,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Child Protection", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Child Protection", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
 
                                 }
                             }
@@ -219,7 +230,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Fire Brigade", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Fire Brigade", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
 
                                 }
                             }
@@ -257,7 +268,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Gas Leakage", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Gas Leakage", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
 
                                 }
                             }
@@ -289,7 +300,7 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Police", fontSize = 12, fontWeight = FontWeight.Light)
+                                    AllTexts("Police", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
 
                                 }
                             }

@@ -23,8 +23,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -46,11 +48,18 @@ class BusinessesViews : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<BusinessesClass>()) }
 
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 val businessName = intent.getStringExtra("business")
                 Toast.makeText(applicationContext, businessName, Toast.LENGTH_SHORT).show()
                 Column(
@@ -58,7 +67,7 @@ class BusinessesViews : ComponentActivity() {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                         .background(
-                            Color(0xFFADD8E6)
+                            backgroundColor
                         )
 
                 ) {
@@ -66,7 +75,7 @@ class BusinessesViews : ComponentActivity() {
                         businessName.toString(),
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp), dark = dark
                     )
 
                     LaunchedEffect(Unit) {
@@ -98,6 +107,7 @@ class BusinessesViews : ComponentActivity() {
                                 "Name",
                                 "Yazman",
                                 "03XXXXXXXXX",
+                                dark,
                                 applicationContext
                             )
                         }
@@ -110,6 +120,7 @@ class BusinessesViews : ComponentActivity() {
                             name = data.name,
                             address = data.address,
                             contact = data.contact,
+                            dark,
                             context = applicationContext
                         )
 
@@ -129,15 +140,19 @@ fun BusinessCard(
     name: String,
     address: String,
     contact: String,
+    dark: Boolean,
     context: Context
 ) {
-
+    var cardBackgroundColor = Color(0xFFFFFF)
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+    }
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = cardBackgroundColor
         ),
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 5.dp)
@@ -175,28 +190,31 @@ fun BusinessCard(
                         fontSize = 17,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp), dark = dark
                     )
                     AllTexts(
                         name,
                         fontSize = 15,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp),
+                        dark = dark
                     )
                     AllTexts(
                         address,
                         fontSize = 13,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Normal,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp),
+                        dark = dark
                     )
                     AllTexts(
                         contact,
                         fontSize = 13,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = modifier.padding(0.dp)
+                        modifier = modifier.padding(0.dp),
+                        dark = dark
                     )
                 }
 

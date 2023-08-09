@@ -51,16 +51,23 @@ class ServicesView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val servicesName = intent.getStringExtra("services")
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<ServicesClass>()) }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                 ) {
 
                     LaunchedEffect(Unit) {
@@ -93,6 +100,7 @@ class ServicesView : ComponentActivity() {
                                 "Skill",
                                 "Yazman",
                                 "03XXXXXXXXX",
+                                dark = dark,
                                 painterResource(id = R.drawable.hamza2),
                                 modifier = Modifier.shimmer()
                             )
@@ -107,6 +115,7 @@ class ServicesView : ComponentActivity() {
                             contact = data.contact,
                             painter = painterResource(id = R.drawable.hamza2),
                             modifier = Modifier,
+                            dark = dark
                         )
 
                     }
@@ -124,16 +133,21 @@ fun ServicesCard(
     expertise: String,
     location: String,
     contact: String,
+    dark: Boolean,
     painter: Painter = painterResource(id = R.drawable.hamza2),
     modifier: Modifier,
 
     ) {
+    var cardBackgroundColor = Color(0xFFFFFF)
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+    }
     Card(
         modifier = modifier
             .height(200.dp)
             .padding(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFFFF)
+            containerColor = cardBackgroundColor
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
@@ -164,19 +178,20 @@ fun ServicesCard(
                             fontSize = 17,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.Bold,
-                            modifier = modifier
+                            modifier = modifier,
+                            dark = dark
                         )
                         Spacer(modifier = modifier.weight(1f))
-                        FavoriteButton(modifier = modifier)
+                        FavoriteButton(modifier = modifier,dark = dark)
                     }
 
                     AllTexts(
                         expertise,
                         fontSize = 14,
-                        color = Color.Blue,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Light,
-                        modifier = modifier
+                        modifier = modifier,
+                        dark = dark
                     )
                     Spacer(modifier = modifier.weight(1f))
                     Row {
@@ -185,7 +200,8 @@ fun ServicesCard(
                             fontSize = 14,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.SemiBold,
-                            modifier = modifier
+                            modifier = modifier,
+                            dark = dark
                         )
                         Spacer(modifier = modifier.weight(1f))
                         AllTexts(
@@ -193,7 +209,8 @@ fun ServicesCard(
                             fontSize = 14,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.SemiBold,
-                            modifier = modifier
+                            modifier = modifier,
+                            dark = dark
                         )
                     }
                     Row(modifier = modifier) {
@@ -202,7 +219,8 @@ fun ServicesCard(
                             fontSize = 14,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.Light,
-                            modifier = modifier
+                            modifier = modifier,
+                            dark = dark
                         )
                         Spacer(modifier = modifier.weight(1f))
                         AllTexts(
@@ -210,7 +228,8 @@ fun ServicesCard(
                             fontSize = 14,
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight.Light,
-                            modifier = modifier
+                            modifier = modifier,
+                            dark = dark
                         )
                     }
                 }
@@ -223,9 +242,12 @@ fun ServicesCard(
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier,
-    color: Color = Color.Black
+    dark: Boolean
 ) {
-
+    var iconColor = Color(0xFF000000)
+    if (dark) {
+        var iconColor = Color(0xFFFFFFFF)
+    }
     var isFavorite by remember { mutableStateOf(false) }
 
     IconToggleButton(
@@ -235,7 +257,7 @@ fun FavoriteButton(
         }
     ) {
         Icon(
-            tint = color,
+            tint = iconColor,
             modifier = modifier.graphicsLayer {
                 scaleX = 1.3f
                 scaleY = 1.3f

@@ -27,6 +27,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,12 +37,21 @@ class Services : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
+            var textColor = Color(0xFF000000)
             val context = LocalContext.current
             DigitalYazmanTheme {
+                if(dark){
+                    backgroundColor = Color(0xFF14141f)
+                    textColor = Color(0xFFFFFFFF)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
 
 
@@ -50,7 +61,8 @@ class Services : ComponentActivity() {
                         "Services",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 25,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
                     )
 
 
@@ -80,7 +92,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -102,7 +115,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -124,7 +138,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -153,7 +168,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -175,7 +191,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -197,7 +214,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -226,7 +244,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -248,7 +267,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -270,7 +290,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -299,7 +320,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -321,7 +343,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -343,7 +366,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 
@@ -372,7 +396,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -394,7 +419,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -416,7 +442,8 @@ class Services : ComponentActivity() {
                                 },
                             imageModifier = Modifier
                                 .height(50.dp)
-                                .width(50.dp)
+                                .width(50.dp),
+                            dark = dark
                         )
                     }
 

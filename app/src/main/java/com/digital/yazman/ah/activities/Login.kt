@@ -44,6 +44,10 @@ class Login : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             var email by remember {
                 mutableStateOf("")
             }
@@ -52,28 +56,26 @@ class Login : ComponentActivity() {
             }
             val context = LocalContext.current
             DigitalYazmanTheme {
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-
-
                 ) {
 
-
-
                     //business start
-                    Text(
+                    AllTexts(
                         text = "Login",
-                        color = Color(0xFF000000),
-                        fontSize = 25.nonScaledSp,
-                        fontFamily = fontFamily,
+                        fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
                     )
                     OutlinedTextField(
                         value = email,
@@ -138,11 +140,11 @@ class Login : ComponentActivity() {
                             .fillMaxWidth()
                             .padding(top = 10.dp)
                     ) {
-                        Text(
+                        AllTexts(
                             text = "Do not have account!",
-                            color = Color(0xFF000000),
-                            fontFamily = fontFamily,
+                            fontSize = 12,
                             fontWeight = FontWeight.Normal,
+                            dark = dark
                         )
 
                         Spacer(

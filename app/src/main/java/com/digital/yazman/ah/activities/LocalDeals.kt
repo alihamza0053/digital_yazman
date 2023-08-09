@@ -19,8 +19,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -40,23 +42,29 @@ class LocalDeals : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var dark by remember {
+                mutableStateOf(true)
+            }
+            var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<LocalDealNewsOppor>()) }
 
             DigitalYazmanTheme {
-
                 // A surface container using the 'background' color from the theme
+                if (dark) {
+                    backgroundColor = Color(0xFF14141f)
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFADD8E6))
+                        .background(backgroundColor)
                         .verticalScroll(rememberScrollState())
                 ) {
                     AllTexts(
                         "Local Deals",
                         fontSize = 25,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp), dark = dark
                     )
 
                     LaunchedEffect(Unit) {
@@ -86,7 +94,8 @@ class LocalDeals : ComponentActivity() {
                                 title = "title",
                                 description = "description",
                                 source = "source",
-                                date = "date"
+                                date = "date",
+                                dark = dark
                             )
                         }
                     }
@@ -97,7 +106,8 @@ class LocalDeals : ComponentActivity() {
                             title = data.title,
                             description = data.shortDes,
                             source = data.source,
-                            date = data.date
+                            date = data.date,
+                            dark = dark
                         )
                     }
 
@@ -117,12 +127,17 @@ fun CardItem(
     title: String,
     description: String,
     source: String,
-    date: String
+    date: String,
+    dark: Boolean
 ) {
+    var cardBackgroundColor = Color(0xFFFFFF)
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+    }
     Card(
         elevation = 6.dp,
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color(0xFFFFFFFF),
+        backgroundColor = cardBackgroundColor,
         modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 10.dp)
     ) {
         Row(
@@ -154,21 +169,21 @@ fun CardItem(
                     fontWeight = FontWeight.ExtraLight,
                     modifier = modifier
                         .alpha(0.5f)
-                        .padding(0.dp)
+                        .padding(0.dp), dark = dark
                 )
                 AllTexts(
                     title,
                     fontSize = 17,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Bold,
-                    modifier = modifier.padding(0.dp)
+                    modifier = modifier.padding(0.dp), dark = dark
                 )
                 AllTexts(
                     description,
                     fontSize = 14,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Light,
-                    modifier = modifier.padding(0.dp)
+                    modifier = modifier.padding(0.dp), dark = dark
                 )
 
                 Row(
@@ -184,7 +199,7 @@ fun CardItem(
                         modifier = modifier
                             .alpha(0.5f)
                             .padding(0.dp)
-                            .weight(1f)
+                            .weight(1f), dark = dark
                     )
                     AllTexts(
                         date,
@@ -194,7 +209,7 @@ fun CardItem(
                         modifier = modifier
                             .alpha(0.5f)
                             .padding(0.dp, end = 10.dp)
-                            .weight(1f)
+                            .weight(1f), dark = dark
                     )
 
                 }
