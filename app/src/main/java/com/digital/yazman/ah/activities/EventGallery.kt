@@ -148,7 +148,7 @@ fun ExpandableCard(images: List<String>, title: String, imgVisibility: Boolean) 
                 }
             }
             if (expandedState) {
-                ImageGrid(imageUrls = images, imgVisibility)
+                ImageGrid(imageUrls = images)
             }
         }
 
@@ -157,9 +157,9 @@ fun ExpandableCard(images: List<String>, title: String, imgVisibility: Boolean) 
 
 
 @Composable
-fun ImageGrid(imageUrls: List<String>,visible:Boolean) {
+fun ImageGrid(imageUrls: List<String>) {
     val context = LocalContext.current
-    var visibility  = visible
+    var visibility  = false
     var url by remember {
         mutableStateOf("")
     }
@@ -199,7 +199,6 @@ fun ImageGrid(imageUrls: List<String>,visible:Boolean) {
                                     if (visibility){
                                         visibility = false
                                     }
-
                                 }
                         )
                     }
