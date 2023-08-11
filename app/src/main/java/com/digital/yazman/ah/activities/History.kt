@@ -11,27 +11,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 
 class History : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
+            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme

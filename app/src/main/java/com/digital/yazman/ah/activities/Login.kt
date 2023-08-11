@@ -22,6 +22,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
@@ -44,20 +48,25 @@ class Login : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
+            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
+            var textColor = Color(0xFF000000)
             var email by remember {
                 mutableStateOf("")
             }
             var password by remember {
                 mutableStateOf("")
             }
-            val context = LocalContext.current
             DigitalYazmanTheme {
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
+                    textColor = Color(0xFFFFFFFF)
                 }
                 Column(
                     modifier = Modifier
@@ -82,7 +91,7 @@ class Login : ComponentActivity() {
                         onValueChange = {
                             email = it
                         },
-                        label = { Text(text = "Email") },
+                        label = { Text(text = "Email", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -90,6 +99,7 @@ class Login : ComponentActivity() {
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
+                            color = textColor,
                         )
                     )
 
@@ -98,7 +108,8 @@ class Login : ComponentActivity() {
                         onValueChange = {
                             password = it
                         },
-                        label = { Text(text = "Password") },
+                        textStyle = TextStyle(color = textColor),
+                        label = { Text(text = "Password", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)

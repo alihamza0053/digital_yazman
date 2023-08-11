@@ -34,14 +34,19 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,6 +67,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -69,6 +75,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import kotlin.time.Duration.Companion.seconds
 
@@ -76,10 +83,19 @@ class menuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val scope = rememberCoroutineScope()
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
-            var textColor = Color(0xFFFFFFFF)
+            dark = darkBool.value
+
+            var lightDark by remember {
+                mutableStateOf(false)
+            }
+            var textColor = Color(0xFF000000)
             var backgroundColor = Color(0xFFADD8E6)
             var name by remember {
                 mutableStateOf("")
@@ -145,8 +161,12 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
-                if(dark){
+                if (dark) {
                     backgroundColor = Color(0xFF14141f)
+                    textColor = Color(0xFFFFFFFF)
+                }else{
+                    backgroundColor = Color(0xFFADD8E6)
+                    textColor = Color(0xFF000000)
                 }
 
                 val images = listOf(
@@ -156,7 +176,6 @@ class menuActivity : ComponentActivity() {
                     "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/4.png?alt=media&token=72d1d394-6aac-4314-b915-18b24005084b",
 
                     )
-                var exit = 0
                 val context = LocalContext.current
                 // topbar start
                 Column(
@@ -168,28 +187,25 @@ class menuActivity : ComponentActivity() {
                         modifier = Modifier
                             .background(Color(0xFF800080))
                             .fillMaxWidth()
-                            .padding(10.dp), verticalAlignment = Alignment.CenterVertically
+                            .padding(start = 5.dp, end = 5.dp), verticalAlignment = Alignment.CenterVertically
 
                     ) {
-                        Image(painter = painterResource(id = R.drawable.back_white),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .width(25.dp)
-                                .height(25.dp)
-                                .clickable {
-                                    if (exit == 0) {
-                                        exit++
-                                        Toast
-                                            .makeText(
-                                                applicationContext,
-                                                "press again to exit",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                            .show()
-                                    } else if (exit > 0) {
-                                        finish()
-                                    }
-                                })
+                        IconToggleButton(checked = dark, onCheckedChange = {
+                            dark = !dark
+                            scope.launch {
+                                dataStore.setDark(dark)
+                            }
+                        }) {
+                            Image(
+                                painter = if (dark) painterResource(id = R.drawable.light_mode) else painterResource(
+                                    id = R.drawable.dark_mode
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .width(30.dp)
+                                    .height(30.dp)
+                            )
+                        }
                         Spacer(
                             modifier = Modifier.weight(1f)
                         )
@@ -258,7 +274,7 @@ class menuActivity : ComponentActivity() {
                                 fontSize = 20,
                                 fontWeight = FontWeight.SemiBold,
                                 dark = dark
-                                )
+                            )
                             Spacer(
                                 modifier = Modifier
                                     .weight(1f)
@@ -672,87 +688,86 @@ class menuActivity : ComponentActivity() {
 }
 
 
-    // image slider start
-    @Composable
-    fun IndicatorDot(
-        modifier: Modifier = Modifier, size: Dp, color: Color
-    ) {
-        Box(
-            modifier = modifier
-                .size(size)
-                .clip(CircleShape)
-                .background(color)
-        )
-    }
-
-
-    @Composable
-    fun DotsIndicator(
-        modifier: Modifier = Modifier,
-        totalDots: Int,
-        selectedIndex: Int,
-        selectedColor: Color = Color(0xFFADD8E6),
-        unSelectedColor: Color = Color.Gray,
-        dotSize: Dp
-    ) {
-        LazyRow(
-            modifier = modifier
-                .wrapContentWidth()
-                .wrapContentHeight()
-        ) {
-            items(totalDots) { index ->
-                IndicatorDot(
-                    color = if (index == selectedIndex) selectedColor else unSelectedColor,
-                    size = dotSize
-                )
-
-                if (index != totalDots - 1) {
-                    Spacer(modifier = Modifier.padding(horizontal = 2.dp))
-                }
-            }
-        }
-    }
-
-
-    @OptIn(ExperimentalPagerApi::class)
-    @Composable
-    fun AutoSlidingCarousel(
-        modifier: Modifier = Modifier,
-        //   autoSlideDuration: Long = AUTO_SLIDE_DURATION,
-        pagerState: PagerState = remember { PagerState() },
-        itemsCount: Int,
-        itemContent: @Composable (index: Int) -> Unit,
-    ) {
-        val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
-
-        LaunchedEffect(pagerState.currentPage) {
-            delay(5.seconds)
-            pagerState.animateScrollToPage((pagerState.currentPage + 1) % itemsCount)
-        }
-
-        Box(
-            modifier = modifier.fillMaxWidth(),
-        ) {
-            HorizontalPager(count = itemsCount, state = pagerState) { page ->
-                itemContent(page)
-            }
-
-            // you can remove the surface in case you don't want
-            // the transparant bacground
-            Surface(
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .align(Alignment.BottomCenter),
-                shape = CircleShape,
-                color = Color.Black.copy(alpha = 0.5f)
-            ) {
-                DotsIndicator(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
-                    totalDots = itemsCount,
-                    selectedIndex = if (isDragged) pagerState.currentPage else pagerState.targetPage,
-                    dotSize = 8.dp
-                )
-            }
-        }
-    }
 // image slider start
+@Composable
+fun IndicatorDot(
+    modifier: Modifier = Modifier, size: Dp, color: Color
+) {
+    Box(
+        modifier = modifier
+            .size(size)
+            .clip(CircleShape)
+            .background(color)
+    )
+}
+
+
+@Composable
+fun DotsIndicator(
+    modifier: Modifier = Modifier,
+    totalDots: Int,
+    selectedIndex: Int,
+    selectedColor: Color = Color(0xFFADD8E6),
+    unSelectedColor: Color = Color.Gray,
+    dotSize: Dp
+) {
+    LazyRow(
+        modifier = modifier
+            .wrapContentWidth()
+            .wrapContentHeight()
+    ) {
+        items(totalDots) { index ->
+            IndicatorDot(
+                color = if (index == selectedIndex) selectedColor else unSelectedColor,
+                size = dotSize
+            )
+
+            if (index != totalDots - 1) {
+                Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun AutoSlidingCarousel(
+    modifier: Modifier = Modifier,
+    //   autoSlideDuration: Long = AUTO_SLIDE_DURATION,
+    pagerState: PagerState = remember { PagerState() },
+    itemsCount: Int,
+    itemContent: @Composable (index: Int) -> Unit,
+) {
+    val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
+
+    LaunchedEffect(pagerState.currentPage) {
+        delay(5.seconds)
+        pagerState.animateScrollToPage((pagerState.currentPage + 1) % itemsCount)
+    }
+
+    Box(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        HorizontalPager(count = itemsCount, state = pagerState) { page ->
+            itemContent(page)
+        }
+
+        // you can remove the surface in case you don't want
+        // the transparant bacground
+        Surface(
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .align(Alignment.BottomCenter),
+            shape = CircleShape,
+            color = Color.Black.copy(alpha = 0.5f)
+        ) {
+            DotsIndicator(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                totalDots = itemsCount,
+                selectedIndex = if (isDragged) pagerState.currentPage else pagerState.targetPage,
+                dotSize = 8.dp
+            )
+        }
+    }
+}

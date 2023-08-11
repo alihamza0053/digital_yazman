@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.nonScaledSp
 
@@ -49,9 +52,13 @@ class FAQs : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
+            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
@@ -95,11 +102,11 @@ fun ExpandableTextCard(title: String, faq: String,dark: Boolean) {
         mutableStateOf(false)
     }
     val rotateState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
-    var cardBackgroundColor = Color(0xFFFFFF)
+    var cardBackgroundColor = Color(0xFFFFFFFF)
     var textColor = Color(0xFF000000)
     if(dark){
         cardBackgroundColor = Color(0xFF282834)
-        var textColor = Color(0xFFFFFFFF)
+        textColor = Color(0xFFFFFFFF)
     }
 
     Card(
@@ -142,6 +149,7 @@ fun ExpandableTextCard(title: String, faq: String,dark: Boolean) {
                     onClick = { expandedState = !expandedState }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
+                        tint = textColor,
                         contentDescription = "drop down arrow"
                     )
 

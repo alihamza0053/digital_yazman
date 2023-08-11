@@ -33,6 +33,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.LoginInfo
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
@@ -63,10 +65,15 @@ class Signup : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
+            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
+            var textColor = Color(0xFF000000)
             val db = Firebase.firestore
             val database = Firebase.database
             val myRef = database.getReference("Signup")
@@ -116,10 +123,10 @@ class Signup : ComponentActivity() {
                 .addOnFailureListener {
                     Toast.makeText(applicationContext, "Check Internet", Toast.LENGTH_SHORT).show()
                 }
-            val context = LocalContext.current
             DigitalYazmanTheme {
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
+                    textColor = Color(0xFFFFFFFF)
                 }
                 Column(
                     modifier = Modifier
@@ -143,7 +150,7 @@ class Signup : ComponentActivity() {
 
                     Card(
                         modifier = Modifier
-                            .border(1.dp, Color.Black)
+                            .border(1.dp, textColor)
                             .padding(17.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
                     ) {
@@ -155,7 +162,7 @@ class Signup : ComponentActivity() {
                             textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .fillMaxWidth(),
-                            dark = dark
+                            dark = dark,
                         )
                     }
                     OutlinedTextField(
@@ -163,7 +170,7 @@ class Signup : ComponentActivity() {
                         onValueChange = {
                             name = it
                         },
-                        label = { Text(text = "Name") },
+                        label = { Text(text = "Name",color = textColor) },
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
@@ -172,6 +179,7 @@ class Signup : ComponentActivity() {
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
+                            color = textColor
                         )
                     )
 
@@ -181,7 +189,7 @@ class Signup : ComponentActivity() {
                         onValueChange = {
                             email = it
                         },
-                        label = { Text(text = "Email") },
+                        label = { Text(text = "Email", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -189,6 +197,7 @@ class Signup : ComponentActivity() {
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
+                            color = textColor
                         )
                     )
 
@@ -197,7 +206,7 @@ class Signup : ComponentActivity() {
                         onValueChange = {
                             address = it
                         },
-                        label = { Text(text = "Address") },
+                        label = { Text(text = "Address", color = textColor) },
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
@@ -206,6 +215,7 @@ class Signup : ComponentActivity() {
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
+                            color = textColor
                         )
                     )
 
@@ -214,7 +224,7 @@ class Signup : ComponentActivity() {
                         onValueChange = {
                             phone = it
                         },
-                        label = { Text(text = "Phone Number") },
+                        label = { Text(text = "Phone Number", color = textColor) },
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
@@ -223,6 +233,7 @@ class Signup : ComponentActivity() {
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
+                            color = textColor
                         )
                     )
 
@@ -232,7 +243,10 @@ class Signup : ComponentActivity() {
                         onValueChange = {
                             password = it
                         },
-                        label = { Text(text = "Password") },
+                        textStyle = TextStyle(
+                            color = textColor
+                        ),
+                        label = { Text(text = "Password", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)

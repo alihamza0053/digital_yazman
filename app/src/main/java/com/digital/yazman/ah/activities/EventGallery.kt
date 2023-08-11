@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 
@@ -59,13 +61,14 @@ class EventGallery : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             var dark by remember {
-                mutableStateOf(true)
-            }
-            var backgroundColor = Color(0xFFADD8E6)
-            var imgVisibility by remember {
                 mutableStateOf(false)
             }
+            dark = darkBool.value
+            var backgroundColor = Color(0xFFADD8E6)
             val images = listOf(
                 "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",
                 "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/2.png?alt=media&token=d70ebc49-265c-4c13-9df6-4d01e56e3a6c",
@@ -96,7 +99,7 @@ class EventGallery : ComponentActivity() {
                     )
                     repeat(20){
 
-                        ExpandableImageCard(images, "Cricket Event", imgVisibility)
+                        ExpandableImageCard(images, "Cricket Event", dark)
                     }
                 }
             }
@@ -106,15 +109,22 @@ class EventGallery : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpandableImageCard(images: List<String>, title: String, imgVisibility: Boolean) {
+fun ExpandableImageCard(images: List<String>, title: String, dark: Boolean) {
+    var cardBackgroundColor = Color(0xFFFFFFFF)
+    var textColor = Color(0xFF000000)
+
     var expandedState by remember {
         mutableStateOf(false)
     }
     val rotateState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
 
+    if(dark){
+        cardBackgroundColor = Color(0xFF282834)
+        textColor = Color(0xFFFFFFFF)
+    }
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFfbf7f5)
+            containerColor = cardBackgroundColor
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -139,6 +149,7 @@ fun ExpandableImageCard(images: List<String>, title: String, imgVisibility: Bool
                     modifier = Modifier.weight(6f),
                     text = title,
                     fontSize = 20.nonScaledSp,
+                    color = textColor,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -151,6 +162,7 @@ fun ExpandableImageCard(images: List<String>, title: String, imgVisibility: Bool
                     onClick = { expandedState = !expandedState }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
+                        tint = textColor,
                         contentDescription = "drop down arrow"
                     )
 

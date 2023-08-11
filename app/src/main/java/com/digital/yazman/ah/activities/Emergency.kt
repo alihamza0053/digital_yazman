@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 
@@ -42,15 +44,22 @@ class Emergency : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var dark by remember {
-                mutableStateOf(true)
-            }
-            var backgroundColor = Color(0xFFADD8E6)
             val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var dark by remember {
+                mutableStateOf(false)
+            }
+            dark = darkBool.value
+            var textColor = Color(0xFF000000)
+            var cardColor = Color(0xFFFFFF)
+            var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
+                    textColor = Color(0xFFFFFFFF)
+                    cardColor = Color(0xFF282834)
                 }
                 Column(
                     modifier = Modifier
@@ -62,7 +71,7 @@ class Emergency : ComponentActivity() {
                 ) {
                     Text(
                         text = "Emergency",
-                        color = Color(0xFF000000),
+                        color = textColor,
                         fontSize = 25.nonScaledSp,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight.SemiBold,
@@ -98,7 +107,7 @@ class Emergency : ComponentActivity() {
                             //first row first card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
@@ -129,7 +138,7 @@ class Emergency : ComponentActivity() {
                             //first row second card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
@@ -174,7 +183,7 @@ class Emergency : ComponentActivity() {
                             //second row first card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
@@ -206,7 +215,7 @@ class Emergency : ComponentActivity() {
                             //second row second card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
@@ -244,7 +253,7 @@ class Emergency : ComponentActivity() {
                             //second row first card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
@@ -276,7 +285,7 @@ class Emergency : ComponentActivity() {
                             //second row second card
                             Card(
                                 elevation = 6.dp,
-                                backgroundColor = Color(0xFFFFFFFF),
+                                backgroundColor = cardColor,
                                 modifier = Modifier
                                     .padding(20.dp)
                                     .weight(1f)
