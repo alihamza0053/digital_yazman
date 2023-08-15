@@ -148,7 +148,7 @@ fun ExpandableImageCard(images: List<String>, title: String, dark: Boolean) {
                 Text(
                     modifier = Modifier.weight(6f),
                     text = title,
-                    fontSize = 20.nonScaledSp,
+                    fontSize = 18.nonScaledSp,
                     color = textColor,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Bold,

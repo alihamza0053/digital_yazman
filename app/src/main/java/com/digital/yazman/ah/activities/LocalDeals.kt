@@ -137,7 +137,7 @@ fun CardItem(
     date: String,
     dark: Boolean
 ) {
-    var cardBackgroundColor = Color(0xFFFFFF)
+    var cardBackgroundColor = Color(0xFFFFFFFF)
     if(dark){
         cardBackgroundColor = Color(0xFF282834)
     }

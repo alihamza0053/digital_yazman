@@ -802,7 +802,7 @@ fun CardColumn(
     }
 
     Card(
-        elevation = 6.dp,
+        elevation = 5.dp,
         shape = RoundedCornerShape(15.dp),
         backgroundColor = cardColor,
         modifier = cardModifier

@@ -1,10 +1,12 @@
 package com.digital.yazman.ah.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,8 +25,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +47,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -118,34 +125,47 @@ class Login : ComponentActivity() {
                     Spacer(
                         modifier = Modifier.padding(2.dp)
                     )
-
                     Button(
                         onClick = {
-                            //Toast.makeText(applicationContext,"hamza",Toast.LENGTH_SHORT).show();
-                            val database = Firebase.database
-                            val myRef = database.getReference("Signup")
-                            myRef.get().addOnSuccessListener {
-                                if(it.exists()){
-                                    it.children.forEach {
-                                        if (it.child("email").value == email && it.child("password").value == password) {
-                                            Toast.makeText(applicationContext, "Login Success ",Toast.LENGTH_SHORT).show()
-                                        }
-
-                                    }
-                                }
-                            }
+                            signInWithEmail(context,email, password)
+//                            //Toast.makeText(applicationContext,"hamza",Toast.LENGTH_SHORT).show();
+//                            val database = Firebase.database
+//                            val myRef = database.getReference("Signup")
+//                            myRef.get().addOnSuccessListener {
+//                                if(it.exists()){
+//                                    it.children.forEach {
+//                                        if (it.child("email").value == email && it.child("password").value == password) {
+//                                            Toast.makeText(applicationContext, "Login Success ",Toast.LENGTH_SHORT).show()
+//                                        }
+//
+//                                    }
+//                                }
+//                            }
                         },
                         shape = RoundedCornerShape(3.dp),
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(Color(0xFF800080))
-                    ) {
+                    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {
                         Text(
                             text = "Login", fontSize = 20.nonScaledSp, color = Color(0xFFFFFFFF),
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -185,3 +205,42 @@ class Login : ComponentActivity() {
 
 
 
+
+
+private fun signUpWithEmail(email: String, password: String) {
+
+    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null && !user.isEmailVerified) {
+                    sendVerificationEmail()
+                }
+            }
+        }
+}
+
+private fun signInWithEmail(context: Context, email: String, password: String) {
+    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = FirebaseAuth.getInstance().currentUser
+                Toast.makeText(context,user?.email.toString(),Toast.LENGTH_SHORT).show()
+                // Handle successful login
+            } else {
+                // Handle login failure
+            }
+        }
+}
+
+private fun sendVerificationEmail() {
+    val user = FirebaseAuth.getInstance().currentUser
+    user?.sendEmailVerification()
+        ?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Email sent
+            } else {
+                // Email not sent
+            }
+        }
+}

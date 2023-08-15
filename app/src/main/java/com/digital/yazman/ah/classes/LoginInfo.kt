@@ -6,7 +6,6 @@ data class LoginInfo(
     val address: String,
     val phone: String,
     val email: String,
-    val password: String,
     val notify: String,
     val verify: Int
 )

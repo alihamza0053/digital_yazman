@@ -57,6 +57,7 @@ import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.LoginInfo
 import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -259,6 +260,7 @@ class Signup : ComponentActivity() {
 
                     Button(
                         onClick = {
+                            signUpWithEmail(email,password)
                             dialog = true
                             enable = false
                             val data = LoginInfo(
@@ -267,7 +269,6 @@ class Signup : ComponentActivity() {
                                 address.trim(),
                                 phone.trim(),
                                 email.trim(),
-                                password.trim(),
                                 notify.trim(),
                                 verify
                             )
@@ -386,4 +387,28 @@ fun LoadingView(
             )
         }
     }
+}
+
+private fun sendVerificationEmail() {
+    val user = FirebaseAuth.getInstance().currentUser
+    user?.sendEmailVerification()
+        ?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Email sent
+            } else {
+                // Email not sent
+            }
+        }
+}
+private fun signUpWithEmail(email: String, password: String) {
+
+    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null && !user.isEmailVerified) {
+                    sendVerificationEmail()
+                }
+            }
+        }
 }

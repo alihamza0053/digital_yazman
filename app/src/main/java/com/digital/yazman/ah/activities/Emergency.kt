@@ -52,7 +52,7 @@ class Emergency : ComponentActivity() {
             }
             dark = darkBool.value
             var textColor = Color(0xFF000000)
-            var cardColor = Color(0xFFFFFF)
+            var cardColor = Color(0xFFFFFFFF)
             var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme

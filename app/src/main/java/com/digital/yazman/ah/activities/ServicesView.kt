@@ -145,7 +145,7 @@ fun ServicesCard(
     modifier: Modifier,
 
     ) {
-    var cardBackgroundColor = Color(0xFFFFFF)
+    var cardBackgroundColor = Color(0xFFFFFFFF)
     if(dark){
         cardBackgroundColor = Color(0xFF282834)
     }
