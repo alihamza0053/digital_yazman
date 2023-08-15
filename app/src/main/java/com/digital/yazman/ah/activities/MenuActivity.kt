@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -74,11 +75,13 @@ import coil.request.ImageRequest
 import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,9 +93,12 @@ class menuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val firebaseAuth = FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
             val scope = rememberCoroutineScope()
-            val dataStore = StoreLightDarkData(context)
+            val dataStoreDark = StoreLightDarkData(context)
+            val dataStoreUser = UserInfo(context)
             val darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
@@ -103,9 +109,8 @@ class menuActivity : ComponentActivity() {
             }
             var textColor = Color(0xFF000000)
             var backgroundColor = Color(0xFFADD8E6)
-            var name by remember {
-                mutableStateOf("")
-            }
+            var name = dataStoreUser.getName.collectAsState(initial = "DY-Guest")
+            var verify = dataStoreUser.getVerify.collectAsState(initial = "0").value
             var imgVerify by remember {
                 mutableStateOf(R.drawable.user_unverified)
             }
@@ -122,6 +127,7 @@ class menuActivity : ComponentActivity() {
             var badgeColor = Color.Transparent
 
             val db = FirebaseFirestore.getInstance()
+
 
             var notifiCheck = 0
             var ids by remember {
@@ -141,18 +147,23 @@ class menuActivity : ComponentActivity() {
                             .toString() == "alihamza00053@gmail.com"
                     ) {
                         userNotify = document.get("notify").toString()
-                        name = document.get("name").toString()
-                        if (document.get("verify").toString() == "2") {
-                            imgVerify = R.drawable.admin_king
-                        }
-                        if (document.get("verify").toString() == "1") {
-                            imgVerify = R.drawable.user_verify
-                        }
-                        login = "Log out"
-                        Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
-                            .show()
+//                        name = document.get("name").toString()
+
                     }
                 }
+            }
+
+            if (verify == "2") {
+                imgVerify = R.drawable.admin_king
+            }
+            if (verify == "1") {
+                imgVerify = R.drawable.user_verify
+            }
+
+            if (currentUser != null) {
+                login = "Log out"
+                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
+                    .show()
             }
 
 
@@ -167,6 +178,9 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
+                BackHandler(enabled = true, onBack = {
+                    finish()
+                })
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
                     textColor = Color(0xFFFFFFFF)
@@ -202,7 +216,7 @@ class menuActivity : ComponentActivity() {
                             onCheckedChange = {
                                 dark = !dark
                                 scope.launch {
-                                    dataStore.setDark(dark)
+                                    dataStoreDark.setDark(dark)
                                 }
                             },
 
@@ -232,7 +246,7 @@ class menuActivity : ComponentActivity() {
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = name,
+                            text = name.value,
                             fontSize = 20.nonScaledSp,
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
@@ -273,11 +287,15 @@ class menuActivity : ComponentActivity() {
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFFFFF),
                             modifier = Modifier.clickable {
+                                if (currentUser != null) {
+                                    firebaseAuth.signOut()
+                                }
                                 context.startActivity(
                                     Intent(
                                         context, Login::class.java
                                     ).putExtra("dark", dark)
                                 )
+                                finish()
                             })
                     }
 

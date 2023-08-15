@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -56,6 +57,7 @@ import androidx.compose.ui.text.font.FontFamily
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.LoginInfo
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
@@ -71,6 +73,8 @@ class Signup : ComponentActivity() {
             var dark by remember {
                 mutableStateOf(darkValue)
             }
+            BackHandler(enabled = true, onBack = {
+            })
             var backgroundColor = Color(0xFFADD8E6)
             var textColor = Color(0xFF000000)
             val db = Firebase.firestore
@@ -290,8 +294,10 @@ class Signup : ComponentActivity() {
                                             Toast.LENGTH_SHORT
                                         )
                                             .show()
-                                        context.startActivity(Intent(context, Login::class.java))
+                                        context.startActivity(Intent(context, Login::class.java).putExtra("dark",dark))
                                         finish()
+                                    }.addOnFailureListener {
+                                        enable = true
                                     }
                             } else {
                                 dialog = false
@@ -301,7 +307,6 @@ class Signup : ComponentActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            enable = true
                         },
                         shape = RoundedCornerShape(3.dp),
                         modifier = Modifier.fillMaxWidth(),
@@ -336,11 +341,12 @@ class Signup : ComponentActivity() {
                         Text(
                             text = "Login",
                             color = Color(0xFF800080),
+                            fontSize = 17.nonScaledSp,
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .clickable {
-                                    startActivity(Intent(context, Login::class.java))
+                                    startActivity(Intent(context, Login::class.java).putExtra("dark",dark))
                                     finish()
                                 }
                         )
@@ -352,6 +358,30 @@ class Signup : ComponentActivity() {
 }
 
 
+
+private fun sendVerificationEmail() {
+    val user = FirebaseAuth.getInstance().currentUser
+    user?.sendEmailVerification()
+        ?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Email sent
+            } else {
+                // Email not sent
+            }
+        }
+}
+private fun signUpWithEmail(email: String, password: String) {
+
+    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null && !user.isEmailVerified) {
+                    sendVerificationEmail()
+                }
+            }
+        }
+}
 
 @Composable
 fun LoadingView(
@@ -385,28 +415,4 @@ fun LoadingView(
             )
         }
     }
-}
-
-private fun sendVerificationEmail() {
-    val user = FirebaseAuth.getInstance().currentUser
-    user?.sendEmailVerification()
-        ?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Email sent
-            } else {
-                // Email not sent
-            }
-        }
-}
-private fun signUpWithEmail(email: String, password: String) {
-
-    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = FirebaseAuth.getInstance().currentUser
-                if (user != null && !user.isEmailVerified) {
-                    sendVerificationEmail()
-                }
-            }
-        }
 }

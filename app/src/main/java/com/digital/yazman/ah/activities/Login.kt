@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
@@ -40,34 +41,58 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class Login : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            val firebaseAuth = FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
+            BackHandler(enabled = true, onBack = {
+                finish()
+            })
             var backgroundColor = Color(0xFFADD8E6)
             var textColor = Color(0xFF000000)
             var email by remember {
                 mutableStateOf("")
             }
+            var enable by remember {
+                mutableStateOf(true)
+            }
+
+            var dialog by remember {
+                mutableStateOf(false)
+            }
             var password by remember {
                 mutableStateOf("")
             }
+            var name by remember {
+                mutableStateOf("")
+            }
+            val scope = rememberCoroutineScope()
+            val dataStoreUser = UserInfo(context)
+            val db = FirebaseFirestore.getInstance()
+
             DigitalYazmanTheme {
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
@@ -123,9 +148,58 @@ class Login : ComponentActivity() {
                     Spacer(
                         modifier = Modifier.padding(2.dp)
                     )
+
+                    LoadingView(modifier = Modifier.padding(16.dp), dialog)
                     Button(
                         onClick = {
-                            signInWithEmail(context,email, password)
+                            dialog = true
+                            enable = false
+                            if (email != "" && password != "") {
+                                db.collection("Users").get().addOnSuccessListener { result ->
+                                    for (document in result) {
+                                        if (document.get("email") == email) {
+                                            scope.launch {
+                                                dataStoreUser.setId(document.get("id").toString())
+                                                dataStoreUser.setName(
+                                                    document.get("name").toString()
+                                                )
+                                                name = document.get("name").toString()
+                                                Toast.makeText(
+                                                    context,
+                                                    name,
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                dataStoreUser.setEmail(
+                                                    document.get("email").toString()
+                                                )
+                                                dataStoreUser.setAddress(
+                                                    document.get("address").toString()
+                                                )
+                                                dataStoreUser.setPhone(
+                                                    document.get("phone").toString()
+                                                )
+                                                dataStoreUser.setNotify(
+                                                    document.get("notify").toString()
+                                                )
+                                                dataStoreUser.setVerify(
+                                                    document.get("verify").toString()
+                                                )
+                                                if (name != "") {
+                                                    signInWithEmail(context, email, password, dark)
+                                                } else {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Fields Empty",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+
 //                            //Toast.makeText(applicationContext,"hamza",Toast.LENGTH_SHORT).show();
 //                            val database = Firebase.database
 //                            val myRef = database.getReference("Signup")
@@ -140,30 +214,26 @@ class Login : ComponentActivity() {
 //                                }
 //                            }
                         },
+                        enabled = enable,
                         shape = RoundedCornerShape(3.dp),
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(Color(0xFF800080))
                     )
-
-
-
-
-
-
-
-
-
-
-
-
-
                     {
                         Text(
-                            text = "Login", fontSize = 20.nonScaledSp, color = Color(0xFFFFFFFF),
+                            text = "Login",
+                            fontSize = 20.nonScaledSp,
+                            color = Color(0xFFFFFFFF),
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
+
+
+
+
+
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -184,11 +254,17 @@ class Login : ComponentActivity() {
                         Text(
                             text = "Sign Up",
                             color = Color(0xFF800080),
+                            fontSize = 17.nonScaledSp,
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .clickable {
-                                    startActivity(Intent(context, Signup::class.java).putExtra("dark",dark))
+                                    startActivity(
+                                        Intent(
+                                            context,
+                                            Signup::class.java
+                                        ).putExtra("dark", dark)
+                                    )
                                     finish()
                                 }
                         )
@@ -202,30 +278,29 @@ class Login : ComponentActivity() {
 }
 
 
-
-
-
-private fun signUpWithEmail(email: String, password: String) {
-
-    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = FirebaseAuth.getInstance().currentUser
-                if (user != null && !user.isEmailVerified) {
-                    sendVerificationEmail()
-                }
-            }
-        }
-}
-
-private fun signInWithEmail(context: Context, email: String, password: String) {
+private fun signInWithEmail(context: Context, email: String, password: String, dark: Boolean) {
     FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
+
                 val user = FirebaseAuth.getInstance().currentUser
-                Toast.makeText(context,user?.email.toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, user?.email.toString(), Toast.LENGTH_SHORT).show()
+
+                context.startActivity(
+                    Intent(context, menuActivity::class.java).putExtra(
+                        "dark",
+                        dark
+                    )
+                )
+
                 // Handle successful login
             } else {
+                Toast.makeText(
+                    context,
+                    "Failed to Login ${error(task.result)}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
                 // Handle login failure
             }
         }
@@ -242,3 +317,5 @@ private fun sendVerificationEmail() {
             }
         }
 }
+
+

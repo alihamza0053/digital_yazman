@@ -3,6 +3,7 @@ package com.digital.yazman.ah
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -22,20 +23,61 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import androidx.datastore.dataStore
+import com.digital.yazman.ah.activities.Login
 import com.digital.yazman.ah.activities.menuActivity
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val firebaseAuth = FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var intent = Intent(context, Login::class.java)
+            val dataStoreDark = StoreLightDarkData(context)
+            val darkBool = dataStoreDark.getDark.collectAsState(initial = false)
+
+            val scope = rememberCoroutineScope()
+            val dataStoreUser = UserInfo(context)
+            val email = dataStoreUser.getEmail.collectAsState(initial = "").value
+            val db = FirebaseFirestore.getInstance()
+
+            var name by remember {
+                mutableStateOf("")
+            }
             DigitalYazmanTheme {
+                if (currentUser != null) {
+                    db.collection("Users").get().addOnSuccessListener { result ->
+                        for (document in result) {
+                            if (document.get("email") == email) {
+                                scope.launch {
+                                    dataStoreUser.setId(document.get("id").toString())
+                                    dataStoreUser.setName(document.get("name").toString())
+                                    dataStoreUser.setAddress(
+                                        document.get("address").toString()
+                                    )
+                                    dataStoreUser.setPhone(document.get("phone").toString())
+                                    dataStoreUser.setNotify(
+                                        document.get("notify").toString()
+                                    )
+                                    dataStoreUser.setVerify(
+                                        document.get("verify").toString()
+                                    )
+                                }
+
+                            }
+                        }
+                    }
+                }
+
                 val fontFamily = FontFamily(
                     Font(R.font.lexend_black, FontWeight.Bold),
                     Font(R.font.lexend_bold, FontWeight.Bold),
@@ -147,12 +189,18 @@ class MainActivity : ComponentActivity() {
                 }
 
 
+
+                if (currentUser != null) {
+                    intent = Intent(context, menuActivity::class.java)
+                } else {
+                    intent = Intent(context, Login::class.java)
+                }
                 // delay to next activity
                 val activity = LocalContext.current as Activity
                 LaunchedEffect(Unit) {
                     delay(2.seconds)
-                    val intent = Intent(context,menuActivity::class.java)
-                    intent.putExtra("dark",darkBool.value)
+
+                    intent.putExtra("dark", darkBool.value)
                     startActivity(intent)
                     finish()
                 }
@@ -160,16 +208,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-//
-//@Preview(
-//    showBackground = true, showSystemUi = true
-//)
-//@Composable
-//fun DefaultPreview() {
-//    DigitalYazmanTheme {
-//        Greeting("Android")
-//    }
-//}
+
+
 val Int.nonScaledSp
     @Composable
     get() = (this / LocalDensity.current.fontScale).sp

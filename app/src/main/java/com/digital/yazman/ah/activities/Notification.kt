@@ -1,6 +1,5 @@
 package com.digital.yazman.ah.activities
 
-import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -46,7 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
-import com.digital.yazman.ah.activities.ui.theme.DigitalYazmanTheme
+import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.classes.NotificationClass
 import com.digital.yazman.ah.classes.ServicesClass
