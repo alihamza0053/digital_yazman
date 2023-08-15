@@ -55,12 +55,10 @@ class ServicesView : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var darkValue = getIntent().getBooleanExtra("dark",false)
             var dark by remember {
-                mutableStateOf(false)
+                mutableStateOf(darkValue)
             }
-            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             val servicesName = intent.getStringExtra("services")
             val db = FirebaseFirestore.getInstance()

@@ -1,10 +1,16 @@
 package com.digital.yazman.ah.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,17 +86,17 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 class menuActivity : ComponentActivity() {
+    @SuppressLint("UnusedTransitionTargetStateParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
             val scope = rememberCoroutineScope()
             val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            val darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
-                mutableStateOf(false)
+                mutableStateOf(darkValue)
             }
-            dark = darkBool.value
 
             var lightDark by remember {
                 mutableStateOf(false)
@@ -164,7 +170,7 @@ class menuActivity : ComponentActivity() {
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
                     textColor = Color(0xFFFFFFFF)
-                }else{
+                } else {
                     backgroundColor = Color(0xFFADD8E6)
                     textColor = Color(0xFF000000)
                 }
@@ -187,23 +193,39 @@ class menuActivity : ComponentActivity() {
                         modifier = Modifier
                             .background(Color(0xFF800080))
                             .fillMaxWidth()
-                            .padding(start = 5.dp, end = 5.dp), verticalAlignment = Alignment.CenterVertically
+                            .padding(start = 5.dp, end = 5.dp),
+                        verticalAlignment = Alignment.CenterVertically
 
                     ) {
-                        IconToggleButton(checked = dark, onCheckedChange = {
-                            dark = !dark
-                            scope.launch {
-                                dataStore.setDark(dark)
+                        IconToggleButton(
+                            checked = dark,
+                            onCheckedChange = {
+                                dark = !dark
+                                scope.launch {
+                                    dataStore.setDark(dark)
+                                }
+                            },
+
+                            ) {
+                            val transition = updateTransition(targetState = dark)
+                            val changeImgSize by transition.animateDp(
+                                transitionSpec = {
+                                    keyframes {
+                                        durationMillis = 200
+                                        40.dp at 0 with LinearOutSlowInEasing
+                                        40.dp at 40 with FastOutLinearInEasing
+                                    }
+                                }, label = ""
+                            ) {
+                                30.dp
                             }
-                        }) {
                             Image(
                                 painter = if (dark) painterResource(id = R.drawable.light_mode) else painterResource(
                                     id = R.drawable.dark_mode
                                 ),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .width(30.dp)
-                                    .height(30.dp)
+                                    .size(changeImgSize)
                             )
                         }
                         Spacer(
@@ -219,7 +241,10 @@ class menuActivity : ComponentActivity() {
                                 .clickable {
                                     if (imgVerify === R.drawable.admin_king) {
                                         context.startActivity(
-                                            Intent(context, Admin::class.java)
+                                            Intent(context, Admin::class.java).putExtra(
+                                                "dark",
+                                                dark
+                                            )
                                         )
                                         finish()
                                     } else {
@@ -251,7 +276,7 @@ class menuActivity : ComponentActivity() {
                                 context.startActivity(
                                     Intent(
                                         context, Login::class.java
-                                    )
+                                    ).putExtra("dark", dark)
                                 )
                             })
                     }
@@ -323,6 +348,7 @@ class menuActivity : ComponentActivity() {
                                             val intent =
                                                 Intent(this@menuActivity, Notification::class.java)
                                             intent.putExtra("notification", badgeNumber)
+                                            intent.putExtra("dark", dark)
                                             startActivity(intent)
                                         }
                                 )
@@ -376,7 +402,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Businesses::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -402,7 +428,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Emergency::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -426,7 +452,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, History::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -458,7 +484,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, LocalDeals::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -483,7 +509,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, LocalNews::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -507,7 +533,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Opportunities::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -539,7 +565,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Services::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -563,7 +589,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Transport::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -587,7 +613,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, EventGallery::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -621,7 +647,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, FAQs::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier
@@ -645,7 +671,7 @@ class menuActivity : ComponentActivity() {
                                         context.startActivity(
                                             Intent(
                                                 context, Contact::class.java
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                     },
                                 imageModifier = Modifier

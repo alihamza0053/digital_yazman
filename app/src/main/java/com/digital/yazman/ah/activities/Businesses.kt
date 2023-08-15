@@ -48,12 +48,9 @@ class Businesses : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
-            var dark by remember {
-                mutableStateOf(false)
-            }
-            dark = darkBool.value
+            val darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark = darkValue
+
             var backgroundColor = Color(0xFFADD8E6)
             DigitalYazmanTheme {
                 if (dark) {
@@ -98,7 +95,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Agriculture")
+                                    intent.putExtra("business", "Agriculture").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -122,7 +119,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Aluminium")
+                                    intent.putExtra("business", "Aluminium").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -146,7 +143,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Automobile")
+                                    intent.putExtra("business", "Automobile").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -178,7 +175,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Banks")
+                                    intent.putExtra("business", "Banks").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -202,7 +199,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Books")
+                                    intent.putExtra("business", "Books").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -226,7 +223,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Clothing")
+                                    intent.putExtra("business", "Clothing").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -259,7 +256,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Computers")
+                                    intent.putExtra("business", "Computers").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -283,7 +280,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Education")
+                                    intent.putExtra("business", "Education").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -307,7 +304,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Electric")
+                                    intent.putExtra("business", "Electric").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -339,7 +336,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Footwear")
+                                    intent.putExtra("business", "Footwear").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -363,7 +360,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Fresh Meat")
+                                    intent.putExtra("business", "Fresh Meat").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -387,7 +384,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Grain Market")
+                                    intent.putExtra("business", "Grain Market").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -420,7 +417,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Grocery")
+                                    intent.putExtra("business", "Grocery").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -444,7 +441,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Jewelry")
+                                    intent.putExtra("business", "Jewelry").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -468,7 +465,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Machine Work")
+                                    intent.putExtra("business", "Machine Work").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -500,7 +497,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Marble")
+                                    intent.putExtra("business", "Marble").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -524,7 +521,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Marriage Hall")
+                                    intent.putExtra("business", "Marriage Hall").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -548,7 +545,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Mobile Accessories")
+                                    intent.putExtra("business", "Mobile Accessories").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -581,7 +578,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Petroleum")
+                                    intent.putExtra("business", "Petroleum").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -605,7 +602,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Photo & Copy Shop")
+                                    intent.putExtra("business", "Photo & Copy Shop").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -629,7 +626,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Property Dealer")
+                                    intent.putExtra("business", "Property Dealer").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -662,7 +659,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Restaurants")
+                                    intent.putExtra("business", "Restaurants").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -686,7 +683,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Steel & Iron")
+                                    intent.putExtra("business", "Steel & Iron").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -710,7 +707,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Sweets")
+                                    intent.putExtra("business", "Sweets").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -742,7 +739,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Tehsil Office")
+                                    intent.putExtra("business", "Tehsil Office").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -766,7 +763,7 @@ class Businesses : ComponentActivity() {
                                 .clickable {
                                     val intent =
                                         Intent(this@Businesses, BusinessesViews::class.java)
-                                    intent.putExtra("business", "Wood Work")
+                                    intent.putExtra("business", "Wood Work").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier

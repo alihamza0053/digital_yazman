@@ -40,12 +40,10 @@ class Services : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var darkValue = getIntent().getBooleanExtra("dark",false)
             var dark by remember {
-                mutableStateOf(false)
+                mutableStateOf(darkValue)
             }
-            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             var textColor = Color(0xFF000000)
             DigitalYazmanTheme {
@@ -92,7 +90,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "TV Cable")
+                                    intent.putExtra("services", "TV Cable").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -115,7 +113,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Car Mechanics")
+                                    intent.putExtra("services", "Car Mechanics").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -138,7 +136,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Catering")
+                                    intent.putExtra("services", "Catering").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -168,7 +166,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Computer Repair")
+                                    intent.putExtra("services", "Computer Repair").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -191,7 +189,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Electricians")
+                                    intent.putExtra("services", "Electricians").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -214,7 +212,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Handyman")
+                                    intent.putExtra("services", "Handyman").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -244,7 +242,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Home Cleaners")
+                                    intent.putExtra("services", "Home Cleaners").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -267,7 +265,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Home Security")
+                                    intent.putExtra("services", "Home Security").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -290,7 +288,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "HVACR")
+                                    intent.putExtra("services", "HVACR").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -320,7 +318,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Internet")
+                                    intent.putExtra("services", "Internet").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -343,7 +341,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Movers")
+                                    intent.putExtra("services", "Movers").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -366,7 +364,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Painters")
+                                    intent.putExtra("services", "Painters").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -396,7 +394,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Pet Service")
+                                    intent.putExtra("services", "Pet Service").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -419,7 +417,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Photograph")
+                                    intent.putExtra("services", "Photograph").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier
@@ -442,7 +440,7 @@ class Services : ComponentActivity() {
                                 .width(90.dp)
                                 .clickable {
                                     val intent = Intent(this@Services, ServicesView::class.java)
-                                    intent.putExtra("services", "Plumbers")
+                                    intent.putExtra("services", "Plumbers").putExtra("dark",dark)
                                     startActivity(intent)
                                 },
                             imageModifier = Modifier

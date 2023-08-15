@@ -18,13 +18,13 @@ class StoreLightDarkData(private val context: Context) {
         val DARK = booleanPreferencesKey("DARK")
     }
 
-    // to get name
+    // to get dark
     val getDark:Flow<Boolean> = context.dataStore.data
         .map { preferences ->
             preferences[DARK]?: false
         }
 
-    // to save the name
+    // to save the dark
     suspend fun setDark(dark:Boolean){
         context.dataStore.edit {preferences->
             preferences[DARK] = dark

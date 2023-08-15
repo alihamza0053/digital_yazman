@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import androidx.datastore.dataStore
 import com.digital.yazman.ah.activities.menuActivity
+import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
@@ -30,8 +32,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val dataStore = StoreLightDarkData(context)
+            val darkBool = dataStore.getDark.collectAsState(initial = false)
             DigitalYazmanTheme {
-
                 val fontFamily = FontFamily(
                     Font(R.font.lexend_black, FontWeight.Bold),
                     Font(R.font.lexend_bold, FontWeight.Bold),
@@ -42,7 +46,6 @@ class MainActivity : ComponentActivity() {
                     Font(R.font.lexend_regular, FontWeight.Normal),
                     Font(R.font.lexend_semibold, FontWeight.SemiBold),
                     Font(R.font.lexend_thin, FontWeight.Thin),
-
 
                     )
                 // splash screen
@@ -145,12 +148,13 @@ class MainActivity : ComponentActivity() {
 
 
                 // delay to next activity
-                val context = LocalContext.current
                 val activity = LocalContext.current as Activity
                 LaunchedEffect(Unit) {
                     delay(2.seconds)
-                    context.startActivity(Intent(context, menuActivity::class.java))
-                    activity.finish()
+                    val intent = Intent(context,menuActivity::class.java)
+                    intent.putExtra("dark",darkBool.value)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }

@@ -62,12 +62,10 @@ class EventGallery : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var darkValue = getIntent().getBooleanExtra("dark",false)
             var dark by remember {
-                mutableStateOf(false)
+                mutableStateOf(darkValue)
             }
-            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             val images = listOf(
                 "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",

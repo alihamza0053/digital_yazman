@@ -56,12 +56,10 @@ class Login : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val dataStore = StoreLightDarkData(context)
-            val darkBool = dataStore.getDark.collectAsState(initial = false)
+            var darkValue = getIntent().getBooleanExtra("dark",false)
             var dark by remember {
-                mutableStateOf(false)
+                mutableStateOf(darkValue)
             }
-            dark = darkBool.value
             var backgroundColor = Color(0xFFADD8E6)
             var textColor = Color(0xFF000000)
             var email by remember {
@@ -190,7 +188,7 @@ class Login : ComponentActivity() {
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .clickable {
-                                    startActivity(Intent(context, Signup::class.java))
+                                    startActivity(Intent(context, Signup::class.java).putExtra("dark",dark))
                                     finish()
                                 }
                         )
