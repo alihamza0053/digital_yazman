@@ -69,7 +69,7 @@ class Signup : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -87,11 +87,20 @@ class Signup : ComponentActivity() {
             var name by remember {
                 mutableStateOf("")
             }
+            var nameError by remember {
+                mutableStateOf(false)
+            }
             var email by remember {
                 mutableStateOf("")
             }
+            var emailError by remember {
+                mutableStateOf(false)
+            }
             var password by remember {
                 mutableStateOf("")
+            }
+            var passwordError by remember {
+                mutableStateOf(false)
             }
             var enable by remember {
                 mutableStateOf(true)
@@ -99,8 +108,14 @@ class Signup : ComponentActivity() {
             var address by remember {
                 mutableStateOf("")
             }
+            var addressError by remember {
+                mutableStateOf(false)
+            }
             var phone by remember {
                 mutableStateOf("")
+            }
+            var phoneError by remember {
+                mutableStateOf(false)
             }
             var notify by remember {
                 mutableStateOf("0")
@@ -116,8 +131,9 @@ class Signup : ComponentActivity() {
             var ids = 0
             db.collection("Users").get().addOnSuccessListener { results ->
                 for (document in results) {
-                    ids = document.get("id").toString().subSequence(3, document.get("id").toString().length).toString().toInt()
-                    if(nameCheck <= ids ){
+                    ids = document.get("id").toString()
+                        .subSequence(3, document.get("id").toString().length).toString().toInt()
+                    if (nameCheck <= ids) {
                         nameCheck = ids + 1
                         id = "DYU0" + nameCheck.toString()
                     }
@@ -172,8 +188,9 @@ class Signup : ComponentActivity() {
                         value = name,
                         onValueChange = {
                             name = it
+                            nameError = name.length > 10 || name.length < 3
                         },
-                        label = { Text(text = "Name",color = textColor) },
+                        label = { Text(text = "Name", color = textColor) },
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
@@ -185,12 +202,19 @@ class Signup : ComponentActivity() {
                             color = textColor
                         )
                     )
+                    if (nameError) {
+                        Text(
+                            text = "Min 3, Max 10",
+                            color = MaterialTheme.colors.error
+                        )
+                    }
 
 
                     OutlinedTextField(
                         value = email,
                         onValueChange = {
                             email = it
+                            emailError = !email.contains("@gmail.com")
                         },
                         label = { Text(text = "Email", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
@@ -204,10 +228,18 @@ class Signup : ComponentActivity() {
                         )
                     )
 
+                    if (emailError) {
+                        Text(
+                            text = "Email must contain @gmail.com",
+                            color = MaterialTheme.colors.error
+                        )
+                    }
+
                     OutlinedTextField(
                         value = address,
                         onValueChange = {
                             address = it
+                            addressError = address.length < 0
                         },
                         label = { Text(text = "Address", color = textColor) },
                         modifier = Modifier
@@ -222,10 +254,18 @@ class Signup : ComponentActivity() {
                         )
                     )
 
+                    if (addressError) {
+                        Text(
+                            text = "There is no address!",
+                            color = MaterialTheme.colors.error
+                        )
+                    }
+
                     OutlinedTextField(
                         value = phone,
                         onValueChange = {
                             phone = it
+                            phoneError = phone.length < 11 || phone.length > 11 || !phone.contains("03")
                         },
                         label = { Text(text = "Phone Number", color = textColor) },
                         modifier = Modifier
@@ -239,12 +279,19 @@ class Signup : ComponentActivity() {
                             color = textColor
                         )
                     )
+                    if (phoneError) {
+                        Text(
+                            text = "Complete Number: 03XXXXXXXXX",
+                            color = MaterialTheme.colors.error
+                        )
+                    }
 
 
                     OutlinedTextField(
                         value = password,
                         onValueChange = {
                             password = it
+                            passwordError = password.length < 8
                         },
                         textStyle = TextStyle(
                             color = textColor
@@ -254,6 +301,10 @@ class Signup : ComponentActivity() {
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
+                    if (passwordError) {
+                        Text(text = "Minimum 8 characters", color = MaterialTheme.colors.error)
+                    }
+
 
 
                     Spacer(
@@ -262,7 +313,7 @@ class Signup : ComponentActivity() {
 
                     Button(
                         onClick = {
-                            signUpWithEmail(email,password)
+
                             dialog = true
                             enable = false
                             val data = LoginInfo(
@@ -282,7 +333,8 @@ class Signup : ComponentActivity() {
                                     }
                                 }
                             }
-                            if (name != "" && email != "" && address != "" && phone != "" && password != "") {
+                            if (!nameError && !emailError && !addressError && !phoneError && !passwordError) {
+                                signUpWithEmail(email, password)
                                 Toast.makeText(applicationContext, emailCheck, Toast.LENGTH_SHORT)
                                     .show()
                                 db.collection("Users").document(id).set(data)
@@ -294,7 +346,12 @@ class Signup : ComponentActivity() {
                                             Toast.LENGTH_SHORT
                                         )
                                             .show()
-                                        context.startActivity(Intent(context, Login::class.java).putExtra("dark",dark))
+                                        context.startActivity(
+                                            Intent(
+                                                context,
+                                                Login::class.java
+                                            ).putExtra("dark", dark)
+                                        )
                                         finish()
                                     }.addOnFailureListener {
                                         enable = true
@@ -322,6 +379,8 @@ class Signup : ComponentActivity() {
 
                     LoadingView(modifier = Modifier.padding(16.dp), dialog)
                     Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 10.dp)
@@ -338,25 +397,34 @@ class Signup : ComponentActivity() {
                                 .weight(1f)
                         )
 
-                        Text(
-                            text = "Login",
-                            color = Color(0xFF800080),
-                            fontSize = 17.nonScaledSp,
-                            fontFamily = fontFamily,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .clickable {
-                                    startActivity(Intent(context, Login::class.java).putExtra("dark",dark))
-                                    finish()
-                                }
-                        )
+                        Button(
+                            onClick = {
+                                startActivity(
+                                    Intent(
+                                        context,
+                                        Login::class.java
+                                    ).putExtra("dark", dark)
+                                )
+                                finish()
+                            },
+                            enabled = enable,
+                            colors = ButtonDefaults.buttonColors(Color.Transparent)
+                        ) {
+
+                            Text(
+                                text = "Login",
+                                color = Color(0xFF800080),
+                                fontSize = 17.nonScaledSp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-
 
 
 private fun sendVerificationEmail() {
@@ -370,6 +438,7 @@ private fun sendVerificationEmail() {
             }
         }
 }
+
 private fun signUpWithEmail(email: String, password: String) {
 
     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)

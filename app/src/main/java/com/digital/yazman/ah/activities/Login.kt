@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -76,6 +77,9 @@ class Login : ComponentActivity() {
             var email by remember {
                 mutableStateOf("")
             }
+            var emailError by remember {
+                mutableStateOf(false)
+            }
             var enable by remember {
                 mutableStateOf(true)
             }
@@ -85,6 +89,9 @@ class Login : ComponentActivity() {
             }
             var password by remember {
                 mutableStateOf("")
+            }
+            var passwordError by remember {
+                mutableStateOf(false)
             }
             var name by remember {
                 mutableStateOf("")
@@ -120,6 +127,8 @@ class Login : ComponentActivity() {
                         value = email,
                         onValueChange = {
                             email = it
+                            emailError = !email.contains("@gmail.com")
+
                         },
                         label = { Text(text = "Email", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
@@ -132,11 +141,18 @@ class Login : ComponentActivity() {
                             color = textColor,
                         )
                     )
+                    if (emailError) {
+                        Text(
+                            text = "Email must contain @gmail.com",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
 
                     OutlinedTextField(
                         value = password,
                         onValueChange = {
                             password = it
+                            passwordError = password.length < 8
                         },
                         textStyle = TextStyle(color = textColor),
                         label = { Text(text = "Password", color = textColor) },
@@ -144,6 +160,9 @@ class Login : ComponentActivity() {
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
+                    if (passwordError) {
+                        Text(text = "Minimum 8 characters", color = MaterialTheme.colorScheme.error)
+                    }
 
                     Spacer(
                         modifier = Modifier.padding(2.dp)
@@ -154,7 +173,7 @@ class Login : ComponentActivity() {
                         onClick = {
                             dialog = true
                             enable = false
-                            if (email != "" && password != "") {
+                            if (!emailError && !passwordError) {
                                 db.collection("Users").get().addOnSuccessListener { result ->
                                     for (document in result) {
                                         if (document.get("email") == email) {
@@ -185,11 +204,49 @@ class Login : ComponentActivity() {
                                                     document.get("verify").toString()
                                                 )
                                                 if (name != "") {
-                                                    signInWithEmail(context, email, password, dark)
+
+                                                    //signIn with email and password
+                                                    FirebaseAuth.getInstance()
+                                                        .signInWithEmailAndPassword(email, password)
+                                                        .addOnCompleteListener { task ->
+                                                            if (task.isSuccessful) {
+                                                                val user =
+                                                                    FirebaseAuth.getInstance().currentUser
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    user?.email.toString(),
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+
+                                                                context.startActivity(
+                                                                    Intent(
+                                                                        context,
+                                                                        menuActivity::class.java
+                                                                    ).putExtra(
+                                                                        "dark",
+                                                                        dark
+                                                                    )
+                                                                )
+                                                                finish()
+
+                                                                // Handle successful login
+                                                            } else {
+                                                                enable = true
+                                                                dialog = false
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    task.exception?.message,
+                                                                    Toast.LENGTH_SHORT
+                                                                )
+                                                                    .show()
+                                                                // Handle login failure
+                                                            }
+
+                                                        }
                                                 } else {
                                                     Toast.makeText(
                                                         context,
-                                                        "Fields Empty",
+                                                        "Check Fields!",
                                                         Toast.LENGTH_SHORT
                                                     ).show()
                                                 }
@@ -237,7 +294,9 @@ class Login : ComponentActivity() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 10.dp)
+                            .padding(top = 10.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         AllTexts(
                             text = "Do not have account!",
@@ -251,23 +310,28 @@ class Login : ComponentActivity() {
                                 .weight(1f)
                         )
 
-                        Text(
-                            text = "Sign Up",
-                            color = Color(0xFF800080),
-                            fontSize = 17.nonScaledSp,
-                            fontFamily = fontFamily,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .clickable {
-                                    startActivity(
-                                        Intent(
-                                            context,
-                                            Signup::class.java
-                                        ).putExtra("dark", dark)
-                                    )
-                                    finish()
-                                }
-                        )
+                        Button(
+                            onClick = {
+                                startActivity(
+                                    Intent(
+                                        context,
+                                        Signup::class.java
+                                    ).putExtra("dark", dark)
+                                )
+                                finish()
+                            },
+                            enabled = enable,
+                            colors = ButtonDefaults.buttonColors(Color.Transparent)
+                        ) {
+
+                            Text(
+                                text = "Sign Up",
+                                color = Color(0xFF800080),
+                                fontSize = 17.nonScaledSp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
 
 
@@ -279,31 +343,7 @@ class Login : ComponentActivity() {
 
 
 private fun signInWithEmail(context: Context, email: String, password: String, dark: Boolean) {
-    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
 
-                val user = FirebaseAuth.getInstance().currentUser
-                Toast.makeText(context, user?.email.toString(), Toast.LENGTH_SHORT).show()
-
-                context.startActivity(
-                    Intent(context, menuActivity::class.java).putExtra(
-                        "dark",
-                        dark
-                    )
-                )
-
-                // Handle successful login
-            } else {
-                Toast.makeText(
-                    context,
-                    "Failed to Login ${error(task.result)}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                // Handle login failure
-            }
-        }
 }
 
 private fun sendVerificationEmail() {

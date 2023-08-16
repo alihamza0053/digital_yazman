@@ -111,6 +111,8 @@ class menuActivity : ComponentActivity() {
             var backgroundColor = Color(0xFFADD8E6)
             var name = dataStoreUser.getName.collectAsState(initial = "DY-Guest")
             var verify = dataStoreUser.getVerify.collectAsState(initial = "0").value
+            var notify = dataStoreUser.getNotify.collectAsState(initial = "0").value
+
             var imgVerify by remember {
                 mutableStateOf(R.drawable.user_unverified)
             }
@@ -250,6 +252,7 @@ class menuActivity : ComponentActivity() {
                             fontSize = 20.nonScaledSp,
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
+                            maxLines = 1,
                             color = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .clickable {
@@ -286,7 +289,7 @@ class menuActivity : ComponentActivity() {
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFFFFF),
-                            modifier = Modifier.clickable {
+                            modifier = Modifier.padding(5.dp).clickable {
                                 if (currentUser != null) {
                                     firebaseAuth.signOut()
                                 }
