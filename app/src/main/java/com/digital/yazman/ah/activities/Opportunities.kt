@@ -50,7 +50,6 @@ class Opportunities : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(backgroundColor)
-                        .verticalScroll(rememberScrollState())
                 ) {
 
                     AllTexts(

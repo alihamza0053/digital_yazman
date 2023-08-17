@@ -50,7 +50,6 @@ class LocalNews : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(backgroundColor)
-                        .verticalScroll(rememberScrollState())
                 ) {
                     AllTexts(
                         "Local News",

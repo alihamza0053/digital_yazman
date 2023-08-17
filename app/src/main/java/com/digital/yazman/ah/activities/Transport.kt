@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +49,7 @@ class Transport : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -66,7 +68,6 @@ class Transport : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(backgroundColor)
-                        .verticalScroll(rememberScrollState())
 
                 ) {
                     AllTexts(
@@ -91,6 +92,7 @@ class Transport : ComponentActivity() {
                             val ticketPrice = document.getString("ticketPrice") ?: ""
                             val distance = document.getString("distance") ?: ""
                             val timeTaken = document.getString("timeTaken") ?: ""
+                            val date = document.getString("date") ?: ""
                             userDataList.add(
                                 TransportClass(
                                     id,
@@ -102,7 +104,8 @@ class Transport : ComponentActivity() {
                                     destination,
                                     ticketPrice,
                                     distance,
-                                    timeTaken
+                                    timeTaken,
+                                    date
                                 )
                             )
                         }
@@ -111,7 +114,8 @@ class Transport : ComponentActivity() {
 
                     if (itemsState.value.isEmpty()) {
                         repeat(10) {
-                            Bus(modifier = Modifier.shimmer(),
+                            Bus(
+                                modifier = Modifier.shimmer(),
                                 busName = "Bus Name",
                                 busNumber = "Contact Number",
                                 startTime = "Start Time",
@@ -126,21 +130,25 @@ class Transport : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach{data->
-                        Bus(modifier= Modifier,
-                            busName = data.busName,
-                            busNumber = data.busNumber,
-                            startTime = data.startTime,
-                            arivalTime = data.arivalTime,
-                            startPoint = data.startPoint,
-                            destination = data.destination,
-                            ticketPrice = data.ticketPrice,
-                            distance = data.distance,
-                            timeTaken = data.timeTaken,
-                            dark = dark
-                        )
-                    }
+                    val sortedItems = itemsState.value.sortedBy { it.date }
 
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            Bus(
+                                modifier = Modifier,
+                                busName = data.busName,
+                                busNumber = data.busNumber,
+                                startTime = data.startTime,
+                                arivalTime = data.arivalTime,
+                                startPoint = data.startPoint,
+                                destination = data.destination,
+                                ticketPrice = data.ticketPrice,
+                                distance = data.distance,
+                                timeTaken = data.timeTaken,
+                                dark = dark
+                            )
+                        }
+                    }
 
                 }
             }
@@ -164,7 +172,7 @@ fun Bus(
     dark: Boolean
 ) {
     var cardBackgroundColor = Color(0xFFFFFFFF)
-    if(dark){
+    if (dark) {
         cardBackgroundColor = Color(0xFF282834)
     }
     Column(
@@ -259,7 +267,7 @@ fun Bus(
                 shape = RoundedCornerShape(10.dp),
                 modifier = modifier
 
-                ) {
+            ) {
 
                 Text(
                     text = ticketPrice + "\nRs",

@@ -10,8 +10,8 @@ class TransportClass(
     val destination: String,
     val ticketPrice: String,
     val distance: String,
-    val timeTaken: String
-
+    val timeTaken: String,
+    val date: String,
 ) {
 
 }

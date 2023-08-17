@@ -73,7 +73,6 @@ class BusinessesViews : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
                         .background(
                             backgroundColor
                         )

@@ -65,7 +65,6 @@ class LocalDeals : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(backgroundColor)
-                        .verticalScroll(rememberScrollState())
                 ) {
                     AllTexts(
                         "Local Deals",

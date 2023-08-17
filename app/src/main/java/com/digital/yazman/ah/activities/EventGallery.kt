@@ -96,7 +96,6 @@ class EventGallery : ComponentActivity() {
                         dark = dark
                     )
                     repeat(20){
-
                         ExpandableImageCard(images, "Cricket Event", dark)
                     }
                 }

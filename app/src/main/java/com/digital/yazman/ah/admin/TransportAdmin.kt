@@ -42,6 +42,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.nonScaledSp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TransportAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,6 +109,9 @@ fun TransportData(id:String) {
         mutableStateOf("")
     }
 
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    var date = dateFormat.format(Date())
+
     val data = hashMapOf(
         "id" to id,
         "busName" to busName.trim(),
@@ -117,6 +123,7 @@ fun TransportData(id:String) {
         "ticketPrice" to ticketPrice.trim(),
         "distance" to distance.trim(),
         "timeTaken" to timeTaken.trim(),
+        "date" to date.trim()
     )
 
     Column(
