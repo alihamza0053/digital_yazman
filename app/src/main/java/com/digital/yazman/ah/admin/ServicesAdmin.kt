@@ -54,6 +54,9 @@ import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ServicesAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +111,8 @@ fun ServicesData(id: String, collectionName: String, context: Context) {
     var contact by remember {
         mutableStateOf("")
     }
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    var date = dateFormat.format(Date())
 
     val businesses = arrayOf(
         "TV Cable",
@@ -138,6 +143,7 @@ fun ServicesData(id: String, collectionName: String, context: Context) {
         "location" to location.trim(),
         "contact" to contact.trim(),
         "services" to selectedServices.trim(),
+        "date" to date.trim()
     )
 
     Column(

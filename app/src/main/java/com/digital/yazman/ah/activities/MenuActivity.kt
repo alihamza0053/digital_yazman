@@ -112,6 +112,9 @@ class menuActivity : ComponentActivity() {
             var name = dataStoreUser.getName.collectAsState(initial = "DY-Guest")
             var verify = dataStoreUser.getVerify.collectAsState(initial = "0").value
             var notify = dataStoreUser.getNotify.collectAsState(initial = "0").value
+            var userId = dataStoreUser.getId.collectAsState(initial = "0").value
+            var userEmail = dataStoreUser.getEmail.collectAsState(initial = "0").value
+
 
             var imgVerify by remember {
                 mutableStateOf(R.drawable.user_unverified)
@@ -119,14 +122,20 @@ class menuActivity : ComponentActivity() {
             var login by remember {
                 mutableStateOf("Login")
             }
+           // Toast.makeText(context,notify.toString(),Toast.LENGTH_SHORT).show()
             var userNotify by remember {
-                mutableStateOf("0")
+                mutableStateOf(notify)
             }
 
             var badgeNumber by remember {
                 mutableStateOf("0")
             }
-            var badgeColor = Color.Transparent
+            var badgeNumberTextColor by remember {
+                mutableStateOf(Color.White)
+            }
+            var badgeColor by remember {
+                mutableStateOf(Color.Transparent)
+            }
 
             val db = FirebaseFirestore.getInstance()
 
@@ -135,18 +144,24 @@ class menuActivity : ComponentActivity() {
             var ids by remember {
                 mutableStateOf(0)
             }
+            var nameCheck by remember {
+                mutableStateOf(0)
+            }
 
-            db.collection("Notification").get().addOnSuccessListener { results ->
-                for (document in results) {
+            db.collection("Notification").get().addOnSuccessListener { notifyResults ->
+                for (document in notifyResults) {
                     ids = document.get("id").toString()
                         .subSequence(3, document.get("id").toString().length).toString().toInt()
+                    if (nameCheck <= ids) {
+                        nameCheck = ids + 1
+                    }
                 }
             }
 
-            db.collection("Users").get().addOnSuccessListener { results ->
-                for (document in results) {
-                    if (document.get("id").toString() == "DYU01" && document.get("email")
-                            .toString() == "alihamza00053@gmail.com"
+            db.collection("Users").get().addOnSuccessListener { userResults ->
+                for (document in userResults) {
+                    if (document.get("id").toString() == userId && document.get("email")
+                            .toString() == userEmail
                     ) {
                         userNotify = document.get("notify").toString()
 //                        name = document.get("name").toString()
@@ -164,8 +179,8 @@ class menuActivity : ComponentActivity() {
 
             if (currentUser != null) {
                 login = "Log out"
-                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
+   //                 .show()
             }
 
 
@@ -289,17 +304,19 @@ class menuActivity : ComponentActivity() {
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFFFFF),
-                            modifier = Modifier.padding(5.dp).clickable {
-                                if (currentUser != null) {
-                                    firebaseAuth.signOut()
-                                }
-                                context.startActivity(
-                                    Intent(
-                                        context, Login::class.java
-                                    ).putExtra("dark", dark)
-                                )
-                                finish()
-                            })
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .clickable {
+                                    if (currentUser != null) {
+                                        firebaseAuth.signOut()
+                                    }
+                                    context.startActivity(
+                                        Intent(
+                                            context, Login::class.java
+                                        ).putExtra("dark", dark)
+                                    )
+                                    finish()
+                                })
                     }
 
                     // topbar end
@@ -326,17 +343,23 @@ class menuActivity : ComponentActivity() {
                                     .weight(1f)
                             )
 
-                            if (badgeNumber == "") {
+                            badgeNumber = (nameCheck - userNotify.toInt()).toString()
+                            Toast.makeText(context," badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}", Toast.LENGTH_SHORT).show()
+
+                            if (badgeNumber == "0") {
+                                badgeNumberTextColor = Color.Transparent
                                 badgeColor = Color.Transparent
                             } else {
                                 badgeColor = Color.Red
+                                badgeNumberTextColor = Color.White
+
                             }
                             if (badgeNumber > "99") {
                                 badgeNumber = "99+"
                             }
                             // Notification Badge Box
 
-                            badgeNumber = (ids - userNotify.toInt()).toString()
+
                             BadgedBox(
                                 badge = {
                                     Badge(
@@ -352,7 +375,7 @@ class menuActivity : ComponentActivity() {
                                             fontFamily = fontFamily,
                                             fontWeight = FontWeight.SemiBold,
                                             fontSize = 12.sp,
-                                            color = Color.White
+                                            color = badgeNumberTextColor
                                         )
                                     }
                                 }) {
@@ -370,7 +393,16 @@ class menuActivity : ComponentActivity() {
                                                 Intent(this@menuActivity, Notification::class.java)
                                             intent.putExtra("notification", badgeNumber)
                                             intent.putExtra("dark", dark)
+                                            intent.putExtra("userId", userId)
+
+                                            Toast
+                                                .makeText(
+                                                    context, userId, Toast.LENGTH_SHORT
+                                                )
+                                                .show()
+                                            intent.putExtra("id",(userNotify.toInt() +  badgeNumber.toInt()).toString())
                                             startActivity(intent)
+                                            finish()
                                         }
                                 )
                             }

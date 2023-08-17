@@ -204,7 +204,6 @@ class Login : ComponentActivity() {
                                                     document.get("verify").toString()
                                                 )
                                                 if (name != "") {
-
                                                     //signIn with email and password
                                                     FirebaseAuth.getInstance()
                                                         .signInWithEmailAndPassword(email, password)

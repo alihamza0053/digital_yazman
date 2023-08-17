@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,6 +40,9 @@ import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.nonScaledSp
 
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class NotificationAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,6 +166,9 @@ fun NotificationData(id: String, collectionName: String, context: Context) {
                 fontWeight = FontWeight.Normal,
             )
         )
+
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        date = dateFormat.format(Date())
 
 
         OutlinedTextField(

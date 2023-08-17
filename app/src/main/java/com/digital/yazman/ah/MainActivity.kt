@@ -53,6 +53,13 @@ class MainActivity : ComponentActivity() {
             var name by remember {
                 mutableStateOf("")
             }
+
+            var nameCheck = 0
+            var ids = 0
+            var notify = ""
+            var finalNotify by remember {
+                mutableStateOf(0)
+            }
             DigitalYazmanTheme {
                 if (currentUser != null) {
                     db.collection("Users").get().addOnSuccessListener { result ->
@@ -61,20 +68,21 @@ class MainActivity : ComponentActivity() {
                                 scope.launch {
                                     dataStoreUser.setId(document.get("id").toString())
                                     dataStoreUser.setName(document.get("name").toString())
+                                    dataStoreUser.setEmail(document.get("email").toString())
                                     dataStoreUser.setAddress(
                                         document.get("address").toString()
                                     )
                                     dataStoreUser.setPhone(document.get("phone").toString())
-                                    dataStoreUser.setNotify(
-                                        document.get("notify").toString()
-                                    )
+                                    dataStoreUser.setNotify(finalNotify.toString())
                                     dataStoreUser.setVerify(
                                         document.get("verify").toString()
                                     )
                                 }
-
                             }
+
+
                         }
+
                     }
                 }
 
@@ -188,9 +196,8 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-
-
                 if (currentUser != null) {
+
                     intent = Intent(context, menuActivity::class.java)
                 } else {
                     intent = Intent(context, Login::class.java)

@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -52,7 +54,7 @@ class BusinessesViews : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -95,9 +97,10 @@ class BusinessesViews : ComponentActivity() {
                                 val address = document.getString("address") ?: ""
                                 val contact = document.getString("contact") ?: ""
                                 val business = document.getString("business") ?: ""
+                                val date = document.getString("date") ?: ""
                                 userDataList.add(
                                     BusinessesClass(
-                                        id, shop, name, address, contact, business
+                                        id, shop, name, address, contact, business, date
                                     )
                                 )
                             }
@@ -119,18 +122,36 @@ class BusinessesViews : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach { data ->
-                        BusinessCard(
-                            modifier = Modifier,
-                            shop = data.shop,
-                            name = data.name,
-                            address = data.address,
-                            contact = data.contact,
-                            dark,
-                            context = applicationContext
-                        )
+                    val sortedItems = itemsState.value.sortedBy { it.date }
 
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            BusinessCard(
+                                modifier = Modifier,
+                                shop = data.shop,
+                                name = data.name,
+                                address = data.address,
+                                contact = data.contact,
+                                dark = dark,
+                                context = applicationContext
+                            )
+
+                        }
                     }
+                    
+
+//                    itemsState.value.forEach { data ->
+//                        BusinessCard(
+//                            modifier = Modifier,
+//                            shop = data.shop,
+//                            name = data.name,
+//                            address = data.address,
+//                            contact = data.contact,
+//                            dark,
+//                            context = applicationContext
+//                        )
+//
+//                    }
 
                 }
 
@@ -150,7 +171,7 @@ fun BusinessCard(
     context: Context
 ) {
     var cardBackgroundColor = Color(0xFFFFFFFF)
-    if(dark){
+    if (dark) {
         cardBackgroundColor = Color(0xFF282834)
     }
     Card(

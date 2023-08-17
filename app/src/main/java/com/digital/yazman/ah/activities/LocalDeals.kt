@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,7 +48,7 @@ class LocalDeals : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -105,19 +107,22 @@ class LocalDeals : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach { data ->
-                        CardItem(
-                            category = data.category,
-                            title = data.title,
-                            description = data.shortDes,
-                            source = data.source,
-                            date = data.date,
-                            dark = dark
-                        )
+                    val sortedItems = itemsState.value.sortedBy { it.date }
+
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            CardItem(
+                                category = data.category,
+                                title = data.title,
+                                description = data.shortDes,
+                                source = data.source,
+                                date = data.date,
+                                dark = dark
+                            )
+                        }
                     }
 
                 }
-
 
             }
         }
@@ -136,7 +141,7 @@ fun CardItem(
     dark: Boolean
 ) {
     var cardBackgroundColor = Color(0xFFFFFFFF)
-    if(dark){
+    if (dark) {
         cardBackgroundColor = Color(0xFF282834)
     }
     Card(

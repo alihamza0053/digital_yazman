@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.LaunchedEffect
@@ -91,17 +93,20 @@ class LocalNews : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach { data ->
-                        CardItem(
-                            category = data.category,
-                            title = data.title,
-                            description = data.shortDes,
-                            source = data.source,
-                            date = data.date,
-                            dark = dark
-                        )
-                    }
+                    val sortedItems = itemsState.value.sortedBy { it.date }
 
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            CardItem(
+                                category = data.category,
+                                title = data.title,
+                                description = data.shortDes,
+                                source = data.source,
+                                date = data.date,
+                                dark = dark
+                            )
+                        }
+                    }
 
                 }
             }

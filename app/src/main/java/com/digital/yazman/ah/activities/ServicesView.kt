@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -86,9 +88,10 @@ class ServicesView : ComponentActivity() {
                                 val location = document.getString("location") ?: ""
                                 val contact = document.getString("contact") ?: ""
                                 val services = document.getString("services") ?: ""
+                                val date = document.getString("date") ?: ""
                                 userDataList.add(
                                     ServicesClass(
-                                        id, name, expert, location, contact, services
+                                        id, name, expert, location, contact, services, date
                                     )
                                 )
                             }
@@ -112,19 +115,21 @@ class ServicesView : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach { data ->
-                        ServicesCard(
-                            name = data.name,
-                            expertise = data.expertise,
-                            location = data.location,
-                            contact = data.contact,
-                            painter = painterResource(id = R.drawable.hamza2),
-                            modifier = Modifier,
-                            dark = dark
-                        )
+                    val sortedItems = itemsState.value.sortedBy { it.date }
 
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            ServicesCard(
+                                name = data.name,
+                                expertise = data.expertise,
+                                location = data.location,
+                                contact = data.contact,
+                                painter = painterResource(id = R.drawable.hamza2),
+                                modifier = Modifier,
+                                dark = dark
+                            )
+                        }
                     }
-
 
                 }
             }

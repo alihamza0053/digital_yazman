@@ -43,6 +43,9 @@ import com.digital.yazman.ah.admin.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class BusinessesAdmin : ComponentActivity() {
@@ -94,6 +97,8 @@ fun BusinessData(id: String, collectionName: String, context: Context) {
     var contact by remember {
         mutableStateOf("")
     }
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    var date = dateFormat.format(Date())
 
     val businesses = arrayOf(
         "Agriculture",
@@ -135,6 +140,7 @@ fun BusinessData(id: String, collectionName: String, context: Context) {
         "address" to address.trim(),
         "contact" to contact.trim(),
         "business" to selectedBusiness.trim(),
+        "date" to date.trim()
     )
 
     Column(

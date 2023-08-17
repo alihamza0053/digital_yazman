@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -45,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.digital.yazman.ah.R
+import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.classes.NotificationClass
@@ -59,25 +63,41 @@ class Notification : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var id = getIntent().getStringExtra("id").toString()
+            var userId = getIntent().getStringExtra("userId").toString()
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
             var backgroundColor = Color(0xFFADD8E6)
             val db = FirebaseFirestore.getInstance()
             val itemsState = remember { mutableStateOf(emptyList<NotificationClass>()) }
+
             val notification = intent.getStringExtra("notification")
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
+                BackHandler(enabled = true, onBack = {
+                    context.startActivity(Intent(this@Notification, menuActivity::class.java))
+                    finish()
+                })
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
                 }
-                Toast.makeText(applicationContext, notification, Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(context, "${userId}", Toast.LENGTH_SHORT).show()
+
+                db.collection("Users").document(userId).update(
+                    mapOf(
+                        "notify" to id.trim()
+                    )
+                ).addOnSuccessListener {
+                    Toast.makeText(context, "done", Toast.LENGTH_SHORT).show()
+                }
+
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
                         .background(
                             backgroundColor
                         )
@@ -91,6 +111,7 @@ class Notification : ComponentActivity() {
                     )
 
                     LaunchedEffect(Unit) {
+
                         val querySnapshot = db.collection("Notification").get().await()
                         val userDataList = mutableListOf<NotificationClass>()
                         for (document in querySnapshot) {
@@ -104,7 +125,6 @@ class Notification : ComponentActivity() {
                                     id, title, shortDes, date, link
                                 )
                             )
-
                         }
                         itemsState.value = userDataList
                     }
@@ -123,16 +143,21 @@ class Notification : ComponentActivity() {
                         }
                     }
 
-                    itemsState.value.forEach { data ->
-                        NotificationCard(
-                            modifier = Modifier,
-                            title = data.title,
-                            shortDes = data.shortDes,
-                            date = data.date,
-                            link = data.link,
-                            context = applicationContext, dark = dark
-                        )
+                    val sortedItems = itemsState.value.sortedBy { it.date }
+
+                    LazyColumn {
+                        items(sortedItems) { data ->
+                            NotificationCard(
+                                modifier = Modifier,
+                                title = data.title,
+                                shortDes = data.shortDes,
+                                date = data.date,
+                                link = data.link,
+                                context = applicationContext, dark = dark
+                            )
+                        }
                     }
+
 
                 }
             }
@@ -152,7 +177,7 @@ fun NotificationCard(
     context: Context
 ) {
     var cardBackgroundColor = Color(0xFFFFFFFF)
-    if(dark){
+    if (dark) {
         cardBackgroundColor = Color(0xFF282834)
     }
     Card(

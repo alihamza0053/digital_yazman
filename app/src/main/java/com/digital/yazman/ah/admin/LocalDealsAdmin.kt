@@ -35,6 +35,9 @@ import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class LocalDealsAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -192,6 +195,8 @@ fun DataToUpload(id: String, collectionName: String, context: Context,) {
             )
         )
 
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        date = dateFormat.format(Date())
         OutlinedTextField(
             value = date, onValueChange = {
                 date = it
