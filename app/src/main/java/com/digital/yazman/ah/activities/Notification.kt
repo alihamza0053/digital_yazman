@@ -77,7 +77,7 @@ class Notification : ComponentActivity() {
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 BackHandler(enabled = true, onBack = {
-                    context.startActivity(Intent(this@Notification, menuActivity::class.java))
+                    context.startActivity(Intent(this@Notification, menuActivity::class.java).putExtra("dark", dark))
                     finish()
                 })
                 if (dark) {

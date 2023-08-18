@@ -179,12 +179,16 @@ class menuActivity : ComponentActivity() {
                 }
             }
 
-            if (verify == "2") {
-                imgVerify = R.drawable.admin_king
+            if (verify == "0") {
+                imgVerify = R.drawable.user_unverified
             }
             if (verify == "1") {
                 imgVerify = R.drawable.user_verify
             }
+            if (verify == "2") {
+                imgVerify = R.drawable.admin_king
+            }
+
 
             if (currentUser != null) {
                 login = "Log out"
@@ -364,7 +368,7 @@ class menuActivity : ComponentActivity() {
                                     .weight(1f)
                             )
 
-                            badgeNumber = (nameCheck - userNotify.toInt()).toString()
+                            badgeNumber = ((nameCheck-1) - userNotify.toInt()).toString()
                             Toast.makeText(
                                 context,
                                 " badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}",
