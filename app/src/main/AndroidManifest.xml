@@ -15,6 +15,11 @@
         android:theme="@style/Theme.DigitalYazman"
         tools:targetApi="31">
         <activity
+            android:name=".activities.BusinessOwnerProfile"
+            android:exported="false"
+            android:label="@string/title_activity_business_owner_profile"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
             android:name=".BusinessOwnerProfile"
             android:exported="false"
             android:label="@string/title_activity_business_owner_profile"

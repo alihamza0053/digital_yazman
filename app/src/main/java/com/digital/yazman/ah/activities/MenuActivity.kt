@@ -73,7 +73,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.digital.yazman.ah.BusinessOwnerProfile
 import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
@@ -211,6 +210,8 @@ class menuActivity : ComponentActivity() {
                 BackHandler(enabled = true, onBack = {
                     finish()
                 })
+//                Toast.makeText(context,userId,Toast.LENGTH_SHORT).show()
+
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
                     textColor = Color(0xFFFFFFFF)
@@ -290,15 +291,26 @@ class menuActivity : ComponentActivity() {
                                                 "dark",
                                                 dark
                                             ).putExtra("dark", dark)
+                                                .putExtra("name", name.value)
+                                                .putExtra("email", userEmail)
+                                                .putExtra("verify", userEmail)
+                                                .putExtra("id",userId)
                                         )
                                         finish()
                                     }
                                     if (imgVerify === R.drawable.user_verify) {
                                         context.startActivity(
-                                            Intent(context, BusinessOwnerProfile::class.java).putExtra(
+                                            Intent(
+                                                context,
+                                                BusinessOwnerProfile::class.java
+                                            ).putExtra(
                                                 "dark",
                                                 dark
                                             ).putExtra("dark", dark)
+                                                .putExtra("name", name.value)
+                                                .putExtra("email", userEmail)
+                                                .putExtra("verify", userEmail)
+                                                .putExtra("id",userId)
                                         )
                                         finish()
                                     }
@@ -308,6 +320,10 @@ class menuActivity : ComponentActivity() {
                                                 "dark",
                                                 dark
                                             ).putExtra("dark", dark)
+                                                .putExtra("name", name.value)
+                                                .putExtra("email", userEmail)
+                                                .putExtra("verify", userEmail)
+                                                .putExtra("id",userId)
                                         )
                                         finish()
                                     }
@@ -368,12 +384,12 @@ class menuActivity : ComponentActivity() {
                                     .weight(1f)
                             )
 
-                            badgeNumber = ((nameCheck-1) - userNotify.toInt()).toString()
-                            Toast.makeText(
-                                context,
-                                " badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            badgeNumber = ((nameCheck - 1) - userNotify.toInt()).toString()
+//                            Toast.makeText(
+//                                context,
+//                                " badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
 
                             if (badgeNumber == "0") {
                                 badgeNumberTextColor = Color.Transparent
@@ -424,11 +440,11 @@ class menuActivity : ComponentActivity() {
                                             intent.putExtra("dark", dark)
                                             intent.putExtra("userId", userId)
 
-                                            Toast
-                                                .makeText(
-                                                    context, userId, Toast.LENGTH_SHORT
-                                                )
-                                                .show()
+//                                            Toast
+//                                                .makeText(
+//                                                    context, userId, Toast.LENGTH_SHORT
+//                                                )
+//                                                .show()
                                             intent.putExtra(
                                                 "id",
                                                 (userNotify.toInt() + badgeNumber.toInt()).toString()

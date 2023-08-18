@@ -63,6 +63,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Signup : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,6 +150,8 @@ class Signup : ComponentActivity() {
                     backgroundColor = Color(0xFF14141f)
                     textColor = Color(0xFFFFFFFF)
                 }
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                var date = dateFormat.format(Date())
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -313,18 +318,20 @@ class Signup : ComponentActivity() {
 
                     Button(
                         onClick = {
-
                             dialog = true
                             enable = false
-                            val data = LoginInfo(
-                                id.trim(),
-                                name.trim(),
-                                address.trim(),
-                                phone.trim(),
-                                email.trim(),
-                                notify.trim(),
-                                verify
+                            val data = hashMapOf(
+                                "id" to id.trim(),
+                                "name" to title.trim(),
+                                "address" to address.trim(),
+                                "phone" to phone.trim(),
+                                "email" to email.trim(),
+                                "notify" to notify.trim(),
+                                "date" to date.trim(),
+                                "verify" to date.trim()
                             )
+
+
 
                             db.collection("Users").get().addOnSuccessListener { results ->
                                 for (document in results) {
