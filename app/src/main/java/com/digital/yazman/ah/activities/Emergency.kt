@@ -45,7 +45,7 @@ class Emergency : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -91,7 +91,12 @@ class Emergency : ComponentActivity() {
                                 .height(200.dp)
                                 .padding(bottom = 20.dp)
                                 .clickable {
-                                    context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"1122")))
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_DIAL,
+                                            Uri.parse("tel:" + "1122")
+                                        )
+                                    )
                                 },
 
                             )
@@ -119,7 +124,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"1122")))
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "1122")
+                                                )
+                                            )
                                         },
 
                                     ) {
@@ -130,7 +140,12 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Ambulance", fontSize = 12, fontWeight = FontWeight.Light,dark = dark)
+                                    AllTexts(
+                                        "Ambulance",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
                                 }
                             }
 
@@ -150,13 +165,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            Toast
-                                                .makeText(
-                                                    applicationContext,
-                                                    "Blood Donors",
-                                                    Toast.LENGTH_SHORT
-                                                )
-                                                .show()
+                                            context.startActivity(
+                                                Intent(
+                                                    this@Emergency,
+                                                    BloodDonors::class.java
+                                                ).putExtra("dark", dark)
+                                            )
                                         },
 
                                     ) {
@@ -167,7 +181,12 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Blood Donors", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
+                                    AllTexts(
+                                        "Blood Donors",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
 
                                 }
                             }
@@ -195,7 +214,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"1121")))
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "1121")
+                                                )
+                                            )
                                         },
 
                                     ) {
@@ -206,7 +230,12 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Child Protection", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
+                                    AllTexts(
+                                        "Child Protection",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
 
                                 }
                             }
@@ -227,7 +256,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"1122")))
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "1122")
+                                                )
+                                            )
                                         },
 
                                     ) {
@@ -238,7 +272,12 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Fire Brigade", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
+                                    AllTexts(
+                                        "Fire Brigade",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
 
                                 }
                             }
@@ -265,7 +304,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"1199")))
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "1199")
+                                                )
+                                            )
                                         },
 
                                     ) {
@@ -276,7 +320,12 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Gas Leakage", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
+                                    AllTexts(
+                                        "Gas Leakage",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
 
                                 }
                             }
@@ -297,7 +346,12 @@ class Emergency : ComponentActivity() {
                                         .height(100.dp)
                                         .weight(1f)
                                         .clickable {
-                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"15")))
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "15")
+                                                )
+                                            )
                                         },
 
                                     ) {
@@ -308,10 +362,105 @@ class Emergency : ComponentActivity() {
                                             .height(70.dp)
                                             .width(70.dp)
                                     )
-                                    AllTexts("Police", fontSize = 12, fontWeight = FontWeight.Light, dark = dark)
+                                    AllTexts(
+                                        "Police",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
 
                                 }
                             }
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            //second row first card
+                            Card(
+                                elevation = 6.dp,
+                                backgroundColor = cardColor,
+                                modifier = Modifier
+                                    .padding(20.dp)
+                                    .weight(1f)
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(100.dp)
+                                        .weight(1f)
+                                        .clickable {
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_DIAL,
+                                                    Uri.parse("tel:" + "1787")
+                                                )
+                                            )
+                                        },
+
+                                    ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.corruptpolice),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .height(70.dp)
+                                            .width(70.dp)
+                                    )
+                                    AllTexts(
+                                        "Complain Against Police",
+                                        fontSize = 12,
+                                        fontWeight = FontWeight.Light,
+                                        dark = dark
+                                    )
+
+                                }
+                            }
+
+                            //second row second card
+//                            Card(
+//                                elevation = 6.dp,
+//                                backgroundColor = cardColor,
+//                                modifier = Modifier
+//                                    .padding(20.dp)
+//                                    .weight(1f)
+//                            ) {
+//                                Column(
+//                                    horizontalAlignment = Alignment.CenterHorizontally,
+//                                    verticalArrangement = Arrangement.Center,
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .height(100.dp)
+//                                        .weight(1f)
+//                                        .clickable {
+//                                            context.startActivity(
+//                                                Intent(
+//                                                    Intent.ACTION_DIAL,
+//                                                    Uri.parse("tel:" + "15")
+//                                                )
+//                                            )
+//                                        },
+//
+//                                    ) {
+//                                    Image(
+//                                        painter = painterResource(id = R.drawable.policeman),
+//                                        contentDescription = null,
+//                                        modifier = Modifier
+//                                            .height(70.dp)
+//                                            .width(70.dp)
+//                                    )
+//                                    AllTexts(
+//                                        "Police",
+//                                        fontSize = 12,
+//                                        fontWeight = FontWeight.Light,
+//                                        dark = dark
+//                                    )
+//
+//                                }
+//                            }
                         }
                     }
 

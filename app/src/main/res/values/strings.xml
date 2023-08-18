@@ -33,4 +33,8 @@
     <string name="title_activity_businesses_admin">BusinessesAdmin</string>
     <string name="title_activity_notification">Notification</string>
     <string name="title_activity_notification_admin">NotificationAdmin</string>
+    <string name="title_activity_event_gallery_admin">EventGalleryAdmin</string>
+    <string name="title_activity_blood_donors">BloodDonors</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_business_owner_profile">BusinessOwnerProfile</string>
 </resources>

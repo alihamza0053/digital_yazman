@@ -3,6 +3,7 @@ package com.digital.yazman.ah.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -72,6 +73,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.digital.yazman.ah.BusinessOwnerProfile
 import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
@@ -93,6 +95,13 @@ class menuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            );
+            BackHandler(enabled = true, onBack = {
+                finish()
+            })
             val firebaseAuth = FirebaseAuth.getInstance()
             val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
@@ -122,7 +131,7 @@ class menuActivity : ComponentActivity() {
             var login by remember {
                 mutableStateOf("Login")
             }
-           // Toast.makeText(context,notify.toString(),Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context,notify.toString(),Toast.LENGTH_SHORT).show()
             var userNotify by remember {
                 mutableStateOf(notify)
             }
@@ -180,7 +189,7 @@ class menuActivity : ComponentActivity() {
             if (currentUser != null) {
                 login = "Log out"
 //                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
-   //                 .show()
+                //                 .show()
             }
 
 
@@ -276,15 +285,27 @@ class menuActivity : ComponentActivity() {
                                             Intent(context, Admin::class.java).putExtra(
                                                 "dark",
                                                 dark
-                                            )
+                                            ).putExtra("dark", dark)
                                         )
                                         finish()
-                                    } else {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "You are not admin.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                    }
+                                    if (imgVerify === R.drawable.user_verify) {
+                                        context.startActivity(
+                                            Intent(context, BusinessOwnerProfile::class.java).putExtra(
+                                                "dark",
+                                                dark
+                                            ).putExtra("dark", dark)
+                                        )
+                                        finish()
+                                    }
+                                    if (imgVerify === R.drawable.user_unverified) {
+                                        context.startActivity(
+                                            Intent(context, UserProfile::class.java).putExtra(
+                                                "dark",
+                                                dark
+                                            ).putExtra("dark", dark)
+                                        )
+                                        finish()
                                     }
 
                                 }
@@ -344,7 +365,11 @@ class menuActivity : ComponentActivity() {
                             )
 
                             badgeNumber = (nameCheck - userNotify.toInt()).toString()
-                            Toast.makeText(context," badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                " badgeNumber ${badgeNumber}, namecheck ${nameCheck}, userNotify ${userNotify}",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                             if (badgeNumber == "0") {
                                 badgeNumberTextColor = Color.Transparent
@@ -400,27 +425,33 @@ class menuActivity : ComponentActivity() {
                                                     context, userId, Toast.LENGTH_SHORT
                                                 )
                                                 .show()
-                                            intent.putExtra("id",(userNotify.toInt() +  badgeNumber.toInt()).toString())
+                                            intent.putExtra(
+                                                "id",
+                                                (userNotify.toInt() + badgeNumber.toInt()).toString()
+                                            )
                                             startActivity(intent)
                                             finish()
                                         }
                                 )
                             }
                         }
-                        @OptIn(ExperimentalPagerApi::class) (Card(
-                            modifier = Modifier.padding(16.dp),
-                            shape = RoundedCornerShape(16.dp),
-                        ) {
-                            AutoSlidingCarousel(itemsCount = images.size, itemContent = { index ->
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(images[index]).build(),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.height(200.dp)
-                                )
-                            })
-                        })
+                        @OptIn(ExperimentalPagerApi::class) (
+                                Card(
+                                    modifier = Modifier.padding(16.dp),
+                                    shape = RoundedCornerShape(16.dp),
+                                ) {
+                                    AutoSlidingCarousel(
+                                        itemsCount = images.size,
+                                        itemContent = { index ->
+                                            AsyncImage(
+                                                model = ImageRequest.Builder(LocalContext.current)
+                                                    .data(images[index]).build(),
+                                                contentDescription = null,
+                                                contentScale = ContentScale.Crop,
+                                                modifier = Modifier.height(200.dp)
+                                            )
+                                        })
+                                })
                         // slides images end
 
 
