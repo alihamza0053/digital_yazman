@@ -208,7 +208,7 @@ class menuActivity : ComponentActivity() {
 
             DigitalYazmanTheme {
                 BackHandler(enabled = true, onBack = {
-                    finish()
+                    finishAffinity()
                 })
 //                Toast.makeText(context,userId,Toast.LENGTH_SHORT).show()
 
@@ -293,7 +293,7 @@ class menuActivity : ComponentActivity() {
                                             ).putExtra("dark", dark)
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
-                                                .putExtra("verify", userEmail)
+                                                .putExtra("verify", verify)
                                                 .putExtra("id",userId)
                                         )
                                         finish()
@@ -309,7 +309,7 @@ class menuActivity : ComponentActivity() {
                                             ).putExtra("dark", dark)
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
-                                                .putExtra("verify", userEmail)
+                                                .putExtra("verify", verify)
                                                 .putExtra("id",userId)
                                         )
                                         finish()
@@ -322,7 +322,7 @@ class menuActivity : ComponentActivity() {
                                             ).putExtra("dark", dark)
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
-                                                .putExtra("verify", userEmail)
+                                                .putExtra("verify", verify)
                                                 .putExtra("id",userId)
                                         )
                                         finish()

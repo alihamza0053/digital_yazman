@@ -53,6 +53,10 @@ class Admin : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val darkValue = getIntent().getBooleanExtra("dark", false)
+            val name = getIntent().getStringExtra("name")
+            val email = getIntent().getStringExtra("email")
+            val verify = getIntent().getStringExtra("verify")
+            val id = getIntent().getStringExtra("id")
 
             var dark by remember {
                 mutableStateOf(darkValue)
@@ -95,6 +99,32 @@ class Admin : ComponentActivity() {
                     )
 
                     allData(dark = dark)
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                20.dp
+                            )
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Hexagon(
+                            "Profile",
+                            modifier = Modifier.clickable {
+                                context.startActivity(
+                                    Intent(context, AdminProfile::class.java)
+                                        .putExtra("dark",dark)
+                                        .putExtra("name", name)
+                                        .putExtra("email", email)
+                                        .putExtra("verify", verify)
+                                        .putExtra("id",id)
+                                )
+                            },
+                            dark = dark
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

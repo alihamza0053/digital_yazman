@@ -37,4 +37,5 @@
     <string name="title_activity_blood_donors">BloodDonors</string>
     <string name="title_activity_user_profile">UserProfile</string>
     <string name="title_activity_business_owner_profile">BusinessOwnerProfile</string>
+    <string name="title_activity_admin_profile">AdminProfile</string>
 </resources>

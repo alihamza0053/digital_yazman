@@ -113,6 +113,7 @@ class UserProfile : ComponentActivity() {
                                 val date = document.getString("date") ?: ""
                                 val verify = document.get("verify") ?: 0
                                 val notify = document.getString("notify") ?: ""
+                                val accountType = document.getString("accountType") ?: ""
                                 userDataList.add(
                                     LoginInfo(
                                         id = id,
@@ -122,7 +123,8 @@ class UserProfile : ComponentActivity() {
                                         address = address,
                                         date = date,
                                         verify = verify.toString().toInt(),
-                                        notify = notify
+                                        notify = notify,
+                                        accountType = accountType
                                     )
                                 )
                             }
@@ -140,6 +142,7 @@ class UserProfile : ComponentActivity() {
                             date = "00-00-2000",
                             verify = "0",
                             notify = "0",
+                            accountType = "Account Type",
                             textColor = textColor,
                             user = user,
                             dark = dark,
@@ -157,6 +160,7 @@ class UserProfile : ComponentActivity() {
                             date = data.date,
                             verify = data.verify.toString(),
                             notify = data.notify,
+                            accountType = data.accountType,
                             textColor = textColor,
                             user = user,
                             dark = dark,
@@ -195,13 +199,18 @@ fun UserData(
     date: String,
     verify: String,
     notify: String,
+    accountType: String,
     textColor: Color,
     user: FirebaseUser?,
     dark: Boolean,
     context: Context,
 ) {
-    var verification = "Not Verified"
-    var verificationColor = Color.Red
+    var verification by remember {
+        mutableStateOf("Not Verified")
+    }
+    var verificationColor by remember {
+        mutableStateOf(Color.Red)
+    }
     Toast.makeText(LocalContext.current, user!!.isEmailVerified.toString(), Toast.LENGTH_SHORT)
         .show()
     if (user!!.isEmailVerified) {
@@ -336,6 +345,27 @@ fun UserData(
                     fontWeight = FontWeight.Normal,
                 )
             )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            OutlinedTextField(
+                value = accountType, onValueChange = { null },
+                label = {
+                    AllTexts(
+                        "Account Type",
+                        fontSize = 13,
+                        fontWeight = FontWeight.SemiBold,
+                        dark = dark
+                    )
+                },
+                textStyle = TextStyle.Default.copy(
+                    fontFamily = fontFamily,
+                    color = textColor,
+                    fontSize = 15.nonScaledSp,
+                    fontWeight = FontWeight.Normal,
+                )
+            )
+
             Spacer(modifier = Modifier.weight(1f))
 
             OutlinedTextField(

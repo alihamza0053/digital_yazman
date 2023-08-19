@@ -123,6 +123,9 @@ class Signup : ComponentActivity() {
             var notify by remember {
                 mutableStateOf("0")
             }
+            var accountType by remember {
+                mutableStateOf("Will be Updated!")
+            }
             var verify by remember {
                 mutableStateOf(0)
             }
@@ -306,9 +309,24 @@ class Signup : ComponentActivity() {
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
+
                     if (passwordError) {
                         Text(text = "Minimum 8 characters", color = MaterialTheme.colors.error)
                     }
+
+                    OutlinedTextField(
+                        value = accountType,
+                        onValueChange = {
+                            null
+                        },
+                        textStyle = TextStyle(
+                            color = textColor
+                        ),
+                        label = { Text(text = "Account Type", color = textColor) },
+                        modifier = Modifier.fillMaxWidth(),
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    )
 
 
 
