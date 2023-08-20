@@ -26,10 +26,12 @@ import androidx.datastore.dataStore
 import com.digital.yazman.ah.activities.Login
 import com.digital.yazman.ah.activities.menuActivity
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.datastore.Update
 import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -39,17 +41,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0).versionName
-     //       Toast.makeText(context,packageInfo.toString(),Toast.LENGTH_SHORT).show()
             val firebaseAuth = FirebaseAuth.getInstance()
             val currentUser = firebaseAuth.currentUser
             var intent = Intent(context, Login::class.java)
             val dataStoreDark = StoreLightDarkData(context)
             val darkBool = dataStoreDark.getDark.collectAsState(initial = false)
-
             val scope = rememberCoroutineScope()
+            val scope2 = rememberCoroutineScope()
             val dataStoreUser = UserInfo(context)
             val email = dataStoreUser.getEmail.collectAsState(initial = "").value
+            val dataStoreUpdate = Update(context)
             val db = FirebaseFirestore.getInstance()
 
             var name by remember {
@@ -62,6 +63,18 @@ class MainActivity : ComponentActivity() {
             var finalNotify by remember {
                 mutableStateOf(0)
             }
+            val fontFamily = FontFamily(
+                Font(R.font.lexend_black, FontWeight.Bold),
+                Font(R.font.lexend_bold, FontWeight.Bold),
+                Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
+                Font(R.font.lexend_light, FontWeight.Light),
+                Font(R.font.lexend_medium, FontWeight.Medium),
+                Font(R.font.lexend_extralight, FontWeight.ExtraLight),
+                Font(R.font.lexend_regular, FontWeight.Normal),
+                Font(R.font.lexend_semibold, FontWeight.SemiBold),
+                Font(R.font.lexend_thin, FontWeight.Thin),
+
+                )
             DigitalYazmanTheme {
                 if (currentUser != null) {
                     db.collection("Users").get().addOnSuccessListener { result ->
@@ -81,25 +94,24 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-
-
                         }
-
                     }
                 }
 
-                val fontFamily = FontFamily(
-                    Font(R.font.lexend_black, FontWeight.Bold),
-                    Font(R.font.lexend_bold, FontWeight.Bold),
-                    Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
-                    Font(R.font.lexend_light, FontWeight.Light),
-                    Font(R.font.lexend_medium, FontWeight.Medium),
-                    Font(R.font.lexend_extralight, FontWeight.ExtraLight),
-                    Font(R.font.lexend_regular, FontWeight.Normal),
-                    Font(R.font.lexend_semibold, FontWeight.SemiBold),
-                    Font(R.font.lexend_thin, FontWeight.Thin),
+                db.collection("App Update").get().addOnSuccessListener { result ->
+                    for (document in result) {
+                        scope2.launch {
+                            dataStoreUpdate.setTitle(document.get("title").toString())
+                            dataStoreUpdate.setShortDes(document.get("shortDes").toString())
+                            dataStoreUpdate.setVersion(
+                                document.get("version").toString()
+                            )
+                            dataStoreUpdate.setLink(document.get("link").toString())
+                        }
+                    }
+                }
 
-                    )
+
                 // splash screen
                 Box(
                     modifier = Modifier

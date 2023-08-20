@@ -71,7 +71,10 @@ class NotificationAdmin : ComponentActivity() {
                 NotificationData(
                     id = id,
                     "Notification",
-                    context
+                    context,
+                    endActivity = {
+                        finish()
+                    }
                 )
             }
         }
@@ -79,7 +82,7 @@ class NotificationAdmin : ComponentActivity() {
 }
 
 @Composable
-fun NotificationData(id: String, collectionName: String, context: Context) {
+fun NotificationData(id: String, collectionName: String, context: Context, endActivity:() -> Unit) {
 
     var id = id
 
@@ -217,6 +220,7 @@ fun NotificationData(id: String, collectionName: String, context: Context) {
                                 id = id
                             }
                         context.startActivity(Intent(context, Admin::class.java))
+                        endActivity()
                     }
                 }
 

@@ -3,6 +3,7 @@ package com.digital.yazman.ah.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -82,6 +83,7 @@ import coil.request.ImageRequest
 import com.digital.yazman.ah.admin.Admin
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
+import com.digital.yazman.ah.datastore.Update
 import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
@@ -107,13 +109,18 @@ class menuActivity : ComponentActivity() {
             BackHandler(enabled = true, onBack = {
                 finish()
             })
+
             val firebaseAuth = FirebaseAuth.getInstance()
             val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
             val scope = rememberCoroutineScope()
             val dataStoreDark = StoreLightDarkData(context)
             val dataStoreUser = UserInfo(context)
+            val dataStoreUpdate = Update(context)
             val darkValue = getIntent().getBooleanExtra("dark", false)
+            val appVersion =
+                context.packageManager.getPackageInfo(context.packageName, 0).versionName
+
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -128,6 +135,13 @@ class menuActivity : ComponentActivity() {
             var notify = dataStoreUser.getNotify.collectAsState(initial = "0").value
             var userId = dataStoreUser.getId.collectAsState(initial = "0").value
             var userEmail = dataStoreUser.getEmail.collectAsState(initial = "0").value
+
+            var title = dataStoreUpdate.getTitle.collectAsState(initial = "Update").value
+            var shortDes =
+                dataStoreUpdate.getTitle.collectAsState(initial = "Update Available").value
+            var version = dataStoreUpdate.getTitle.collectAsState(initial = appVersion).value
+//            Toast.makeText(context,version,Toast.LENGTH_SHORT).show()
+            var link = dataStoreUpdate.getTitle.collectAsState(initial = "link").value
 
 
             var imgVerify by remember {
@@ -215,9 +229,10 @@ class menuActivity : ComponentActivity() {
             DigitalYazmanTheme {
                 UpdateDialog(
                     context = context,
-                    updateVersion = "2.0",
-                    title = "Update",
-                    shortDes = "Please update it",
+                    updateVersion = version,
+                    title = title,
+                    shortDes = shortDes,
+                    link = link,
                     dark = dark,
                     onCancelClick = {
                         finishAffinity()
@@ -839,12 +854,13 @@ fun UpdateDialog(
     updateVersion: String,
     title: String,
     shortDes: String,
+    link: String,
     dark: Boolean,
     onCancelClick: () -> Unit
 ) {
     val appVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
-    Toast.makeText(context, appVersion.toString(), Toast.LENGTH_SHORT).show()
-    Toast.makeText(context, updateVersion.toString(), Toast.LENGTH_SHORT).show()
+//    Toast.makeText(context, appVersion.toString(), Toast.LENGTH_SHORT).show()
+//    Toast.makeText(context, updateVersion.toString(), Toast.LENGTH_SHORT).show()
     var dialogBg = Color(0xFFADD8E6)
     var buttonColor = Color(0xFFFFFFFF)
     if (dark) {
@@ -896,23 +912,38 @@ fun UpdateDialog(
             confirmButton = {
                 Button(
                     onClick = {
-
-                    },modifier = Modifier.padding(bottom = 10.dp),
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent)
+                    },
+                    modifier = Modifier.padding(bottom = 10.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = buttonColor
                     )
                 ) {
-                    AllTexts(text = "Update", fontSize = 12, fontWeight = FontWeight.Normal, dark = dark)
+                    AllTexts(
+                        text = "Update",
+                        fontSize = 12,
+                        fontWeight = FontWeight.Normal,
+                        dark = dark
+                    )
                 }
             },
             dismissButton = {
-                Button(onClick = {
-                    onCancelClick()
-                },modifier = Modifier.padding(bottom = 10.dp),
+                Button(
+                    onClick = {
+                        onCancelClick()
+                    }, modifier = Modifier.padding(bottom = 10.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = buttonColor
-                    )) {
-                    AllTexts(text = "Exit", fontSize = 12, fontWeight = FontWeight.Normal, dark = dark)
+                    )
+                ) {
+                    AllTexts(
+                        text = "Exit",
+                        fontSize = 12,
+                        fontWeight = FontWeight.Normal,
+                        dark = dark
+                    )
 
                 }
             }

@@ -3,6 +3,7 @@ package com.digital.yazman.ah.admin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +27,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,10 +41,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.digital.yazman.ah.activities.AllTexts
+import com.digital.yazman.ah.activities.NotificationCard
 import com.digital.yazman.ah.activities.fontFamily
-import com.digital.yazman.ah.admin.ui.theme.DigitalYazmanTheme
+import com.digital.yazman.ah.activities.menuActivity
+import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.digital.yazman.ah.classes.NotificationClass
 import com.digital.yazman.ah.nonScaledSp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,24 +59,34 @@ class UpdateAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            val context = LocalContext.current
+            DigitalYazmanTheme {
+                // A surface container using the 'background' color from the theme
+                UpdateData(
+                    "App Update",
+                    context,
+                    endActivity = {
+                        finish()
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun UpdateData(id: String, collectionName: String, context: Context) {
+fun UpdateData(collectionName: String, context: Context, endActivity: () -> Unit) {
 
-    var id = id
+    var update = "Update"
 
     var title by remember {
-        mutableStateOf("")
+        mutableStateOf("Update Available")
     }
     var shortDescription by remember {
         mutableStateOf("")
     }
 
-    var date by remember {
+    var version by remember {
         mutableStateOf("")
     }
     var link by remember {
@@ -74,10 +94,9 @@ fun UpdateData(id: String, collectionName: String, context: Context) {
     }
 
     val data = hashMapOf(
-        "id" to id.trim(),
         "title" to title.trim(),
         "shortDes" to shortDescription.trim(),
-        "date" to date.trim(),
+        "version" to version.trim(),
         "link" to link.trim()
     )
 
@@ -97,25 +116,10 @@ fun UpdateData(id: String, collectionName: String, context: Context) {
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 20.dp, top = 10.dp)
         )
-        OutlinedTextField(
-            value = id, onValueChange = {
-                id = it
-            },
-            label = { Text(text = "ID") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Normal,
-            )
-        )
-
 
         OutlinedTextField(
             value = title, onValueChange = {
-                title = it
+                null
             },
             label = { Text(text = "Title") },
             modifier = Modifier.fillMaxWidth(),
@@ -143,15 +147,12 @@ fun UpdateData(id: String, collectionName: String, context: Context) {
             )
         )
 
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        date = dateFormat.format(Date())
-
 
         OutlinedTextField(
-            value = date, onValueChange = {
-                date = it
+            value = version, onValueChange = {
+                version = it
             },
-            label = { Text(text = "Date") },
+            label = { Text(text = "Version") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -182,20 +183,16 @@ fun UpdateData(id: String, collectionName: String, context: Context) {
             onClick = {
                 val db = FirebaseFirestore.getInstance()
                 val collection = db.collection(collectionName)
-                if (id != "ID") {
-                    if (title != "" && shortDescription != "" && date != "" && link != "") {
-                        collection.document(id).set(data)
-                            .addOnSuccessListener {
-                                title = "";
-                                shortDescription = "";
-                                date = "";
-                                link = "";
-                                id = id
-                            }
-                        context.startActivity(Intent(context, Admin::class.java))
-                    }
+                if (shortDescription != "" && version != "" && link != "") {
+                    collection.document(update).set(data)
+                        .addOnSuccessListener {
+                            shortDescription = "";
+                            version = "";
+                            link = "";
+                        }
+                    context.startActivity(Intent(context, Admin::class.java))
+                    endActivity()
                 }
-
             },
             shape = RoundedCornerShape(3.dp),
             modifier = Modifier.fillMaxWidth(),
@@ -207,75 +204,5 @@ fun UpdateData(id: String, collectionName: String, context: Context) {
                 fontWeight = FontWeight.SemiBold,
             )
         }
-    }
-}
-
-
-@Composable
-fun UpdateDialog(
-    showDialog: Boolean,
-    onDismiss: () -> Unit,
-    onUpdateClick: () -> Unit
-) {
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { onDismiss() },
-            title = { Text(text = "Update Apps") },
-            text = { Text(text = "Send updates to all apps?") },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        onUpdateClick()
-                        onDismiss()
-                    }
-                ) {
-                    Text(text = "Update")
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = { onDismiss() }
-                ) {
-                    Text(text = "Cancel")
-                }
-            }
-        )
-    }
-}
-
-
-@Composable
-fun MainScreen() {
-    var showDialog by remember { mutableStateOf(false) }
-    val firestore = FirebaseFirestore.getInstance()
-
-    BackHandler(
-        enabled = showDialog,
-        onBack = {
-            showDialog = false
-        }
-    )
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = {
-                showDialog = true
-            }
-        ) {
-            Text(text = "Show Update Dialog")
-        }
-
-        UpdateDialog(
-            showDialog = showDialog,
-            onDismiss = { showDialog = false },
-            onUpdateClick = {
-                // Perform Firestore update here
-                firestore.collection("apps").document("")
-            }
-        )
     }
 }
