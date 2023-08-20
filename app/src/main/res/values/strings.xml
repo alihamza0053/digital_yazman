@@ -38,4 +38,5 @@
     <string name="title_activity_user_profile">UserProfile</string>
     <string name="title_activity_business_owner_profile">BusinessOwnerProfile</string>
     <string name="title_activity_admin_profile">AdminProfile</string>
+    <string name="title_activity_update_admin">UpdateAdmin</string>
 </resources>

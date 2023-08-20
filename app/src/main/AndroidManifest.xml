@@ -15,17 +15,17 @@
         android:theme="@style/Theme.DigitalYazman"
         tools:targetApi="31">
         <activity
+            android:name=".admin.UpdateAdmin"
+            android:exported="false"
+            android:label="@string/title_activity_update_admin"
+            android:theme="@style/Theme.DigitalYazman" />
+        <activity
             android:name=".admin.AdminProfile"
             android:exported="false"
             android:label="@string/title_activity_admin_profile"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
             android:name=".activities.BusinessOwnerProfile"
-            android:exported="false"
-            android:label="@string/title_activity_business_owner_profile"
-            android:theme="@style/Theme.DigitalYazman" />
-        <activity
-            android:name=".BusinessOwnerProfile"
             android:exported="false"
             android:label="@string/title_activity_business_owner_profile"
             android:theme="@style/Theme.DigitalYazman" />
@@ -128,11 +128,6 @@
             android:name=".activities.Transport"
             android:exported="true"
             android:label="@string/title_activity_transport"
-            android:theme="@style/Theme.DigitalYazman" />
-        <activity
-            android:name=".activities.Support"
-            android:exported="true"
-            android:label="@string/title_activity_support"
             android:theme="@style/Theme.DigitalYazman" />
         <activity
             android:name=".activities.Services"

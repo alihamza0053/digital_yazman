@@ -1,6 +1,7 @@
 package com.digital.yazman.ah.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
@@ -36,6 +37,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -46,6 +48,9 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.runtime.Composable
@@ -71,6 +76,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.digital.yazman.ah.admin.Admin
@@ -207,6 +213,15 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
+                UpdateDialog(
+                    context = context,
+                    updateVersion = "2.0",
+                    title = "Update",
+                    shortDes = "Please update it",
+                    dark = dark,
+                    onCancelClick = {
+                        finishAffinity()
+                    })
                 BackHandler(enabled = true, onBack = {
                     finishAffinity()
                 })
@@ -294,7 +309,7 @@ class menuActivity : ComponentActivity() {
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
                                                 .putExtra("verify", verify)
-                                                .putExtra("id",userId)
+                                                .putExtra("id", userId)
                                         )
                                         finish()
                                     }
@@ -310,7 +325,7 @@ class menuActivity : ComponentActivity() {
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
                                                 .putExtra("verify", verify)
-                                                .putExtra("id",userId)
+                                                .putExtra("id", userId)
                                         )
                                         finish()
                                     }
@@ -323,7 +338,7 @@ class menuActivity : ComponentActivity() {
                                                 .putExtra("name", name.value)
                                                 .putExtra("email", userEmail)
                                                 .putExtra("verify", verify)
-                                                .putExtra("id",userId)
+                                                .putExtra("id", userId)
                                         )
                                         finish()
                                     }
@@ -817,6 +832,93 @@ class menuActivity : ComponentActivity() {
     }
 }
 
+
+@Composable
+fun UpdateDialog(
+    context: Context,
+    updateVersion: String,
+    title: String,
+    shortDes: String,
+    dark: Boolean,
+    onCancelClick: () -> Unit
+) {
+    val appVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+    Toast.makeText(context, appVersion.toString(), Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, updateVersion.toString(), Toast.LENGTH_SHORT).show()
+    var dialogBg = Color(0xFFADD8E6)
+    var buttonColor = Color(0xFFFFFFFF)
+    if (dark) {
+        dialogBg = Color(0xFF14141f)
+        buttonColor = Color(0xFF282834)
+    }
+
+    if (appVersion < updateVersion) {
+        AlertDialog(modifier = Modifier.padding(20.dp),
+            backgroundColor = dialogBg,
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+            onDismissRequest = { false },
+            title = {
+                Column {
+                    AllTexts(
+                        text = title,
+                        fontSize = 17,
+                        modifier = Modifier.align(Alignment.Start),
+                        fontWeight = FontWeight.SemiBold,
+                        dark = dark
+                    )
+                }
+            },
+            text = {
+                Column {
+                    AllTexts(
+                        text = shortDes,
+                        fontSize = 13,
+                        modifier = Modifier.align(Alignment.Start),
+                        fontWeight = FontWeight.Normal,
+                        dark = dark
+                    )
+                    AllTexts(
+                        text = "You can use app after update.",
+                        fontSize = 13,
+                        modifier = Modifier.align(Alignment.Start),
+                        fontWeight = FontWeight.Normal,
+                        dark = dark
+                    )
+                    AllTexts(
+                        text = "Thanks❤️",
+                        fontSize = 13,
+                        modifier = Modifier.align(Alignment.Start),
+                        fontWeight = FontWeight.Normal,
+                        dark = dark
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+
+                    },modifier = Modifier.padding(bottom = 10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = buttonColor
+                    )
+                ) {
+                    AllTexts(text = "Update", fontSize = 12, fontWeight = FontWeight.Normal, dark = dark)
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    onCancelClick()
+                },modifier = Modifier.padding(bottom = 10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = buttonColor
+                    )) {
+                    AllTexts(text = "Exit", fontSize = 12, fontWeight = FontWeight.Normal, dark = dark)
+
+                }
+            }
+        )
+    }
+}
 
 // image slider start
 @Composable

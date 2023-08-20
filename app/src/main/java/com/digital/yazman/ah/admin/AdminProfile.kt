@@ -81,12 +81,6 @@ class AdminProfile : ComponentActivity() {
                     textColor = Color(0xFFFFFFFF)
                 }
                 BackHandler(enabled = true, onBack = {
-                    context.startActivity(
-                        Intent(
-                            this@AdminProfile,
-                            Admin::class.java
-                        ).putExtra("dark", dark)
-                    )
                     finish()
                 })
                 Column(

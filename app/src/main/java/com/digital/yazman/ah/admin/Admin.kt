@@ -256,10 +256,10 @@ class Admin : ComponentActivity() {
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Hexagon(
-                            "Unknown",
+                            "Update",
                             modifier = Modifier.clickable {
                                 context.startActivity(
-                                    Intent(context, TransportAdmin::class.java)
+                                    Intent(context, UpdateAdmin::class.java)
                                 )
                             },
                             dark = dark

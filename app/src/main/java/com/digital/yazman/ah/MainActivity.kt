@@ -38,9 +38,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+     //       Toast.makeText(context,packageInfo.toString(),Toast.LENGTH_SHORT).show()
             val firebaseAuth = FirebaseAuth.getInstance()
             val currentUser = firebaseAuth.currentUser
-            val context = LocalContext.current
             var intent = Intent(context, Login::class.java)
             val dataStoreDark = StoreLightDarkData(context)
             val darkBool = dataStoreDark.getDark.collectAsState(initial = false)
