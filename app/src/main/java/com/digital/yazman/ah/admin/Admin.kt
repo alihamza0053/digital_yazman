@@ -26,6 +26,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,8 +44,11 @@ import com.digital.yazman.ah.R
 import com.digital.yazman.ah.activities.AllTexts
 import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.activities.menuActivity
+import com.digital.yazman.ah.classes.NotificationClass
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class Admin : ComponentActivity() {
 
@@ -58,6 +62,31 @@ class Admin : ComponentActivity() {
             val verify = getIntent().getStringExtra("verify")
             val id = getIntent().getStringExtra("id")
 
+            val db = FirebaseFirestore.getInstance()
+            var userNumber by remember {
+                mutableStateOf(0)
+            }
+            var userId by remember {
+                mutableStateOf(0)
+            }
+            var businessesNumber by remember {
+                mutableStateOf(0)
+            }
+            var businessesId by remember {
+                mutableStateOf(0)
+            }
+            var adsNumber by remember {
+                mutableStateOf(0)
+            }
+            var adsId by remember {
+                mutableStateOf(0)
+            }
+            var serviceNumber by remember {
+                mutableStateOf(0)
+            }
+            var serviceId by remember {
+                mutableStateOf(0)
+            }
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -82,6 +111,47 @@ class Admin : ComponentActivity() {
                     )
                     finish()
                 })
+
+                db.collection("Users").get().addOnSuccessListener { notifyResults ->
+                    for (document in notifyResults) {
+                        userId = document.get("id").toString()
+                            .subSequence(3, document.get("id").toString().length).toString().toInt()
+                        if (userNumber <= userId) {
+                            userNumber = userId
+                        }
+                    }
+                }
+
+                db.collection("Businesses").get().addOnSuccessListener { notifyResults ->
+                    for (document in notifyResults) {
+                        businessesId = document.get("id").toString()
+                            .subSequence(3, document.get("id").toString().length).toString().toInt()
+                        if (businessesNumber <= businessesId) {
+                            businessesNumber = businessesId
+                        }
+                    }
+                }
+
+//                db.collection("Users").get().addOnSuccessListener { notifyResults ->
+//                    for (document in notifyResults) {
+//                        adsId = document.get("id").toString()
+//                            .subSequence(3, document.get("id").toString().length).toString().toInt()
+//                        if (adsNumber <= adsId) {
+//                            adsNumber = adsId
+//                        }
+//                    }
+//                }
+
+                db.collection("Services").get().addOnSuccessListener { notifyResults ->
+                    for (document in notifyResults) {
+                        serviceId = document.get("id").toString()
+                            .subSequence(3, document.get("id").toString().length).toString().toInt()
+                        if (serviceNumber <= serviceId) {
+                            serviceNumber = serviceId
+                        }
+                    }
+                }
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -90,15 +160,21 @@ class Admin : ComponentActivity() {
                         .background(backgroundColor)
                 ) {
                     Text(
-                        text = "Ali Hamza",
+                        text = name.toString(),
                         fontSize = 20.nonScaledSp,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight.Bold,
                         color = textColor,
-                        modifier = Modifier
+                        modifier = Modifier.padding(top = 10.dp)
                     )
 
-                    allData(dark = dark)
+                    allData(
+                        users = userNumber.toString(),
+                        business = businessesNumber.toString(),
+                        ads = adsNumber.toString(),
+                        services = serviceNumber.toString(),
+                        dark = dark
+                    )
 
                     Row(
                         modifier = Modifier
@@ -113,11 +189,11 @@ class Admin : ComponentActivity() {
                             modifier = Modifier.clickable {
                                 context.startActivity(
                                     Intent(context, AdminProfile::class.java)
-                                        .putExtra("dark",dark)
+                                        .putExtra("dark", dark)
                                         .putExtra("name", name)
                                         .putExtra("email", email)
                                         .putExtra("verify", verify)
-                                        .putExtra("id",id)
+                                        .putExtra("id", id)
                                 )
                             },
                             dark = dark
@@ -294,14 +370,9 @@ fun Hexagon(text: String, modifier: Modifier, dark: Boolean) {
     }
 }
 
-@Composable
-@Preview
-fun test() {
-    allData(dark = true)
-}
 
 @Composable
-fun allData(dark: Boolean) {
+fun allData(users: String, business: String, ads: String, services: String, dark: Boolean) {
 
     var cardColor = Color(0xFFFFFFFF)
     var textColor = Color(0xFF000000)
@@ -337,7 +408,7 @@ fun allData(dark: Boolean) {
                 }
                 Row {
                     AllTexts(
-                        text = "00",
+                        text = users,
                         fontSize = 12,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.padding(0.dp),
@@ -346,7 +417,7 @@ fun allData(dark: Boolean) {
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     AllTexts(
-                        text = "00",
+                        text = ads,
                         fontSize = 12,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.padding(0.dp),
@@ -398,7 +469,7 @@ fun allData(dark: Boolean) {
                 }
                 Row {
                     AllTexts(
-                        text = "00",
+                        text = business,
                         fontSize = 12,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.padding(0.dp),
@@ -407,7 +478,7 @@ fun allData(dark: Boolean) {
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     AllTexts(
-                        text = "00",
+                        text = services,
                         fontSize = 12,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.padding(0.dp),
