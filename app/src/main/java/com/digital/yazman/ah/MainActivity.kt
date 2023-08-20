@@ -107,6 +107,8 @@ class MainActivity : ComponentActivity() {
                                 document.get("version").toString()
                             )
                             dataStoreUpdate.setLink(document.get("link").toString())
+                         //   Toast.makeText(context,document.get("link").toString(),Toast.LENGTH_SHORT).show()
+
                         }
                     }
                 }

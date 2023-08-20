@@ -138,10 +138,10 @@ class menuActivity : ComponentActivity() {
 
             var title = dataStoreUpdate.getTitle.collectAsState(initial = "Update").value
             var shortDes =
-                dataStoreUpdate.getTitle.collectAsState(initial = "Update Available").value
-            var version = dataStoreUpdate.getTitle.collectAsState(initial = appVersion).value
+                dataStoreUpdate.getShortDes.collectAsState(initial = "Update Available").value
+            var version = dataStoreUpdate.getVersion.collectAsState(initial = appVersion).value
 //            Toast.makeText(context,version,Toast.LENGTH_SHORT).show()
-            var link = dataStoreUpdate.getTitle.collectAsState(initial = "link").value
+            var link = dataStoreUpdate.getLink.collectAsState(initial = "https://www.dy.alihamza.me/").value
 
 
             var imgVerify by remember {
@@ -227,16 +227,25 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
-                UpdateDialog(
-                    context = context,
-                    updateVersion = version,
-                    title = title,
-                    shortDes = shortDes,
-                    link = link,
-                    dark = dark,
-                    onCancelClick = {
-                        finishAffinity()
-                    })
+             //   Toast.makeText(context,link,Toast.LENGTH_SHORT).show()
+                if (userEmail != "alihamza00053@gmail.com") {
+                    UpdateDialog(
+                        context = context,
+                        updateVersion = version,
+                        title = title,
+                        shortDes = shortDes,
+                        link = link,
+                        dark = dark,
+                        onCancelClick = {
+                            finishAffinity()
+                        },
+                        updateLink = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            applicationContext.startActivity(intent)
+                            finish()
+                        })
+                }
                 BackHandler(enabled = true, onBack = {
                     finishAffinity()
                 })
@@ -856,7 +865,8 @@ fun UpdateDialog(
     shortDes: String,
     link: String,
     dark: Boolean,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    updateLink: () -> Unit
 ) {
     val appVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
 //    Toast.makeText(context, appVersion.toString(), Toast.LENGTH_SHORT).show()
@@ -912,9 +922,7 @@ fun UpdateDialog(
             confirmButton = {
                 Button(
                     onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent)
+                        updateLink()
                     },
                     modifier = Modifier.padding(bottom = 10.dp),
                     colors = ButtonDefaults.buttonColors(
