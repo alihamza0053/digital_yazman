@@ -753,11 +753,12 @@ class menuActivity : ComponentActivity() {
                                     .height(80.dp)
                                     .width(80.dp)
                                     .clickable {
-                                        context.startActivity(
-                                            Intent(
-                                                context, EventGallery::class.java
-                                            ).putExtra("dark", dark)
-                                        )
+                                               Toast.makeText(context,"Not Available",Toast.LENGTH_SHORT).show()
+//                                        context.startActivity(
+//                                            Intent(
+//                                                context, EventGallery::class.java
+//                                            ).putExtra("dark", dark)
+//                                        )
                                     },
                                 imageModifier = Modifier
                                     .height(40.dp)

@@ -75,6 +75,13 @@ class ServicesView : ComponentActivity() {
                         .fillMaxSize()
                         .background(backgroundColor)
                 ) {
+                    AllTexts(
+                        servicesName.toString(),
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 25,
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        dark = dark
+                    )
 
                     LaunchedEffect(Unit) {
                         val querySnapshot = db.collection("Services").get().await()

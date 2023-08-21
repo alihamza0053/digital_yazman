@@ -79,13 +79,11 @@ class FAQs : ComponentActivity() {
                         modifier = Modifier.padding(top = 15.dp, start = 20.dp),
                         dark = dark
                     )
-                    ExpandableTextCard("How to place ads of our business?", "You have to contact us for business ads.", dark)
-                    ExpandableTextCard("Are these ads free?", "No, you have to pay for each ad.", dark)
-                    ExpandableTextCard("How long it will take to place my ads?", "As Soon as your payment successfull, you ads will be visible", dark)
                     ExpandableTextCard("Can I promote my business here?", "Yes, you can promote your through ads.", dark)
-                    ExpandableTextCard("What to do in case of any issue", "Contact us if you face any issue.", dark)
-
-
+                    ExpandableTextCard("How to place ads for my business?", "You have to contact us to place business ads.", dark)
+                    ExpandableTextCard("Are these ads free?", "No, you have to pay for each ad.", dark)
+                    ExpandableTextCard("How long it will take to place my ads?", "As Soon as your payment successfull, your ads will be visible", dark)
+                    ExpandableTextCard("What to do in case of any issue", "Contact us if you face any issue, in Contact Us activity at home screen.", dark)
                 }
             }
         }
@@ -137,7 +135,7 @@ fun ExpandableTextCard(title: String, faq: String,dark: Boolean) {
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.weight(6f),
                     color =  textColor,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 IconButton(modifier = Modifier
