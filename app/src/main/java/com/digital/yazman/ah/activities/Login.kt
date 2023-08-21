@@ -8,6 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,10 +21,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -168,92 +173,104 @@ class Login : ComponentActivity() {
                         modifier = Modifier.padding(2.dp)
                     )
 
-                    LoadingView(modifier = Modifier.padding(16.dp), dialog)
                     Button(
                         onClick = {
-                            dialog = true
-                            enable = false
-                            if (!emailError && !passwordError) {
-                                db.collection("Users").get().addOnSuccessListener { result ->
-                                    for (document in result) {
-                                        if (document.get("email") == email) {
-                                            scope.launch {
-                                                dataStoreUser.setId(document.get("id").toString())
-                                                dataStoreUser.setName(
-                                                    document.get("name").toString()
-                                                )
-                                                name = document.get("name").toString()
-                                                Toast.makeText(
-                                                    context,
-                                                    name,
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                dataStoreUser.setEmail(
-                                                    document.get("email").toString()
-                                                )
-                                                dataStoreUser.setAddress(
-                                                    document.get("address").toString()
-                                                )
-                                                dataStoreUser.setPhone(
-                                                    document.get("phone").toString()
-                                                )
-                                                dataStoreUser.setNotify(
-                                                    document.get("notify").toString()
-                                                )
-                                                dataStoreUser.setVerify(
-                                                    document.get("verify").toString()
-                                                )
-                                                if (name != "") {
-                                                    //signIn with email and password
-                                                    FirebaseAuth.getInstance()
-                                                        .signInWithEmailAndPassword(email, password)
-                                                        .addOnCompleteListener { task ->
-                                                            if (task.isSuccessful) {
-                                                                val user =
-                                                                    FirebaseAuth.getInstance().currentUser
+
+                            if (!emailError && !passwordError && email != "" && password != "") {
+                                dialog = true
+                                enable = false
+                                //signIn with email and password
+                                FirebaseAuth.getInstance()
+                                    .signInWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            db.collection("Users").get()
+                                                .addOnSuccessListener { result ->
+                                                    for (document in result) {
+                                                        if (document.get("email") == email) {
+                                                            scope.launch {
+                                                                dataStoreUser.setId(
+                                                                    document.get("id").toString()
+                                                                )
+                                                                dataStoreUser.setName(
+                                                                    document.get("name").toString()
+                                                                )
+                                                                name =
+                                                                    document.get("name").toString()
                                                                 Toast.makeText(
                                                                     context,
-                                                                    user?.email.toString(),
+                                                                    name,
                                                                     Toast.LENGTH_SHORT
                                                                 ).show()
-
-                                                                context.startActivity(
-                                                                    Intent(
-                                                                        context,
-                                                                        menuActivity::class.java
-                                                                    ).putExtra(
-                                                                        "dark",
-                                                                        dark
-                                                                    )
+                                                                dataStoreUser.setEmail(
+                                                                    document.get("email").toString()
                                                                 )
-                                                                finish()
-
-                                                                // Handle successful login
-                                                            } else {
-                                                                enable = true
-                                                                dialog = false
-                                                                Toast.makeText(
-                                                                    context,
-                                                                    task.exception?.message,
-                                                                    Toast.LENGTH_SHORT
+                                                                dataStoreUser.setAddress(
+                                                                    document.get("address")
+                                                                        .toString()
                                                                 )
-                                                                    .show()
-                                                                // Handle login failure
+                                                                dataStoreUser.setPhone(
+                                                                    document.get("phone").toString()
+                                                                )
+                                                                dataStoreUser.setNotify(
+                                                                    document.get("notify")
+                                                                        .toString()
+                                                                )
+                                                                dataStoreUser.setVerify(
+                                                                    document.get("verify")
+                                                                        .toString()
+                                                                )
                                                             }
-
+                                                            context.startActivity(
+                                                                Intent(
+                                                                    context,
+                                                                    menuActivity::class.java
+                                                                ).putExtra(
+                                                                    "dark",
+                                                                    dark
+                                                                )
+                                                            )
+                                                            finish()
                                                         }
-                                                } else {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Check Fields!",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                }
+                                                    }
+                                                }.addOnFailureListener {
+                                                Toast.makeText(
+                                                    context,
+                                                    it.message.toString(),
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                enable = true
+                                                dialog = false
                                             }
+                                            val user =
+                                                FirebaseAuth.getInstance().currentUser
+                                            Toast.makeText(
+                                                context,
+                                                user?.email.toString(),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
 
+                                            // Handle successful login
+                                        } else {
+                                            enable = true
+                                            dialog = false
+                                            Toast.makeText(
+                                                context,
+                                                task.exception?.message,
+                                                Toast.LENGTH_SHORT
+                                            )
+                                                .show()
+                                            // Handle login failure
                                         }
+
                                     }
-                                }
+
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Check Fields!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
 
 //                            //Toast.makeText(applicationContext,"hamza",Toast.LENGTH_SHORT).show();
@@ -333,8 +350,8 @@ class Login : ComponentActivity() {
                         }
                     }
 
-
                 }
+                LoadingView(modifier = Modifier, dialog)
             }
         }
     }

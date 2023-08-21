@@ -91,19 +91,19 @@ class Signup : ComponentActivity() {
                 mutableStateOf("")
             }
             var nameError by remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             var email by remember {
                 mutableStateOf("")
             }
             var emailError by remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             var password by remember {
                 mutableStateOf("")
             }
             var passwordError by remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             var enable by remember {
                 mutableStateOf(true)
@@ -112,13 +112,13 @@ class Signup : ComponentActivity() {
                 mutableStateOf("")
             }
             var addressError by remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             var phone by remember {
                 mutableStateOf("")
             }
             var phoneError by remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             var notify by remember {
                 mutableStateOf("0")
@@ -273,7 +273,8 @@ class Signup : ComponentActivity() {
                         value = phone,
                         onValueChange = {
                             phone = it
-                            phoneError = phone.length < 11 || phone.length > 11 || !phone.contains("03")
+                            phoneError =
+                                phone.length < 11 || phone.length > 11 || !phone.contains("03")
                         },
                         label = { Text(text = "Phone Number", color = textColor) },
                         modifier = Modifier
@@ -324,8 +325,6 @@ class Signup : ComponentActivity() {
                         ),
                         label = { Text(text = "Account Type", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
 
 
@@ -349,8 +348,6 @@ class Signup : ComponentActivity() {
                                 "verify" to date.trim()
                             )
 
-
-
                             db.collection("Users").get().addOnSuccessListener { results ->
                                 for (document in results) {
                                     if (email == document.get("email").toString()) {
@@ -359,29 +356,54 @@ class Signup : ComponentActivity() {
                                 }
                             }
                             if (!nameError && !emailError && !addressError && !phoneError && !passwordError) {
-                                signUpWithEmail(email, password)
-                                Toast.makeText(applicationContext, emailCheck, Toast.LENGTH_SHORT)
-                                    .show()
-                                db.collection("Users").document(id).set(data)
-                                    .addOnSuccessListener {
+                                FirebaseAuth.getInstance()
+                                    .createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            db.collection("Users").document(id).set(data)
+                                                .addOnSuccessListener {
+                                                    dialog = false
+                                                    Toast.makeText(
+                                                        applicationContext,
+                                                        "record added",
+                                                        Toast.LENGTH_SHORT
+                                                    )
+                                                        .show()
+                                                    context.startActivity(
+                                                        Intent(
+                                                            context,
+                                                            Login::class.java
+                                                        ).putExtra("dark", dark)
+                                                    )
+                                                    finish()
+                                                }.addOnFailureListener {
+                                                    Toast.makeText(
+                                                        context,
+                                                        it.message.toString(),
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                    dialog = false
+                                                    enable = true
+                                                }
+                                            val user = FirebaseAuth.getInstance().currentUser
+                                            if (user != null && !user.isEmailVerified) {
+                                                sendVerificationEmail()
+                                            }
+                                        }
+                                    }.addOnFailureListener {
+                                        enable = true
                                         dialog = false
                                         Toast.makeText(
                                             applicationContext,
-                                            "record added",
+                                            it.message.toString(),
                                             Toast.LENGTH_SHORT
                                         )
                                             .show()
-                                        context.startActivity(
-                                            Intent(
-                                                context,
-                                                Login::class.java
-                                            ).putExtra("dark", dark)
-                                        )
-                                        finish()
-                                    }.addOnFailureListener {
-                                        enable = true
                                     }
+
+
                             } else {
+                                enable = true
                                 dialog = false
                                 Toast.makeText(
                                     applicationContext,
@@ -401,8 +423,6 @@ class Signup : ComponentActivity() {
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
-
-                    LoadingView(modifier = Modifier.padding(16.dp), dialog)
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
@@ -446,6 +466,7 @@ class Signup : ComponentActivity() {
                         }
                     }
                 }
+                LoadingView(modifier = Modifier, dialog)
             }
         }
     }
@@ -487,25 +508,18 @@ fun LoadingView(
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        Row(
-            modifier
-                .shadow(2.dp, CircleShape)
-                .clip(CircleShape)
-                .background(MaterialTheme.colors.surface)
-                .padding(0.dp, 4.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             CircularProgressIndicator(
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .size(16.dp),
-                strokeWidth = 2.dp
-            )
-            androidx.compose.material.Text(
-                modifier = Modifier.padding(end = 12.dp),
-                text = "Loading...",
-                fontSize = 14.sp,
-                color = MaterialTheme.colors.onSurface.copy(alpha = .75f)
+                    .size(50.dp),
+                color = Color.White,
+                strokeWidth = 3.dp
             )
         }
     }
