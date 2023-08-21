@@ -76,6 +76,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
@@ -141,7 +142,8 @@ class menuActivity : ComponentActivity() {
                 dataStoreUpdate.getShortDes.collectAsState(initial = "Update Available").value
             var version = dataStoreUpdate.getVersion.collectAsState(initial = appVersion).value
 //            Toast.makeText(context,version,Toast.LENGTH_SHORT).show()
-            var link = dataStoreUpdate.getLink.collectAsState(initial = "https://www.dy.alihamza.me/").value
+            var link =
+                dataStoreUpdate.getLink.collectAsState(initial = "https://www.dy.alihamza.me/").value
 
 
             var imgVerify by remember {
@@ -227,7 +229,7 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
-             //   Toast.makeText(context,link,Toast.LENGTH_SHORT).show()
+                //   Toast.makeText(context,link,Toast.LENGTH_SHORT).show()
                 if (userEmail != "alihamza00053@gmail.com") {
                     UpdateDialog(
                         context = context,
@@ -753,7 +755,9 @@ class menuActivity : ComponentActivity() {
                                     .height(80.dp)
                                     .width(80.dp)
                                     .clickable {
-                                               Toast.makeText(context,"Not Available",Toast.LENGTH_SHORT).show()
+                                        Toast
+                                            .makeText(context, "Not Available", Toast.LENGTH_SHORT)
+                                            .show()
 //                                        context.startActivity(
 //                                            Intent(
 //                                                context, EventGallery::class.java
@@ -896,25 +900,18 @@ fun UpdateDialog(
                 }
             },
             text = {
-                Column {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     AllTexts(
                         text = shortDes,
                         fontSize = 13,
-                        modifier = Modifier.align(Alignment.Start),
+                        textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Normal,
                         dark = dark
                     )
                     AllTexts(
-                        text = "You can use app after update.",
+                        text = "You can use app after update.\nThanks❤️",
                         fontSize = 13,
-                        modifier = Modifier.align(Alignment.Start),
-                        fontWeight = FontWeight.Normal,
-                        dark = dark
-                    )
-                    AllTexts(
-                        text = "Thanks❤️",
-                        fontSize = 13,
-                        modifier = Modifier.align(Alignment.Start),
+                        textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Normal,
                         dark = dark
                     )

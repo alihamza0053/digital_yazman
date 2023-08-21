@@ -249,13 +249,13 @@ class MainActivity : ComponentActivity() {
                         finish()
                     }
                 }else{
-                    AlertDialog(
+                    AlertDialog(modifier = Modifier.background(Color.White),
                         onDismissRequest = { false },
                         title = { Text(text = "No Internet Connection", fontWeight = FontWeight.SemiBold) },
                         text = { Text(text = "Please check your internet connection and try again.") },
                         confirmButton = {
                             Button(onClick = { finishAffinity() }) {
-                                Text(text = "Exit App")
+                                Text(text = "Exit App", color =  Color.White)
                             }
                         }
                     )
