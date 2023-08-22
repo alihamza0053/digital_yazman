@@ -196,7 +196,7 @@ class Signup : ComponentActivity() {
                         value = name,
                         onValueChange = {
                             name = it
-                            nameError = name.length > 10 || name.length < 3
+                            nameError = name.length > 12 || name.length < 3
                         },
                         label = { Text(text = "Name", color = textColor) },
                         modifier = Modifier
@@ -212,7 +212,7 @@ class Signup : ComponentActivity() {
                     )
                     if (nameError) {
                         Text(
-                            text = "Min 3, Max 10",
+                            text = "Min 3, Max 12",
                             color = MaterialTheme.colors.error
                         )
                     }
@@ -339,13 +339,14 @@ class Signup : ComponentActivity() {
                             enable = false
                             val data = hashMapOf(
                                 "id" to id.trim(),
-                                "name" to title.trim(),
+                                "name" to name.trim(),
                                 "address" to address.trim(),
                                 "phone" to phone.trim(),
                                 "email" to email.trim(),
                                 "notify" to notify.trim(),
                                 "date" to date.trim(),
-                                "verify" to date.trim()
+                                "accountType" to "User",
+                                "verify" to verify
                             )
 
                             db.collection("Users").get().addOnSuccessListener { results ->
@@ -360,7 +361,7 @@ class Signup : ComponentActivity() {
                                     .createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            db.collection("Users").document(id).set(data)
+                                            db.collection("Users").document().set(data)
                                                 .addOnSuccessListener {
                                                     dialog = false
                                                     Toast.makeText(

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,8 +51,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.datastore.UserInfo
 import com.digital.yazman.ah.nonScaledSp
@@ -128,6 +131,11 @@ class Login : ComponentActivity() {
                         modifier = Modifier.padding(top = 15.dp, start = 20.dp),
                         dark = dark
                     )
+//                    Image(
+//                        painter = painterResource(id = R.drawable.new_logo),
+//                        contentDescription = "logo",
+//                        modifier = Modifier.size(150.dp)
+//                    )
                     OutlinedTextField(
                         value = email,
                         onValueChange = {

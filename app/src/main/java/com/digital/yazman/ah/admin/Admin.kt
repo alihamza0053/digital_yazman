@@ -1,5 +1,6 @@
 package com.digital.yazman.ah.admin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -169,6 +170,7 @@ class Admin : ComponentActivity() {
                     )
 
                     allData(
+                        context = context,
                         users = userNumber.toString(),
                         business = businessesNumber.toString(),
                         ads = adsNumber.toString(),
@@ -372,7 +374,7 @@ fun Hexagon(text: String, modifier: Modifier, dark: Boolean) {
 
 
 @Composable
-fun allData(users: String, business: String, ads: String, services: String, dark: Boolean) {
+fun allData(context:Context, users: String, business: String, ads: String, services: String, dark: Boolean) {
 
     var cardColor = Color(0xFFFFFFFF)
     var textColor = Color(0xFF000000)
@@ -394,7 +396,9 @@ fun allData(users: String, business: String, ads: String, services: String, dark
                         text = "Users",
                         fontSize = 12,
                         fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(0.dp),
+                        modifier = Modifier.padding(0.dp).clickable {
+                          context.startActivity(Intent(context,UserDataViewAdmin::class.java))
+                        },
                         dark = dark
                     )
                     Spacer(modifier = Modifier.weight(1f))

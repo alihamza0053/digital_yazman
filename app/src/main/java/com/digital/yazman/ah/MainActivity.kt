@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -139,23 +141,23 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(0xFF800080))
+                            .background(Color(0xFF000000))
                     ) {
                         Column(
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier.fillMaxSize().align(Alignment.Center),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-//                        Image(
-//                            painter = painterResource(id = R.drawable.logo_2),
-//                            contentDescription = null,
-//                            modifier = Modifier.size(200.dp)
-//                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.new_logo),
+                            contentDescription = "logo",
+                            modifier = Modifier.size(250.dp)
+                        )
                             Text(
                                 buildAnnotatedString {
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("D")
@@ -163,7 +165,7 @@ class MainActivity : ComponentActivity() {
                                     append("i")
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("g")
@@ -171,7 +173,7 @@ class MainActivity : ComponentActivity() {
                                     append("i")
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("t")
@@ -179,22 +181,22 @@ class MainActivity : ComponentActivity() {
                                     append("a")
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("l")
                                     }
                                 },
-                                fontSize = 50.nonScaledSp,
+                                fontSize = 25.nonScaledSp,
                                 fontFamily = fontFamily,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.Normal,
                                 color = Color(0xFFFFFFFF)
                             )
                             Text(
                                 buildAnnotatedString {
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("Y")
@@ -202,7 +204,7 @@ class MainActivity : ComponentActivity() {
                                     append("a")
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("z")
@@ -210,16 +212,16 @@ class MainActivity : ComponentActivity() {
                                     append("ma")
                                     withStyle(
                                         style = SpanStyle(
-                                            color = Color.Green, fontSize = 60.nonScaledSp
+                                            color = Color.Green, fontSize = 27.nonScaledSp
                                         )
                                     ) {
                                         append("n")
                                     }
 
                                 },
-                                fontSize = 50.nonScaledSp,
+                                fontSize = 25.nonScaledSp,
                                 fontFamily = fontFamily,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.Normal,
                                 color = Color(0xFFFFFFFF)
                             )
 

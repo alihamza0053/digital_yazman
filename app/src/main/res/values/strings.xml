@@ -39,4 +39,5 @@
     <string name="title_activity_business_owner_profile">BusinessOwnerProfile</string>
     <string name="title_activity_admin_profile">AdminProfile</string>
     <string name="title_activity_update_admin">UpdateAdmin</string>
+    <string name="title_activity_user_data_view_admin">UserDataViewAdmin</string>
 </resources>
