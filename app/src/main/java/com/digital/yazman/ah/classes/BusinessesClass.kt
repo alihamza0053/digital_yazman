@@ -9,5 +9,6 @@ class BusinessesClass(
     val address: String,
     val contact: String,
     val business: String,
+    val logoUrl: String,
     val date: String
 )

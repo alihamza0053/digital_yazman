@@ -6,6 +6,7 @@ data class LocalDealNewsOppor(
     val title: String,
     val shortDes: String,
     val source: String,
+    val logoUrl: String,
     val date: String
 )
 

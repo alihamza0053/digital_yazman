@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.datastore.StoreLightDarkData
@@ -96,16 +97,20 @@ class BusinessesViews : ComponentActivity() {
                                 val address = document.getString("address") ?: ""
                                 val contact = document.getString("contact") ?: ""
                                 val business = document.getString("business") ?: ""
+                                val logoUrl = document.getString("logoUrl") ?: ""
                                 val date = document.getString("date") ?: ""
                                 userDataList.add(
                                     BusinessesClass(
-                                        id, shop, name, address, contact, business, date
+                                        id, shop, name, address, contact, business, logoUrl, date
                                     )
                                 )
                             }
                         }
                         itemsState.value = userDataList
                     }
+
+                    val logoUrl =
+                        "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/logo.png?alt=media&token=3a657305-5f6b-4c75-b012-07b58c71945e"
 
                     if (itemsState.value.isEmpty()) {
                         repeat(10) {
@@ -115,6 +120,7 @@ class BusinessesViews : ComponentActivity() {
                                 "Name",
                                 "Yazman",
                                 "03XXXXXXXXX",
+                                logoUrl,
                                 dark,
                                 applicationContext
                             )
@@ -131,13 +137,14 @@ class BusinessesViews : ComponentActivity() {
                                 name = data.name,
                                 address = data.address,
                                 contact = data.contact,
+                                logoUrl = data.logoUrl,
                                 dark = dark,
                                 context = applicationContext
                             )
 
                         }
                     }
-                    
+
 
 //                    itemsState.value.forEach { data ->
 //                        BusinessCard(
@@ -166,6 +173,7 @@ fun BusinessCard(
     name: String,
     address: String,
     contact: String,
+    logoUrl: String,
     dark: Boolean,
     context: Context
 ) {
@@ -198,8 +206,8 @@ fun BusinessCard(
                 Column(
                     modifier = modifier.padding(10.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.hamza2),
+                    AsyncImage(
+                        model = logoUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = modifier

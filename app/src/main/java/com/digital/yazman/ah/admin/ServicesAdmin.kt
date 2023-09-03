@@ -2,17 +2,24 @@ package com.digital.yazman.ah.admin
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -50,13 +58,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import com.digital.yazman.ah.R
 import com.digital.yazman.ah.activities.fontFamily
 import com.digital.yazman.ah.nonScaledSp
 import com.digital.yazman.ah.ui.theme.DigitalYazmanTheme
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class ServicesAdmin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +113,17 @@ class ServicesAdmin : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Context) {
+
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        imageUri = uri
+    }
+    var uploadSuccess by remember { mutableStateOf(false) }
+    val storage = Firebase.storage
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     var id = id
 
@@ -113,6 +137,9 @@ fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Con
         mutableStateOf("")
     }
     var contact by remember {
+        mutableStateOf("")
+    }
+    var logoUrl by remember {
         mutableStateOf("")
     }
     val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -147,8 +174,33 @@ fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Con
         "location" to location.trim(),
         "contact" to contact.trim(),
         "services" to selectedServices.trim(),
+        "logoUrl" to logoUrl.trim(),
         "date" to date.trim()
     )
+
+    // upload image to firebase storage
+    fun uploadImageToFirebase(storage: FirebaseStorage, userId: String, imageUri: Uri) {
+        if (userId.isNotEmpty()) {
+            val imageName = imageUri.lastPathSegment ?: UUID.randomUUID().toString()
+            val storageRef = storage.reference.child("images/$userId/$imageName")
+
+            storageRef.putFile(imageUri)
+                .addOnSuccessListener { _ ->
+                    uploadSuccess = true
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        logoUrl = uri.toString()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    uploadSuccess = false
+                    logoUrl = ""
+                    // Handle the error
+                    Toast.makeText(context, "Upload failed: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(context, "Please select an image", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -158,6 +210,24 @@ fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Con
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        val selectedImagePainter: Painter = rememberImagePainter(data = imageUri?.toString() ?: R.drawable.logo)
+        Image(
+            painter = selectedImagePainter,
+            contentDescription = null,
+            modifier = Modifier
+                .size(80.dp)
+                .fillMaxWidth()
+                .combinedClickable(
+                    onClick = {
+                        logoUrl = ""
+                        launcher.launch("image/*")
+                    },
+                    onLongClick = {
+                        uploadImageToFirebase(storage, currentUser?.uid ?: "", imageUri!!)
+                    },
+                )
+        )
         Text(
             text = collectionName,
             color = Color(0xFF000000),
@@ -282,6 +352,21 @@ fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Con
                 contact = it
             },
             label = { Text(text = "Owner Contact Number") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+            ),
+            textStyle = TextStyle.Default.copy(
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal,
+            )
+        )
+        OutlinedTextField(
+            value = logoUrl,
+            onValueChange = {
+                logoUrl = it
+            },
+            label = { Text(text = "Logo Url") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,

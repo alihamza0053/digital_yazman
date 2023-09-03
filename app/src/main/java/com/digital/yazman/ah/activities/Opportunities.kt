@@ -70,15 +70,18 @@ class Opportunities : ComponentActivity() {
                             val title = document.getString("title") ?: ""
                             val shortDes = document.getString("shortDes") ?: ""
                             val source = document.getString("source") ?: ""
+                            val logoUrl = document.getString("logoUrl") ?: ""
                             val date = document.getString("date") ?: ""
                             userDataList.add(
                                 LocalDealNewsOppor(
-                                    id, category, title, shortDes, source, date
+                                    id, category, title, shortDes, source, logoUrl, date
                                 )
                             )
                         }
                         itemsState.value = userDataList
                     }
+
+                    val logoUrl = "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/logo.png?alt=media&token=3a657305-5f6b-4c75-b012-07b58c71945e"
 
                     if (itemsState.value.isEmpty()) {
                         repeat(10) {
@@ -88,6 +91,7 @@ class Opportunities : ComponentActivity() {
                                 title = "title",
                                 description = "description",
                                 source = "source",
+                                logoUrl = logoUrl,
                                 date = "date",
                                 dark = dark
                             )
@@ -103,6 +107,7 @@ class Opportunities : ComponentActivity() {
                                 title = data.title,
                                 description = data.shortDes,
                                 source = data.source,
+                                logoUrl = data.logoUrl,
                                 date = data.date,
                                 dark = dark
                             )

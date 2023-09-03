@@ -43,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.BusinessesClass
 import com.digital.yazman.ah.classes.ServicesClass
@@ -57,7 +58,7 @@ class ServicesView : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            var darkValue = getIntent().getBooleanExtra("dark",false)
+            var darkValue = getIntent().getBooleanExtra("dark", false)
             var dark by remember {
                 mutableStateOf(darkValue)
             }
@@ -94,10 +95,11 @@ class ServicesView : ComponentActivity() {
                                 val location = document.getString("location") ?: ""
                                 val contact = document.getString("contact") ?: ""
                                 val services = document.getString("services") ?: ""
+                                val logoUrl = document.getString("logoUrl") ?: ""
                                 val date = document.getString("date") ?: ""
                                 userDataList.add(
                                     ServicesClass(
-                                        id, name, expert, location, contact, services, date
+                                        id, name, expert, location, contact, services,logoUrl, date
                                     )
                                 )
                             }
@@ -105,6 +107,8 @@ class ServicesView : ComponentActivity() {
                         itemsState.value = userDataList
                     }
 
+
+                    val logoUrl = "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/logo.png?alt=media&token=3a657305-5f6b-4c75-b012-07b58c71945e"
 
                     if (itemsState.value.isEmpty()) {
 
@@ -115,7 +119,7 @@ class ServicesView : ComponentActivity() {
                                 "Yazman",
                                 "03XXXXXXXXX",
                                 dark = dark,
-                                painterResource(id = R.drawable.hamza2),
+                                logoUrl,
                                 modifier = Modifier.shimmer()
                             )
                         }
@@ -130,7 +134,7 @@ class ServicesView : ComponentActivity() {
                                 expertise = data.expertise,
                                 location = data.location,
                                 contact = data.contact,
-                                painter = painterResource(id = R.drawable.hamza2),
+                                logoUrl = data.logoUrl,
                                 modifier = Modifier,
                                 dark = dark
                             )
@@ -150,12 +154,12 @@ fun ServicesCard(
     location: String,
     contact: String,
     dark: Boolean,
-    painter: Painter = painterResource(id = R.drawable.hamza2),
+    logoUrl: String,
     modifier: Modifier,
 
     ) {
     var cardBackgroundColor = Color(0xFFFFFFFF)
-    if(dark){
+    if (dark) {
         cardBackgroundColor = Color(0xFF282834)
     }
     Card(
@@ -175,8 +179,8 @@ fun ServicesCard(
                 .padding(5.dp)
         ) {
             Row {
-                Image(
-                    painter = painter,
+                AsyncImage(
+                    model = logoUrl,
                     contentDescription = "Image",
                     contentScale = ContentScale.Crop,
                     modifier = modifier
@@ -187,7 +191,7 @@ fun ServicesCard(
 
                 Column {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,modifier = modifier
+                        verticalAlignment = Alignment.CenterVertically, modifier = modifier
                     ) {
                         AllTexts(
                             name,
@@ -198,7 +202,7 @@ fun ServicesCard(
                             dark = dark
                         )
                         Spacer(modifier = modifier.weight(1f))
-                        FavoriteButton(modifier = modifier,dark = dark)
+                        FavoriteButton(modifier = modifier, dark = dark)
                     }
 
                     AllTexts(

@@ -7,6 +7,7 @@ class ServicesClass(
     val location: String,
     val contact: String,
     val services: String,
+    val logoUrl: String,
     val date: String
 ) {
 }
