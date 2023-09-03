@@ -48,6 +48,10 @@ class LocalDealsAdmin : ComponentActivity() {
             }
             val db = FirebaseFirestore.getInstance()
             val context = LocalContext.current
+            var darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark by remember {
+                mutableStateOf(darkValue)
+            }
             var nameCheck = 0
             var ids = 0
 
@@ -65,6 +69,7 @@ class LocalDealsAdmin : ComponentActivity() {
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 DataToUpload(
+                    dark = dark,
                     id = id,
                     "Local Deals",
                     context
@@ -75,7 +80,7 @@ class LocalDealsAdmin : ComponentActivity() {
 }
 
 @Composable
-fun DataToUpload(id: String, collectionName: String, context: Context,) {
+fun DataToUpload(dark: Boolean, id: String, collectionName: String, context: Context,) {
 
     var id = id
 
@@ -228,7 +233,7 @@ fun DataToUpload(id: String, collectionName: String, context: Context,) {
                                 date = "";
                                 id = id
                             }
-                        context.startActivity(Intent(context, Admin::class.java))
+                        context.startActivity(Intent(context, Admin::class.java).putExtra("dark", dark))
                     }
                 }
 

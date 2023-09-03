@@ -66,6 +66,10 @@ class ServicesAdmin : ComponentActivity() {
                 mutableStateOf("ID")
             }
             val context = LocalContext.current
+            var darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark by remember {
+                mutableStateOf(darkValue)
+            }
             val db = FirebaseFirestore.getInstance()
             var nameCheck = 0
             var ids = 0
@@ -85,7 +89,7 @@ class ServicesAdmin : ComponentActivity() {
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    ServicesData(id, "Services", context)
+                    ServicesData(dark, id, "Services", context)
 
                 }
             }
@@ -95,7 +99,7 @@ class ServicesAdmin : ComponentActivity() {
 
 
 @Composable
-fun ServicesData(id: String, collectionName: String, context: Context) {
+fun ServicesData(dark: Boolean, id: String, collectionName: String, context: Context) {
 
     var id = id
 
@@ -302,7 +306,7 @@ fun ServicesData(id: String, collectionName: String, context: Context) {
                             contact = "";
                             id = id
                         }
-                        context.startActivity(Intent(context, Admin::class.java))
+                        context.startActivity(Intent(context, Admin::class.java).putExtra("dark", dark))
                     }
                 }
             },

@@ -84,14 +84,14 @@ class Notification : ComponentActivity() {
                     backgroundColor = Color(0xFF14141f)
                 }
 
-                Toast.makeText(context, "${userId}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "${userId}", Toast.LENGTH_SHORT).show()
 
                 db.collection("Users").document(userId).update(
                     mapOf(
                         "notify" to id.trim()
                     )
                 ).addOnSuccessListener {
-                    Toast.makeText(context, "done", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "done", Toast.LENGTH_SHORT).show()
                 }
 
 
@@ -201,9 +201,9 @@ fun NotificationCard(
                     context.startActivity(intent)
                 }
 
-                Toast
-                    .makeText(context, title, Toast.LENGTH_SHORT)
-                    .show()
+//                Toast
+//                    .makeText(context, title, Toast.LENGTH_SHORT)
+//                    .show()
             }) {
             Row(
                 verticalAlignment = Alignment.CenterVertically, modifier = modifier.fillMaxWidth()

@@ -20,6 +20,10 @@ class LocalNewsAdmin : ComponentActivity() {
             }
             val db = FirebaseFirestore.getInstance()
             val context = LocalContext.current
+            var darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark by remember {
+                mutableStateOf(darkValue)
+            }
             var nameCheck = 0
             var ids = 0
 
@@ -36,6 +40,7 @@ class LocalNewsAdmin : ComponentActivity() {
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 DataToUpload(
+                    dark,
                     id = id, "Local News",
                     context)
             }

@@ -207,7 +207,7 @@ class Login : ComponentActivity() {
                                                                     document.get("name").toString()
                                                                 Toast.makeText(
                                                                     context,
-                                                                    name,
+                                                                    "Welcome "+ name,
                                                                     Toast.LENGTH_SHORT
                                                                 ).show()
                                                                 dataStoreUser.setEmail(
@@ -252,11 +252,11 @@ class Login : ComponentActivity() {
                                             }
                                             val user =
                                                 FirebaseAuth.getInstance().currentUser
-                                            Toast.makeText(
-                                                context,
-                                                user?.email.toString(),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+//                                            Toast.makeText(
+//                                                context,
+//                                                user?.email.toString(),
+//                                                Toast.LENGTH_SHORT
+//                                            ).show()
 
                                             // Handle successful login
                                         } else {

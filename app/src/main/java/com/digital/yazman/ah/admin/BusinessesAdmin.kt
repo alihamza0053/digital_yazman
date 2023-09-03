@@ -57,6 +57,10 @@ class BusinessesAdmin : ComponentActivity() {
             }
             val db = FirebaseFirestore.getInstance()
             val context = LocalContext.current
+            var darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark by remember {
+                mutableStateOf(darkValue)
+            }
             var nameCheck = 0
             var ids = 0
 
@@ -72,7 +76,7 @@ class BusinessesAdmin : ComponentActivity() {
             }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
-                BusinessData(id, "Businesses", context)
+                BusinessData(dark,id, "Businesses", context)
 
             }
         }
@@ -81,7 +85,7 @@ class BusinessesAdmin : ComponentActivity() {
 
 
 @Composable
-fun BusinessData(id: String, collectionName: String, context: Context) {
+fun BusinessData(dark: Boolean, id: String, collectionName: String, context: Context) {
 
     var id = id
 
@@ -299,7 +303,7 @@ fun BusinessData(id: String, collectionName: String, context: Context) {
                             contact = "";
                             id = id
                         }
-                        context.startActivity(Intent(context, Admin::class.java))
+                        context.startActivity(Intent(context, Admin::class.java).putExtra("dark", dark))
                     }
                 }
             },

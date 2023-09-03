@@ -252,7 +252,7 @@ class Admin : ComponentActivity() {
                             "MS ads",
                             modifier = Modifier.clickable {
                                 context.startActivity(
-                                    Intent(context, LocalDealsAdmin::class.java)
+                                    Intent(context, AdsAdmin::class.java).putExtra("dark", dark)
                                 )
                             },
                             dark = dark
@@ -397,7 +397,7 @@ fun allData(context:Context, users: String, business: String, ads: String, servi
                         fontSize = 12,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(0.dp).clickable {
-                          context.startActivity(Intent(context,UserDataViewAdmin::class.java))
+                          context.startActivity(Intent(context,UserDataViewAdmin::class.java).putExtra("dark", dark))
                         },
                         dark = dark
                     )

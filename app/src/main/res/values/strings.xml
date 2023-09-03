@@ -40,4 +40,5 @@
     <string name="title_activity_admin_profile">AdminProfile</string>
     <string name="title_activity_update_admin">UpdateAdmin</string>
     <string name="title_activity_user_data_view_admin">UserDataViewAdmin</string>
+    <string name="title_activity_ads_admin">AdsAdmin</string>
 </resources>

@@ -361,7 +361,7 @@ class Signup : ComponentActivity() {
                                     .createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            db.collection("Users").document().set(data)
+                                            db.collection("Users").document(id).set(data)
                                                 .addOnSuccessListener {
                                                     dialog = false
                                                     Toast.makeText(
@@ -522,6 +522,7 @@ fun LoadingView(
                 color = Color.White,
                 strokeWidth = 3.dp
             )
+            Text(text = "Please wait...", color = Color.White)
         }
     }
 }

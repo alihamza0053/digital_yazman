@@ -60,9 +60,14 @@ class UpdateAdmin : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
+            var darkValue = getIntent().getBooleanExtra("dark", false)
+            var dark by remember {
+                mutableStateOf(darkValue)
+            }
             DigitalYazmanTheme {
                 // A surface container using the 'background' color from the theme
                 UpdateData(
+                    dark,
                     "App Update",
                     context,
                     endActivity = {
@@ -75,7 +80,7 @@ class UpdateAdmin : ComponentActivity() {
 }
 
 @Composable
-fun UpdateData(collectionName: String, context: Context, endActivity: () -> Unit) {
+fun UpdateData(dark: Boolean, collectionName: String, context: Context, endActivity: () -> Unit) {
 
     var update = "Update"
 
@@ -90,7 +95,7 @@ fun UpdateData(collectionName: String, context: Context, endActivity: () -> Unit
         mutableStateOf("")
     }
     var link by remember {
-        mutableStateOf("")
+        mutableStateOf("https://dy.alihamza.me")
     }
 
     val data = hashMapOf(
@@ -190,7 +195,7 @@ fun UpdateData(collectionName: String, context: Context, endActivity: () -> Unit
                             version = "";
                             link = "";
                         }
-                    context.startActivity(Intent(context, Admin::class.java))
+                    context.startActivity(Intent(context, Admin::class.java).putExtra("dark", dark))
                     endActivity()
                 }
             },

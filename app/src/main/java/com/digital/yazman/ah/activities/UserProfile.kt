@@ -408,8 +408,6 @@ fun UserData(
 
         }
     }
-
-
 }
 
 private fun sendVerificationEmail(context: Context) {
