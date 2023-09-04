@@ -107,10 +107,13 @@ class menuActivity : ComponentActivity() {
 //                WindowManager.LayoutParams.FLAG_SECURE,
 //                WindowManager.LayoutParams.FLAG_SECURE
 //            )
+
+            //Back Handler
             BackHandler(enabled = true, onBack = {
                 finish()
             })
 
+            //All veriables
             val firebaseAuth = FirebaseAuth.getInstance()
             val currentUser = firebaseAuth.currentUser
             val context = LocalContext.current
@@ -121,11 +124,9 @@ class menuActivity : ComponentActivity() {
             val darkValue = getIntent().getBooleanExtra("dark", false)
             val appVersion =
                 context.packageManager.getPackageInfo(context.packageName, 0).versionName
-
             var dark by remember {
                 mutableStateOf(darkValue)
             }
-
             var lightDark by remember {
                 mutableStateOf(false)
             }
@@ -136,27 +137,21 @@ class menuActivity : ComponentActivity() {
             var notify = dataStoreUser.getNotify.collectAsState(initial = "0").value
             var userId = dataStoreUser.getId.collectAsState(initial = "0").value
             var userEmail = dataStoreUser.getEmail.collectAsState(initial = "0").value
-
             var title = dataStoreUpdate.getTitle.collectAsState(initial = "Update").value
             var shortDes =
                 dataStoreUpdate.getShortDes.collectAsState(initial = "Update Available").value
             var version = dataStoreUpdate.getVersion.collectAsState(initial = appVersion).value
-//            Toast.makeText(context,version,Toast.LENGTH_SHORT).show()
             var link =
                 dataStoreUpdate.getLink.collectAsState(initial = "https://www.dy.alihamza.me/").value
-
-
             var imgVerify by remember {
                 mutableStateOf(R.drawable.user_unverified)
             }
             var login by remember {
                 mutableStateOf("Login")
             }
-            // Toast.makeText(context,notify.toString(),Toast.LENGTH_SHORT).show()
             var userNotify by remember {
                 mutableStateOf(notify)
             }
-
             var badgeNumber by remember {
                 mutableStateOf("0")
             }
@@ -166,11 +161,7 @@ class menuActivity : ComponentActivity() {
             var badgeColor by remember {
                 mutableStateOf(Color.Transparent)
             }
-
             val db = FirebaseFirestore.getInstance()
-
-
-            var notifiCheck = 0
             var ids by remember {
                 mutableStateOf(0)
             }
@@ -178,6 +169,13 @@ class menuActivity : ComponentActivity() {
                 mutableStateOf(0)
             }
 
+            var adsUrls = mutableListOf("")
+
+            //testing Toasts
+            // Toast.makeText(context,version,Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context,notify.toString(),Toast.LENGTH_SHORT).show()
+
+            //Getting notificaion update from firestore
             db.collection("Notification").get().addOnSuccessListener { notifyResults ->
                 for (document in notifyResults) {
                     ids = document.get("id").toString()
@@ -188,6 +186,7 @@ class menuActivity : ComponentActivity() {
                 }
             }
 
+            //Getting user notify data to check weather uer read notificaiton or not
             db.collection("Users").get().addOnSuccessListener { userResults ->
                 for (document in userResults) {
                     if (document.get("id").toString() == userId && document.get("email")
@@ -200,6 +199,21 @@ class menuActivity : ComponentActivity() {
                 }
             }
 
+            //Getting Announcement Images Urls form firestore
+            db.collection("Announcements").get().addOnSuccessListener {urls->
+                for(document in urls){
+                    adsUrls.remove("")
+                    adsUrls.add(document.get("link1").toString())
+                    adsUrls.add(document.get("link2").toString())
+                    adsUrls.add(document.get("link3").toString())
+                    adsUrls.add(document.get("link4").toString())
+                    adsUrls.add(document.get("link5").toString())
+
+                }
+
+            }
+
+            //Contitionds for account type
             if (verify == "0") {
                 imgVerify = R.drawable.user_unverified
             }
@@ -210,13 +224,10 @@ class menuActivity : ComponentActivity() {
                 imgVerify = R.drawable.admin_king
             }
 
-
+            //check user logged in or not
             if (currentUser != null) {
                 login = "Log out"
-//                Toast.makeText(applicationContext, "Login Success ", Toast.LENGTH_SHORT)
-                //                 .show()
             }
-
 
 //            myRef.get().addOnSuccessListener {
 //                var idCheck =
@@ -229,7 +240,8 @@ class menuActivity : ComponentActivity() {
 //            }
 
             DigitalYazmanTheme {
-                //   Toast.makeText(context,link,Toast.LENGTH_SHORT).show()
+
+                //admin power condition show update dialog
                 if (userEmail != "alihamza00053@gmail.com") {
                     UpdateDialog(
                         context = context,
@@ -248,11 +260,9 @@ class menuActivity : ComponentActivity() {
                             finish()
                         })
                 }
-                BackHandler(enabled = true, onBack = {
-                    finishAffinity()
-                })
-//                Toast.makeText(context,userId,Toast.LENGTH_SHORT).show()
-
+//                BackHandler(enabled = true, onBack = {
+//                    finishAffinity()
+//                })
                 if (dark) {
                     backgroundColor = Color(0xFF14141f)
                     textColor = Color(0xFFFFFFFF)
@@ -261,14 +271,8 @@ class menuActivity : ComponentActivity() {
                     textColor = Color(0xFF000000)
                 }
 
-                val images = listOf(
-                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/1.png?alt=media&token=fc9a62d2-b12d-47ed-b59a-0287cf1f1b1d",
-                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/2.png?alt=media&token=d70ebc49-265c-4c13-9df6-4d01e56e3a6c",
-                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/3.png?alt=media&token=2fe49b52-0ff4-4871-b18c-653c2476c324",
-                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/4.png?alt=media&token=72d1d394-6aac-4314-b915-18b24005084b",
-                    "https://firebasestorage.googleapis.com/v0/b/digital-yazman-34f70.appspot.com/o/3.png?alt=media&token=2fe49b52-0ff4-4871-b18c-653c2476c324",
-                    )
-                val context = LocalContext.current
+                val images = adsUrls
+
                 // topbar start
                 Column(
                     modifier = Modifier

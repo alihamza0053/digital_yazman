@@ -98,7 +98,7 @@ class UserProfile : ComponentActivity() {
 
                 ) {
 
-                    Toast.makeText(context, email.toString(), Toast.LENGTH_SHORT).show()
+        //            Toast.makeText(context, email.toString(), Toast.LENGTH_SHORT).show()
                     LaunchedEffect(Unit) {
 
                         val querySnapshot = db.collection("Users").get().await()
@@ -211,8 +211,8 @@ fun UserData(
     var verificationColor by remember {
         mutableStateOf(Color.Red)
     }
-    Toast.makeText(LocalContext.current, user!!.isEmailVerified.toString(), Toast.LENGTH_SHORT)
-        .show()
+ //   Toast.makeText(LocalContext.current, user!!.isEmailVerified.toString(), Toast.LENGTH_SHORT)
+  //      .show()
     if (user!!.isEmailVerified) {
         verification = "Verified"
         verificationColor = Color.Green
