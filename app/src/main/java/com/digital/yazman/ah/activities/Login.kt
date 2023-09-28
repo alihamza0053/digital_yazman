@@ -52,8 +52,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.datastore.StoreLightDarkData
 import com.digital.yazman.ah.datastore.UserInfo
@@ -120,15 +122,15 @@ class Login : ComponentActivity() {
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
                     //business start
                     AllTexts(
-                        text = "Login",
-                        fontSize = 25,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        text = "Welcome\nBack",
+                        fontSize = 30,
+                        fontWeight = FontWeight.Light,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(top = 15.dp, bottom = 50.dp),
                         dark = dark
                     )
 //                    Image(
@@ -136,6 +138,7 @@ class Login : ComponentActivity() {
 //                        contentDescription = "logo",
 //                        modifier = Modifier.size(150.dp)
 //                    )
+
                     OutlinedTextField(
                         value = email,
                         onValueChange = {
@@ -147,7 +150,9 @@ class Login : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
                         ),
+
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
                             fontWeight = FontWeight.Normal,
@@ -171,7 +176,10 @@ class Login : ComponentActivity() {
                         label = { Text(text = "Password", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        )
                     )
                     if (passwordError) {
                         Text(text = "Minimum 8 characters", color = MaterialTheme.colorScheme.error)
@@ -207,7 +215,7 @@ class Login : ComponentActivity() {
                                                                     document.get("name").toString()
                                                                 Toast.makeText(
                                                                     context,
-                                                                    "Welcome "+ name,
+                                                                    "Welcome " + name,
                                                                     Toast.LENGTH_SHORT
                                                                 ).show()
                                                                 dataStoreUser.setEmail(
@@ -242,14 +250,14 @@ class Login : ComponentActivity() {
                                                         }
                                                     }
                                                 }.addOnFailureListener {
-                                                Toast.makeText(
-                                                    context,
-                                                    it.message.toString(),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                enable = true
-                                                dialog = false
-                                            }
+                                                    Toast.makeText(
+                                                        context,
+                                                        it.message.toString(),
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                    enable = true
+                                                    dialog = false
+                                                }
                                             val user =
                                                 FirebaseAuth.getInstance().currentUser
 //                                            Toast.makeText(
@@ -366,20 +374,21 @@ class Login : ComponentActivity() {
 }
 
 
-private fun signInWithEmail(context: Context, email: String, password: String, dark: Boolean) {
-
-}
-
-private fun sendVerificationEmail() {
-    val user = FirebaseAuth.getInstance().currentUser
-    user?.sendEmailVerification()
-        ?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Email sent
-            } else {
-                // Email not sent
-            }
-        }
-}
+//
+//private fun signInWithEmail(context: Context, email: String, password: String, dark: Boolean) {
+//
+//}
+//
+//private fun sendVerificationEmail() {
+//    val user = FirebaseAuth.getInstance().currentUser
+//    user?.sendEmailVerification()
+//        ?.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                // Email sent
+//            } else {
+//                // Email not sent
+//            }
+//        }
+//}
 
 

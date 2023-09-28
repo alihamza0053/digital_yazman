@@ -54,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
 import com.digital.yazman.ah.R
 import com.digital.yazman.ah.classes.LoginInfo
 import com.digital.yazman.ah.datastore.StoreLightDarkData
@@ -91,19 +92,19 @@ class Signup : ComponentActivity() {
                 mutableStateOf("")
             }
             var nameError by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             var email by remember {
                 mutableStateOf("")
             }
             var emailError by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             var password by remember {
                 mutableStateOf("")
             }
             var passwordError by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             var enable by remember {
                 mutableStateOf(true)
@@ -112,13 +113,13 @@ class Signup : ComponentActivity() {
                 mutableStateOf("")
             }
             var addressError by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             var phone by remember {
                 mutableStateOf("")
             }
             var phoneError by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             var notify by remember {
                 mutableStateOf("0")
@@ -162,16 +163,16 @@ class Signup : ComponentActivity() {
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
 
-                ) {
+                    ) {
 
                     //business start
                     AllTexts(
-                        text = "Sign up",
-                        fontSize = 25,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 20.dp),
+                        text = "Create\nAccount",
+                        fontSize = 30,
+                        fontWeight = FontWeight.Light,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(top = 15.dp, bottom = 20.dp),
                         dark = dark
                     )
 
@@ -203,6 +204,7 @@ class Signup : ComponentActivity() {
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
@@ -228,6 +230,7 @@ class Signup : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
@@ -254,6 +257,7 @@ class Signup : ComponentActivity() {
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
@@ -281,6 +285,7 @@ class Signup : ComponentActivity() {
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontFamily = fontFamily,
@@ -308,7 +313,10 @@ class Signup : ComponentActivity() {
                         label = { Text(text = "Password", color = textColor) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        )
                     )
 
                     if (passwordError) {
